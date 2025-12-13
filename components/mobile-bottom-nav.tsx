@@ -9,6 +9,7 @@ import {
     SheetContent,
     SheetHeader,
     SheetTitle,
+    SheetDescription,
     SheetTrigger,
 } from "@/components/ui/sheet"
 import type { DateRange } from "react-day-picker"
@@ -104,7 +105,10 @@ export function MobileBottomNav({
                     </SheetTrigger>
                     <SheetContent side="bottom" className="h-auto pb-safe">
                         <SheetHeader className="px-1 pb-4">
-                            <SheetTitle className="text-center">Tarih Seçin</SheetTitle>
+                            <SheetTitle className="text-center text-lg">Tarih Seçin</SheetTitle>
+                            <SheetDescription className="text-center text-sm text-muted-foreground/80">
+                                Menüsünü görüntülemek istediğiniz günü veya tarih aralığını seçin.
+                            </SheetDescription>
                         </SheetHeader>
                         <div className="px-2 pb-6">
                             <DatePicker
