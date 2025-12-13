@@ -1,0 +1,39 @@
+name: Update Menu Data
+
+on:
+  schedule:
+    # Her 14 günde bir saat 04:00'te (UTC) çalışır.
+    # TR saatiyle sabah 07:00 civarı.
+    - cron: '0 4 */14 * *'
+  # Elle tetiklemek istersen diye:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-and-commit:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Depoyu Çek (Checkout)
+        uses: actions/checkout@v4
+
+      - name: Node.js Kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Bağımlılıkları Yükle
+        run: npm install
+
+      - name: Menüyü Scrape Et
+        run: npm run scrape
+
+      - name: Değişiklikleri Kontrol Et ve Pushla
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add public/data/
+          # Eğer değişiklik varsa commit at ve pushla
+          git diff --quiet && git diff --staged --quiet || (git commit -m "scraping: Otomatik menü güncelleme" && git push)
