@@ -225,12 +225,14 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
     const handleMobilePrevious = () => {
         if (mobileSelectedDateIndex > 0) {
             setMobileSelectedDateIndex(mobileSelectedDateIndex - 1)
+            setSelectedDateRange(undefined)
         }
     }
 
     const handleMobileNext = () => {
         if (mobileSelectedDateIndex < availableDates.length - 1) {
             setMobileSelectedDateIndex(mobileSelectedDateIndex + 1)
+            setSelectedDateRange(undefined)
         }
     }
 
@@ -331,7 +333,7 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                     <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button variant="outline" size="sm" className="relative overflow-hidden h-7 text-xs border-0 bg-transparent hover:bg-transparent transition-none group/ai-btn p-[1px]">
+                                                <Button suppressHydrationWarning variant="outline" size="sm" className="relative overflow-hidden h-7 text-xs border-0 bg-transparent hover:bg-transparent transition-none group/ai-btn p-[1px]">
                                                     <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#A8C6FA_0%,#B388EB_25%,#FCAFBB_50%,#B388EB_75%,#A8C6FA_100%)] opacity-60" />
                                                     <span className="relative h-full w-full bg-background/95 group-hover/ai-btn:bg-background/100 transition-colors rounded-[calc(var(--radius)-3px)] flex items-center justify-center gap-1.5 px-2.5">
                                                         <MagicIcon className="w-3.5 h-3.5 text-primary/80" />
@@ -436,7 +438,7 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                 <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
-                                            <Button variant="outline" size="sm" className="relative overflow-hidden h-7 text-xs border-0 bg-transparent hover:bg-transparent transition-none group/ai-btn p-[1px]">
+                                            <Button suppressHydrationWarning variant="outline" size="sm" className="relative overflow-hidden h-7 text-xs border-0 bg-transparent hover:bg-transparent transition-none group/ai-btn p-[1px]">
                                                 <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#A8C6FA_0%,#B388EB_25%,#FCAFBB_50%,#B388EB_75%,#A8C6FA_100%)] opacity-60" />
                                                 <span className="relative h-full w-full bg-background/95 group-hover/ai-btn:bg-background/100 transition-colors rounded-[calc(var(--radius)-3px)] flex items-center justify-center gap-1.5 px-2.5">
                                                     <MagicIcon className="w-3.5 h-3.5 text-primary/80" />

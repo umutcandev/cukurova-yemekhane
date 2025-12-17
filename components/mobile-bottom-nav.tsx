@@ -61,8 +61,6 @@ export function MobileBottomNav({
             year: "numeric",
             month: "numeric",
             day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
             timeZone: "Europe/Istanbul",
         })
     }
@@ -106,7 +104,7 @@ export function MobileBottomNav({
                 {/* Right: Date Picker Trigger */}
                 <Sheet open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
                     <SheetTrigger asChild>
-                        <Button variant="outline" size="sm" className="rounded-lg gap-2">
+                        <Button suppressHydrationWarning variant="outline" size="sm" className="rounded-lg gap-2">
                             <CalendarIcon className="h-4 w-4" />
                             <span className="text-xs">Tarih Seç</span>
                         </Button>
