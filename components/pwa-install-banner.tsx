@@ -45,11 +45,11 @@ export function PwaInstallBanner() {
     if (!isVisible) return null
 
     return (
-        <div className="dark relative flex w-full items-center justify-between gap-4 bg-muted/20 border-b border-border/50 p-3 sm:px-4">
+        <div className="dark relative flex w-full items-center justify-between gap-4 bg-[#0a0a0a] border-b border-white/10 p-3 sm:px-4">
             <div className="flex items-center gap-3">
                 <button
                     onClick={handleCloseClick}
-                    className="text-foreground/80 hover:text-foreground/50 transition-colors"
+                    className="text-white hover:text-white/50 transition-colors"
                     aria-label="Kapat"
                 >
                     <X className="h-5 w-5" />
@@ -64,8 +64,8 @@ export function PwaInstallBanner() {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-foreground sm:text-base">Yemekhane</span>
-                    <span className="text-xs text-muted-foreground sm:text-sm">
+                    <span className="text-sm font-semibold text-white sm:text-base">Yemekhane</span>
+                    <span className="text-xs text-white/60 sm:text-sm">
                         Çukurova Üniversitesi yemekhane uygulaması.
                     </span>
                 </div>
