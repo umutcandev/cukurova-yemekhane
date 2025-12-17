@@ -54,13 +54,13 @@ export function PwaInstallBanner() {
                 >
                     <X className="h-5 w-5" />
                 </button>
-                <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/10 sm:h-12 sm:w-12">
+                <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5 sm:h-12 sm:w-12 sm:p-2">
                     <Image
                         src="/icon/icon-512x512.png"
                         alt="App Icon"
                         width={48}
                         height={48}
-                        className="object-cover"
+                        className="h-full w-full object-contain"
                     />
                 </div>
                 <div className="flex flex-col">
