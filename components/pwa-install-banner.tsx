@@ -55,9 +55,8 @@ export function PwaInstallBanner() {
                     <X className="h-5 w-5" />
                 </button>
                 <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/10 sm:h-12 sm:w-12">
-                    {/* Assuming local icon exists, using a placeholder if not found or relying on Next.js automatic public handling if configured, but best to use standard paths */}
                     <Image
-                        src="/icon-512x512.png"
+                        src="/icon/icon-512x512.png"
                         alt="App Icon"
                         width={48}
                         height={48}
