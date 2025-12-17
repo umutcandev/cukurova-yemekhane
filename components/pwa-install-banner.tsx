@@ -45,11 +45,11 @@ export function PwaInstallBanner() {
     if (!isVisible) return null
 
     return (
-        <div className="relative flex w-full items-center justify-between gap-4 bg-[#1a1a1a] p-3 text-white sm:px-4">
+        <div className="relative flex w-full items-center justify-between gap-4 bg-muted/20 p-3 text-white sm:px-4 border-b border-border/50">
             <div className="flex items-center gap-3">
                 <button
                     onClick={handleCloseClick}
-                    className="text-gray-400 hover:text-white"
+                    className="text-white hover:text-white/50"
                     aria-label="Kapat"
                 >
                     <X className="h-5 w-5" />
