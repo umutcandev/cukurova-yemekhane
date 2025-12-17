@@ -34,4 +34,8 @@ next-env.d.ts
 # agents and internal docs
 AGENTS.md
 .agent/
-.gemini/
+
+# PWA
+public/sw.js
+public/workbox-*.js
+public/swe-worker-*.js
