@@ -45,40 +45,42 @@ export function PwaInstallBanner() {
     if (!isVisible) return null
 
     return (
-        <div className="dark relative flex w-full items-center justify-between gap-4 bg-[#101010] border-b border-white/10 p-3 sm:px-4">
-            <div className="flex items-center gap-3">
-                <button
-                    onClick={handleCloseClick}
-                    className="text-white/50 hover:text-white transition-colors"
-                    aria-label="Kapat"
-                >
-                    <X className="h-5 w-5" />
-                </button>
-                <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5 sm:h-12 sm:w-12 sm:p-2">
-                    <Image
-                        src="/icon/icon-512x512.png"
-                        alt="App Icon"
-                        width={48}
-                        height={48}
-                        className="h-full w-full object-contain"
-                    />
+        <div className="dark w-full bg-[#101010] border-b border-white/10">
+            <div className="container mx-auto flex items-center justify-between gap-4 p-3 px-4 sm:py-3">
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={handleCloseClick}
+                        className="text-white/50 hover:text-white transition-colors"
+                        aria-label="Kapat"
+                    >
+                        <X className="h-5 w-5" />
+                    </button>
+                    <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5 sm:h-12 sm:w-12 sm:p-2">
+                        <Image
+                            src="/icon/icon-512x512.png"
+                            alt="App Icon"
+                            width={48}
+                            height={48}
+                            className="h-full w-full object-contain"
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-white sm:text-base">Yemekhane</span>
+                        <span className="text-xs text-white/60 sm:text-sm">
+                            Çukurova Üniversitesi yemekhane uygulaması.
+                        </span>
+                    </div>
                 </div>
-                <div className="flex flex-col">
-                    <span className="text-sm font-semibold text-white sm:text-base">Yemekhane</span>
-                    <span className="text-xs text-white/60 sm:text-sm">
-                        Çukurova Üniversitesi yemekhane uygulaması.
-                    </span>
-                </div>
-            </div>
 
-            <Button
-                onClick={handleInstallClick}
-                variant="secondary"
-                size="sm"
-                className="shrink-0 font-medium"
-            >
-                Yükle
-            </Button>
+                <Button
+                    onClick={handleInstallClick}
+                    variant="default"
+                    size="sm"
+                    className="shrink-0 font-medium"
+                >
+                    Yükle
+                </Button>
+            </div>
         </div>
     )
 }
