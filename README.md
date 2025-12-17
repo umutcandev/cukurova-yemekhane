@@ -22,7 +22,7 @@ Proje en güncel web teknolojileri kullanılarak geliştirilmiştir:
 -   **Dil**: [TypeScript](https://www.typescriptlang.org/) (Tam tip güvenliği)
 -   **Stil**: [Tailwind CSS 4](https://tailwindcss.com/) (PostCSS ile entegre)
 -   **Komponent Kütüphanesi**: [Radix UI](https://www.radix-ui.com/)
--   **İkonlar**: [Lucide React](https://lucide.dev/)
+-   **İkonlar**: [Lucide React](https://lucide.dev/) - SVG'ler
 -   **Scraping**: `cheerio`, `iconv-lite`
 -   **Form & Validasyon**: `react-hook-form`, `zod`
 -   **Paket Yöneticisi**: pnpm (veya npm)
@@ -54,8 +54,8 @@ Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyi
 
 ### 1. Depoyu Klonlayın
 ```bash
-git clone https://github.com/umutcandev/cu-yemekhane.git
-cd cu-yemekhane
+git clone https://github.com/umutcandev/cukurova-yemekhane.git
+cd cukurova-yemekhane
 ```
 
 ### 2. Bağımlılıkları Yükleyin
@@ -106,4 +106,4 @@ interface MenuData {
 
 ## Lisans
 
-Bu proje MIT lisansı ile lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakınız.
+Bu proje MIT lisansı ile lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakınız.

@@ -1,11 +1,12 @@
 import { loadMenuData } from "@/lib/menu-loader"
-import { getCurrentMonth } from "@/lib/date-utils"
+import { getCurrentMonth, getTurkeyDate } from "@/lib/date-utils"
 import MenuPage from "./menu-page"
 
 export default async function Home() {
   try {
     const menuData = await loadMenuData(getCurrentMonth())
-    return <MenuPage menuData={menuData} />
+    const initialDate = getTurkeyDate()
+    return <MenuPage menuData={menuData} initialDate={initialDate} />
   } catch (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

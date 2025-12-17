@@ -38,8 +38,10 @@ export async function scrapeFullMonth(): Promise<MenuData> {
     const ymkMatch = dateLink?.match(/ymk=(\d+)/);
     const ymk = ymkMatch ? parseInt(ymkMatch[1]) : null;
 
-    // Tarih metnini al (FONT içinden, <br> tag'lerini temizle)
-    let dateText = $card.find('FONT[size="6"]').text().replace(/\s+/g, ' ').trim();
+    // Tarih metnini al (FONT içinden, <br> tag'lerini boşlukla değiştirerek)
+    const $font = $card.find('FONT[size="6"]');
+    $font.find('br').replaceWith(' ');
+    let dateText = $font.text().replace(/\s+/g, ' ').trim();
     // Örnek: "03.11.2025 Pazartesi" veya sadece "03.11.2025"
     const dateMatch = dateText.match(/(\d{2})\.(\d{2})\.(\d{4})/);
 

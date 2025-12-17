@@ -6,20 +6,28 @@
  * Get today's date in ISO format (YYYY-MM-DD)
  */
 export function getTodayDate(): string {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return getTurkeyDate();
+}
+
+/**
+ * Get current date in Turkey (Europe/Istanbul) timezone
+ */
+export function getTurkeyDate(): string {
+    const now = new Date();
+    return new Intl.DateTimeFormat('fr-CA', {
+        timeZone: 'Europe/Istanbul',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(now);
 }
 
 /**
  * Get current month in YYYY-MM format
  */
 export function getCurrentMonth(): string {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const today = getTurkeyDate();
+    const [year, month] = today.split('-');
     return `${year}-${month}`;
 }
 

@@ -15,15 +15,6 @@ Bir güvenlik açığı bulursanız, lütfen bunu **issue açarak bildirmeyin**.
 
 Bunun yerine, lütfen şu adımları izleyin:
 
-1.  Bulgularınızı **[email protected]** adresine e-posta ile gönderin.
+1.  Bulgularınızı can@umutcan.xyz adresine e-posta ile gönderin.
 2.  Konu satırına "SECURITY: [Proje Adı] - [Kısa Açıklama]" yazın.
-3.  Mümkünse, açığı yeniden oluşturmak için gerekli adımları ve kavram kanıtını (PoC) ekleyin.
-
-Raporunuzu aldıktan sonra:
-
--   Raporun alındığını 48 saat içinde onaylayacağız.
--   Sorunu inceleyip doğrulayacağız.
--   Gerekirse sizinle iletişime geçip ek bilgi isteyeceğiz.
--   Sorun çözüldüğünde sizi bilgilendireceğiz.
-
-Güvenlik açıklarını sorumlu bir şekilde bildirdiğiniz için teşekkür ederiz!
+3.  Mümkünse, açığın yeniden oluşturulmaması için gerekli adımları ve kanıtını (PoC) ekleyin.

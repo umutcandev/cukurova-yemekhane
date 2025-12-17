@@ -80,13 +80,14 @@ function formatDate(dateString: string) {
         day: "numeric",
         month: "long",
         weekday: "long",
+        timeZone: "Europe/Istanbul",
     }
     return date.toLocaleDateString("tr-TR", options)
 }
 
 function formatDayName(dateString: string) {
     const date = new Date(dateString)
-    const dayName = date.toLocaleDateString("tr-TR", { weekday: "long" })
+    const dayName = date.toLocaleDateString("tr-TR", { weekday: "long", timeZone: "Europe/Istanbul" })
     return dayName.charAt(0).toUpperCase() + dayName.slice(1) + " Menüsü"
 }
 
@@ -96,7 +97,8 @@ function formatDateShort(dateString: string) {
     return date.toLocaleDateString("tr-TR", {
         day: "2-digit",
         month: "2-digit",
-        year: "numeric"
+        year: "numeric",
+        timeZone: "Europe/Istanbul",
     })
 }
 
@@ -139,14 +141,15 @@ function getAiLinks(prompt: string) {
 }
 
 
-export default function MenuPage({ menuData }: { menuData: MenuData }) {
+export default function MenuPage({ menuData, initialDate }: { menuData: MenuData, initialDate: string }) {
 
     const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined)
     const [selectedMeal, setSelectedMeal] = useState<{ id: string; name: string; calories: number } | null>(null)
 
     // Find today's date or nearest available date for mobile initial view
     const findInitialDateIndex = (): number => {
-        const today = new Date().toISOString().split("T")[0]
+        // Use server-provided date to avoid hydration mismatch
+        const today = initialDate
 
         // Try to find today's menu
         const todayIndex = menuData.days.findIndex((day) => day.date === today)
@@ -157,11 +160,16 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
         if (futureIndex !== -1) return futureIndex
 
         // If no future dates, use the last available date
+        // But if today is Saturday/Sunday (which means we passed all weekdays),
+        // we might want to stay on Friday or show nothing?
+        // Current behavior: show last available (likely Friday)
         return menuData.days.length - 1
     }
 
     const [mobileSelectedDateIndex, setMobileSelectedDateIndex] = useState<number>(findInitialDateIndex())
-    const today = new Date().toISOString().split("T")[0]
+
+    // Use initialDate here as well to avoid mismatch
+    const today = initialDate
 
     const todayMenu = menuData.days.find((day) => day.date === today)
 
