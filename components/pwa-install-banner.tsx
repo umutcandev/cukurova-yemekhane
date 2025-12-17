@@ -77,7 +77,7 @@ export function PwaInstallBanner() {
                 size="sm"
                 className="shrink-0 font-medium"
             >
-                Uygulamayı Yükle
+                Yükle
             </Button>
         </div>
     )
