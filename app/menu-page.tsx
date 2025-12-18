@@ -5,7 +5,13 @@ import { Card } from "@/components/ui/card"
 import Image from "next/image"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
-import { UtensilsIcon, MoreVertical, ChevronRight } from "lucide-react"
+import { MoreVertical, ChevronRight } from "lucide-react"
+import {
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+} from "@/components/ui/table"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 import { MealDetailModal } from "@/components/meal-detail-modal"
@@ -279,7 +285,7 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                         // Show range of menus if date range is selected
                         <div className="grid gap-4">
                             {selectedDateMenus.map((day) => (
-                                <Card key={day.ymk} className="border border-border/40 bg-card overflow-hidden shadow-sm">
+                                <Card key={day.ymk} className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
                                     <div className="bg-muted/20 px-3 py-2 border-b border-border/40">
                                         <div className="flex items-center justify-between mb-1">
                                             <div className="flex items-center gap-2">
@@ -296,40 +302,40 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                             Menüler yemekhane sitesinden alınmaktadır.
                                         </p>
                                     </div>
-
-                                    <div className="px-3">
-                                        <div className="space-y-0">
-                                            {day.meals.map((meal, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="flex items-center justify-between py-3 first:pt-0 last:pb-0 border-t border-border/40 first:border-t-0"
-                                                >
-                                                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                                                        <UtensilsIcon className="h-4 w-4 text-muted-foreground/70 shrink-0" />
-                                                        <span
-                                                            className="font-medium text-sm text-foreground cursor-pointer hover:text-primary transition-colors truncate"
-                                                            onClick={() => handleMealClick(meal.id, meal.name, meal.calories)}
-                                                        >
+                                    <div>
+                                        <Table>
+                                            <TableBody>
+                                                {day.meals.map((meal, idx) => (
+                                                    <TableRow
+                                                        key={idx}
+                                                        className="border-border/40 hover:bg-muted/30 cursor-pointer last:border-b-0"
+                                                        onClick={() => handleMealClick(meal.id, meal.name, meal.calories)}
+                                                    >
+                                                        <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground">
                                                             {meal.name}
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-center gap-3 shrink-0 pl-2">
-                                                        <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
-                                                            {meal.calories} kcal
-                                                        </Badge>
-                                                        <button
-                                                            onClick={() => handleMealClick(meal.id, meal.name, meal.calories)}
-                                                            className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                                            aria-label="Detayları göster"
-                                                        >
-                                                            <MoreVertical className="h-4 w-4" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
+                                                        </TableCell>
+                                                        <TableCell className="py-2.5 px-3 text-right w-[1%]">
+                                                            <div className="flex items-center justify-end gap-2">
+                                                                <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
+                                                                    {meal.calories} kcal
+                                                                </Badge>
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleMealClick(meal.id, meal.name, meal.calories);
+                                                                    }}
+                                                                    className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                                                    aria-label="Detayları göster"
+                                                                >
+                                                                    <MoreVertical className="h-4 w-4" />
+                                                                </button>
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
                                     </div>
-
                                     <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
@@ -384,7 +390,7 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                     ) : mobileCurrentMenu ? (
                         // Show single menu from arrow navigation
                         <div className="max-w-md mx-auto">
-                            <Card className="border border-border/40 bg-card overflow-hidden shadow-sm">
+                            <Card className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
                                 <div className="bg-muted/20 px-3 py-3 border-b border-border/40">
                                     <div className="flex items-center justify-between mb-1">
                                         <div className="flex items-center gap-2">
@@ -402,37 +408,39 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                     </p>
                                 </div>
 
-                                <div className="px-3">
-                                    <div className="space-y-0">
-                                        {mobileCurrentMenu.meals.map((meal, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center justify-between py-3 first:pt-0 last:pb-0 border-t border-border/40 first:border-t-0"
-                                            >
-                                                <div className="flex items-center gap-3 flex-1 min-w-0">
-                                                    <UtensilsIcon className="h-4 w-4 text-muted-foreground/70 shrink-0" />
-                                                    <span
-                                                        className="font-medium text-sm text-foreground cursor-pointer hover:text-primary transition-colors truncate"
-                                                        onClick={() => handleMealClick(meal.id, meal.name, meal.calories)}
-                                                    >
+                                <div className="-my-px">
+                                    <Table>
+                                        <TableBody>
+                                            {mobileCurrentMenu.meals.map((meal, idx) => (
+                                                <TableRow
+                                                    key={idx}
+                                                    className="border-border/40 hover:bg-muted/30 cursor-pointer last:border-b-0"
+                                                    onClick={() => handleMealClick(meal.id, meal.name, meal.calories)}
+                                                >
+                                                    <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground">
                                                         {meal.name}
-                                                    </span>
-                                                </div>
-                                                <div className="flex items-center gap-3 shrink-0 pl-2">
-                                                    <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
-                                                        {meal.calories} kcal
-                                                    </Badge>
-                                                    <button
-                                                        onClick={() => handleMealClick(meal.id, meal.name, meal.calories)}
-                                                        className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                                        aria-label="Detayları göster"
-                                                    >
-                                                        <MoreVertical className="h-4 w-4" />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                                    </TableCell>
+                                                    <TableCell className="py-2.5 px-3 text-right w-[1%]">
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
+                                                                {meal.calories} kcal
+                                                            </Badge>
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleMealClick(meal.id, meal.name, meal.calories);
+                                                                }}
+                                                                className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                                                aria-label="Detayları göster"
+                                                            >
+                                                                <MoreVertical className="h-4 w-4" />
+                                                            </button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
                                 </div>
 
                                 <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between">
