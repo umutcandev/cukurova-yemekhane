@@ -2,6 +2,8 @@ import { loadMenuData } from "@/lib/menu-loader"
 import { getCurrentMonth, getTurkeyDate } from "@/lib/date-utils"
 import MenuPage from "./menu-page"
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   try {
     const menuData = await loadMenuData(getCurrentMonth())
