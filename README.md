@@ -1,8 +1,24 @@
-# CU Yemekhane - Çukurova Üniversitesi Yemek Menüsü Uygulaması
+<div align="center">
+
+<img alt="Çukurova Üniversitesi Yemekhane" width="30%" src="https://github.com/user-attachments/assets/17646122-441a-4e5c-b7a3-5f8c53f013a5" />
+
+
+Çukurova Üniversitesi yemekhanesinin günlük yemek menülerini görüntülemek için geliştirilmiş, yüksek performanslı ve modern bir web uygulaması.
+
+![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
+![shadcn/ui](https://img.shields.io/badge/shadcn/ui-000000?logo=shadcnui&logoColor=white)
+![Radix UI](https://img.shields.io/badge/Radix_UI-161618?logo=radix-ui&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-5A0FC8?logo=pwa&logoColor=white)
+</div>
 
 Demo: [https://cukurova.vercel.app](https://cukurova.vercel.app)
 
-Bu proje, Çukurova Üniversitesi yemekhanesinin günlük yemek menülerini görüntülemek için geliştirilmiş, yüksek performanslı ve modern bir web uygulamasıdır. Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekilir, yapılandırılmış JSON formatında saklanır ve Next.js 16 altyapısı ile kullanıcıya sunulur.
+![Deploy with Vercel](https://vercel.com/button)
+
+Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekilir, yapılandırılmış JSON formatında saklanır ve Next.js 16 altyapısı ile kullanıcıya sunulur.
 
 ## Teknik Mimari
 
