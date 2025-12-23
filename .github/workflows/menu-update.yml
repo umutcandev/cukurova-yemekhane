@@ -2,10 +2,7 @@ name: Update Menu Data
 
 on:
   schedule:
-    # Her 14 günde bir saat 04:00'te (UTC) çalışır.
-    # TR saatiyle sabah 07:00 civarı.
-    - cron: '0 4 */14 * *'
-  # Elle tetiklemek istersen diye:
+    - cron: '0 4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -36,4 +33,4 @@ jobs:
           git config --global user.email 'action@github.com'
           git add public/data/
           # Eğer değişiklik varsa commit at ve pushla
-          git diff --quiet && git diff --staged --quiet || (git commit -m "scraping: Otomatik menü güncelleme" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "scraping: Günlük menü güncellemesi" && git push)
