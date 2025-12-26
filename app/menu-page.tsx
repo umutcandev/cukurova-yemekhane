@@ -16,6 +16,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
+import { InfoDialog } from "@/components/info-dialog"
 import type { DateRange } from "react-day-picker"
 import type { MenuData } from "@/lib/types"
 
@@ -269,6 +270,7 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                     <span className="text-muted-foreground text-xs">umutcandev</span>
                                 </Link>
                             </Button>
+                            <InfoDialog />
                             <div className="h-4 w-px bg-border/60 mx-1" aria-hidden="true" />
                             <ThemeToggle />
                         </div>
