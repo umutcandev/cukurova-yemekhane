@@ -1,12 +1,12 @@
 {
-  "month": "2025-12",
-  "lastUpdated": "2025-12-23T11:09:35.161Z",
-  "scrapeDate": "2025-12-23",
+  "month": "2026-01",
+  "lastUpdated": "2025-12-28T04:40:54.096Z",
+  "scrapeDate": "2025-12-28",
   "totalDays": 24,
   "days": [
     {
       "ymk": 1,
-      "date": "2025-12-01",
+      "date": "2026-01-05",
       "dayName": "Pazartesi",
       "hasData": true,
       "meals": [
@@ -23,19 +23,19 @@
           "category": "ana_yemek"
         },
         {
-          "id": "64",
-          "name": "Türlü Turşu",
-          "calories": 10,
+          "id": "155",
+          "name": "Şalgam",
+          "calories": 20,
           "category": "ana_yemek"
         },
         {
-          "id": "2336",
-          "name": "yoğurt",
-          "calories": 118,
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 714
+      "totalCalories": 748
     },
     {
       "ymk": 2,
@@ -545,12 +545,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "204",
-          "name": "Etsiz Nohut Yahnisi",
-          "calories": 277,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2",
           "name": "Tel Şehriyeli Pirinç Pilavı",
           "calories": 275,
@@ -794,13 +788,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "63",
-          "name": "Meyve (Armut)",
-          "calories": 128,
+          "id": "148",
+          "name": "Meyve (Portakal)",
+          "calories": 171,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 762
+      "totalCalories": 805
     }
   ]
 }
