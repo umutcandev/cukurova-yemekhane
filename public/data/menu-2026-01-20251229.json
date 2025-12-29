@@ -1,12 +1,12 @@
 {
-  "month": "2025-12",
-  "lastUpdated": "2025-12-24T04:32:40.881Z",
-  "scrapeDate": "2025-12-24",
+  "month": "2026-01",
+  "lastUpdated": "2025-12-29T04:44:50.773Z",
+  "scrapeDate": "2025-12-29",
   "totalDays": 24,
   "days": [
     {
       "ymk": 1,
-      "date": "2025-12-01",
+      "date": "2026-01-05",
       "dayName": "Pazartesi",
       "hasData": true,
       "meals": [
@@ -23,19 +23,19 @@
           "category": "ana_yemek"
         },
         {
-          "id": "64",
-          "name": "Türlü Turşu",
-          "calories": 10,
+          "id": "155",
+          "name": "Şalgam",
+          "calories": 20,
           "category": "ana_yemek"
         },
         {
-          "id": "2336",
-          "name": "yoğurt",
-          "calories": 118,
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 714
+      "totalCalories": 748
     },
     {
       "ymk": 2,
@@ -578,12 +578,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "87",
-          "name": "Fırın Bezelye (Etsiz)",
-          "calories": 190,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2314",
           "name": "Şehriyeli Bulgur Pilavı",
           "calories": 352,
@@ -680,6 +674,12 @@
           "id": "191",
           "name": "Kıymalı Ispanak",
           "calories": 162,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "190",
+          "name": "Ispanak Kavurma",
+          "calories": 42,
           "category": "ana_yemek"
         },
         {
@@ -794,13 +794,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "63",
-          "name": "Meyve (Armut)",
-          "calories": 128,
+          "id": "148",
+          "name": "Meyve (Portakal)",
+          "calories": 171,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 762
+      "totalCalories": 805
     }
   ]
 }
