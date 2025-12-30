@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { MoreVertical, ChevronRight } from "lucide-react"
+import { motion } from "framer-motion"
 import {
     Table,
     TableBody,
@@ -17,6 +18,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { InfoDialog } from "@/components/info-dialog"
+import { LikeDislikeButtons } from "@/components/like-dislike-buttons"
 import type { DateRange } from "react-day-picker"
 import type { MenuData } from "@/lib/types"
 
@@ -25,6 +27,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -288,21 +291,14 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                         <div className="grid gap-4">
                             {selectedDateMenus.map((day) => (
                                 <Card key={day.ymk} className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
-                                    <div className="bg-muted/20 px-3 py-2 border-b border-border/40">
-                                        <div className="flex items-center justify-between mb-1">
-                                            <div className="flex items-center gap-2">
-                                                <div className="text-lg font-semibold text-foreground tracking-tight">{formatDayName(day.date)}</div>
-                                                <Badge className={`${getCalorieBadgeClasses(day.totalCalories)} text-[10px] px-1.5 py-0 h-5 font-mono`}>
-                                                    {day.totalCalories} kcal
-                                                </Badge>
-                                            </div>
-                                            <Badge variant="outline" className="text-xs font-mono font-normal">
-                                                {formatDateShort(day.date)}
-                                            </Badge>
+                                    <div className="bg-muted/20 px-3 py-2 border-b border-border/40 flex items-center justify-between">
+                                        <div>
+                                            <div className="text-lg font-semibold text-foreground tracking-tight">{formatDayName(day.date)}</div>
+                                            <p className="text-xs text-muted-foreground/60 leading-none">
+                                                Yemek verileri son dakika değiştirilmiş olabilir.
+                                            </p>
                                         </div>
-                                        <p className="text-xs text-muted-foreground/60 leading-none">
-                                            Menüler yemekhane sitesinden alınmaktadır.
-                                        </p>
+                                        <LikeDislikeButtons menuDate={day.date} />
                                     </div>
                                     <div>
                                         <Table>
@@ -338,46 +334,113 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                             </TableBody>
                                         </Table>
                                     </div>
+                                    {/* Sub-nav with date and total calories */}
+                                    <div className="border-t border-border/40 bg-muted/10 px-3 py-1.5 flex items-center justify-between text-xs text-muted-foreground">
+                                        <span>Menü Tarihi: <span className="font-mono text-foreground/80">{formatDateShort(day.date)}</span></span>
+                                        <span className="flex items-center gap-1.5">Toplam Kalori: <span className={`inline-block w-2 h-2 rounded-full ${day.totalCalories < 800 ? 'bg-green-500' : day.totalCalories < 1100 ? 'bg-amber-500' : 'bg-red-500'}`} /><span className="font-mono text-foreground/80">{day.totalCalories} kcal</span></span>
+                                    </div>
                                     <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button suppressHydrationWarning variant="outline" size="sm" className="relative overflow-hidden h-7 text-xs border-0 bg-transparent hover:bg-transparent transition-none group/ai-btn p-[1px]">
-                                                    <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#A8C6FA_0%,#B388EB_25%,#FCAFBB_50%,#B388EB_75%,#A8C6FA_100%)] opacity-60" />
-                                                    <span className="relative h-full w-full bg-background/95 group-hover/ai-btn:bg-background/100 transition-colors rounded-[calc(var(--radius)-3px)] flex items-center justify-center gap-1.5 px-2.5">
-                                                        <MagicIcon className="w-3.5 h-3.5 text-primary/80" />
-                                                        <span className="bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent font-medium">Yapay Zekâya Sor</span>
-                                                    </span>
+                                                <Button suppressHydrationWarning size="sm" className="h-7 text-xs bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 border-0 transition-colors gap-1.5 px-2.5">
+                                                    <MagicIcon className="w-3.5 h-3.5" />
+                                                    <span className="font-medium">Yapay Zekâya Sor</span>
                                                 </Button>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="start" className="w-44 p-2">
+                                            <DropdownMenuContent align="start" className="w-44">
                                                 {(() => {
                                                     const prompt = generateAiPrompt(day);
                                                     const links = getAiLinks(prompt);
                                                     return (
                                                         <>
+                                                            <DropdownMenuLabel className="text-xs">Model Seçin</DropdownMenuLabel>
                                                             <DropdownMenuItem asChild>
-                                                                <a href={links.chatgpt} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                    <ChatGptIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                    <span className="font-semibold text-xs">ChatGPT</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                                </a>
+                                                                <motion.a
+                                                                    href={links.chatgpt}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="cursor-pointer group"
+                                                                    whileHover="hover"
+                                                                >
+                                                                    <ChatGptIcon className="h-4 w-4 text-foreground/80" />
+                                                                    <span className="text-xs text-foreground/80">ChatGPT</span>
+                                                                    <motion.span
+                                                                        className="ml-auto"
+                                                                        variants={{
+                                                                            hover: { opacity: 1, x: 0 }
+                                                                        }}
+                                                                        initial={{ opacity: 0, x: -4 }}
+                                                                        transition={{ duration: 0.15 }}
+                                                                    >
+                                                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                    </motion.span>
+                                                                </motion.a>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem asChild>
-                                                                <a href={links.claude} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                    <ClaudeBrandIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                    <span className="font-semibold text-xs">Claude</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                                </a>
+                                                                <motion.a
+                                                                    href={links.claude}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="cursor-pointer group"
+                                                                    whileHover="hover"
+                                                                >
+                                                                    <ClaudeBrandIcon className="h-4 w-4 text-foreground/80" />
+                                                                    <span className="text-xs text-foreground/80">Claude</span>
+                                                                    <motion.span
+                                                                        className="ml-auto"
+                                                                        variants={{
+                                                                            hover: { opacity: 1, x: 0 }
+                                                                        }}
+                                                                        initial={{ opacity: 0, x: -4 }}
+                                                                        transition={{ duration: 0.15 }}
+                                                                    >
+                                                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                    </motion.span>
+                                                                </motion.a>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem asChild>
-                                                                <a href={links.grok} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                    <GrokIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                    <span className="font-semibold text-xs">Grok</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                                </a>
+                                                                <motion.a
+                                                                    href={links.grok}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="cursor-pointer group"
+                                                                    whileHover="hover"
+                                                                >
+                                                                    <GrokIcon className="h-4 w-4 text-foreground/80" />
+                                                                    <span className="text-xs text-foreground/80">Grok</span>
+                                                                    <motion.span
+                                                                        className="ml-auto"
+                                                                        variants={{
+                                                                            hover: { opacity: 1, x: 0 }
+                                                                        }}
+                                                                        initial={{ opacity: 0, x: -4 }}
+                                                                        transition={{ duration: 0.15 }}
+                                                                    >
+                                                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                    </motion.span>
+                                                                </motion.a>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem asChild>
-                                                                <a href={links.perplexity} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                    <PerplexityIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                    <span className="font-semibold text-xs">Perplexity</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                                </a>
+                                                                <motion.a
+                                                                    href={links.perplexity}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="cursor-pointer group"
+                                                                    whileHover="hover"
+                                                                >
+                                                                    <PerplexityIcon className="h-4 w-4 text-foreground/80" />
+                                                                    <span className="text-xs text-foreground/80">Perplexity</span>
+                                                                    <motion.span
+                                                                        className="ml-auto"
+                                                                        variants={{
+                                                                            hover: { opacity: 1, x: 0 }
+                                                                        }}
+                                                                        initial={{ opacity: 0, x: -4 }}
+                                                                        transition={{ duration: 0.15 }}
+                                                                    >
+                                                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                    </motion.span>
+                                                                </motion.a>
                                                             </DropdownMenuItem>
                                                         </>
                                                     );
@@ -393,21 +456,14 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                         // Show single menu from arrow navigation
                         <div className="max-w-md mx-auto">
                             <Card className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
-                                <div className="bg-muted/20 px-3 py-3 border-b border-border/40">
-                                    <div className="flex items-center justify-between mb-1">
-                                        <div className="flex items-center gap-2">
-                                            <div className="text-lg font-semibold text-foreground tracking-tight">{formatDayName(mobileCurrentMenu.date)}</div>
-                                            <Badge className={`${getCalorieBadgeClasses(mobileCurrentMenu.totalCalories)} text-[10px] px-1.5 py-0 h-5 font-mono`}>
-                                                {mobileCurrentMenu.totalCalories} kcal
-                                            </Badge>
-                                        </div>
-                                        <Badge variant="outline" className="text-xs font-mono font-normal">
-                                            {formatDateShort(mobileCurrentMenu.date)}
-                                        </Badge>
+                                <div className="bg-muted/20 px-3 py-3 border-b border-border/40 flex items-center justify-between">
+                                    <div>
+                                        <div className="text-lg font-semibold text-foreground tracking-tight">{formatDayName(mobileCurrentMenu.date)}</div>
+                                        <p className="text-xs text-muted-foreground/60 leading-none">
+                                            Yemek verileri son dakika değiştirilmiş olabilir.
+                                        </p>
                                     </div>
-                                    <p className="text-xs text-muted-foreground/60 leading-none">
-                                        Menüler yemekhane sitesinden alınmaktadır.
-                                    </p>
+                                    <LikeDislikeButtons menuDate={mobileCurrentMenu.date} />
                                 </div>
 
                                 <div className="-my-px">
@@ -445,46 +501,114 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                     </Table>
                                 </div>
 
+                                {/* Sub-nav with date and total calories */}
+                                <div className="border-t border-border/40 bg-muted/10 px-3 py-1.5 flex items-center justify-between text-xs text-muted-foreground">
+                                    <span>Menü Tarihi: <span className="font-mono text-foreground/80">{formatDateShort(mobileCurrentMenu.date)}</span></span>
+                                    <span className="flex items-center gap-1.5">Toplam Kalori: <span className={`inline-block w-2 h-2 rounded-full ${mobileCurrentMenu.totalCalories < 800 ? 'bg-green-500' : mobileCurrentMenu.totalCalories < 1100 ? 'bg-amber-500' : 'bg-red-500'}`} /><span className="font-mono text-foreground/80">{mobileCurrentMenu.totalCalories} kcal</span></span>
+                                </div>
+
                                 <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
-                                            <Button suppressHydrationWarning variant="outline" size="sm" className="relative overflow-hidden h-7 text-xs border-0 bg-transparent hover:bg-transparent transition-none group/ai-btn p-[1px]">
-                                                <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#A8C6FA_0%,#B388EB_25%,#FCAFBB_50%,#B388EB_75%,#A8C6FA_100%)] opacity-60" />
-                                                <span className="relative h-full w-full bg-background/95 group-hover/ai-btn:bg-background/100 transition-colors rounded-[calc(var(--radius)-3px)] flex items-center justify-center gap-1.5 px-2.5">
-                                                    <MagicIcon className="w-3.5 h-3.5 text-primary/80" />
-                                                    <span className="bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent font-medium">Yapay Zekâya Sor</span>
-                                                </span>
+                                            <Button suppressHydrationWarning size="sm" className="h-7 text-xs bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 border-0 transition-colors gap-1.5 px-2.5">
+                                                <MagicIcon className="w-3.5 h-3.5" />
+                                                <span className="font-medium">Yapay Zekâya Sor</span>
                                             </Button>
                                         </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="start" className="w-44 p-2">
+                                        <DropdownMenuContent align="start" className="w-44">
                                             {(() => {
                                                 const prompt = generateAiPrompt(mobileCurrentMenu);
                                                 const links = getAiLinks(prompt);
                                                 return (
                                                     <>
+                                                        <DropdownMenuLabel className="text-xs">Model Seçin</DropdownMenuLabel>
                                                         <DropdownMenuItem asChild>
-                                                            <a href={links.chatgpt} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                <ChatGptIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                <span className="font-semibold text-xs">ChatGPT</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                            </a>
+                                                            <motion.a
+                                                                href={links.chatgpt}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="cursor-pointer group"
+                                                                whileHover="hover"
+                                                            >
+                                                                <ChatGptIcon className="h-4 w-4 text-foreground/80" />
+                                                                <span className="text-xs text-foreground/80">ChatGPT</span>
+                                                                <motion.span
+                                                                    className="ml-auto"
+                                                                    variants={{
+                                                                        hover: { opacity: 1, x: 0 }
+                                                                    }}
+                                                                    initial={{ opacity: 0, x: -4 }}
+                                                                    transition={{ duration: 0.15 }}
+                                                                >
+                                                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                </motion.span>
+                                                            </motion.a>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem asChild>
-                                                            <a href={links.claude} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                <ClaudeBrandIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                <span className="font-semibold text-xs">Claude</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                            </a>
+                                                            <motion.a
+                                                                href={links.claude}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="cursor-pointer group"
+                                                                whileHover="hover"
+                                                            >
+                                                                <ClaudeBrandIcon className="h-4 w-4 text-foreground/80" />
+                                                                <span className="text-xs text-foreground/80">Claude</span>
+                                                                <motion.span
+                                                                    className="ml-auto"
+                                                                    variants={{
+                                                                        hover: { opacity: 1, x: 0 }
+                                                                    }}
+                                                                    initial={{ opacity: 0, x: -4 }}
+                                                                    transition={{ duration: 0.15 }}
+                                                                >
+                                                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                </motion.span>
+                                                            </motion.a>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem asChild>
-                                                            <a href={links.grok} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                <GrokIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                <span className="font-semibold text-xs">Grok</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                            </a>
+                                                            <motion.a
+                                                                href={links.grok}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="cursor-pointer group"
+                                                                whileHover="hover"
+                                                            >
+                                                                <GrokIcon className="h-4 w-4 text-foreground/80" />
+                                                                <span className="text-xs text-foreground/80">Grok</span>
+                                                                <motion.span
+                                                                    className="ml-auto"
+                                                                    variants={{
+                                                                        hover: { opacity: 1, x: 0 }
+                                                                    }}
+                                                                    initial={{ opacity: 0, x: -4 }}
+                                                                    transition={{ duration: 0.15 }}
+                                                                >
+                                                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                </motion.span>
+                                                            </motion.a>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem asChild>
-                                                            <a href={links.perplexity} target="_blank" rel="noopener noreferrer" className="flex items-center cursor-pointer gap-2 py-2.5 px-2 bg-muted/40 hover:bg-muted/60 rounded-md transition-colors mb-1.5 group">
-                                                                <PerplexityIcon className="h-3.5 w-3.5 text-foreground/80" />
-                                                                <span className="font-semibold text-xs">Perplexity</span><ChevronRight className="ml-auto h-3.5 w-3.5 text-muted-foreground/50 group-hover:text-foreground/80 transition-colors" />
-                                                            </a>
+                                                            <motion.a
+                                                                href={links.perplexity}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="cursor-pointer group"
+                                                                whileHover="hover"
+                                                            >
+                                                                <PerplexityIcon className="h-4 w-4 text-foreground/80" />
+                                                                <span className="text-xs text-foreground/80">Perplexity</span>
+                                                                <motion.span
+                                                                    className="ml-auto"
+                                                                    variants={{
+                                                                        hover: { opacity: 1, x: 0 }
+                                                                    }}
+                                                                    initial={{ opacity: 0, x: -4 }}
+                                                                    transition={{ duration: 0.15 }}
+                                                                >
+                                                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                                </motion.span>
+                                                            </motion.a>
                                                         </DropdownMenuItem>
                                                     </>
                                                 );
