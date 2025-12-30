@@ -60,7 +60,13 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
 
     // Load initial counts and user action from localStorage
     useEffect(() => {
-        // Load user action from localStorage
+        // Reset state immediately when menuDate changes to prevent stale state
+        setUserAction(null)
+        setLikeCount(null)
+        setDislikeCount(null)
+        setIsLoading(false)
+
+        // Load user action from localStorage for this specific date
         const storedAction = localStorage.getItem(`reaction_${menuDate}`)
         if (storedAction === "like" || storedAction === "dislike") {
             setUserAction(storedAction)

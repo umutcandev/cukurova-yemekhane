@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Info, Database, Palette, ExternalLink, ArrowUp } from "lucide-react"
+import { Info, Database, Palette, ExternalLink, ArrowUp, ThumbsUp, ThumbsDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import {
@@ -172,6 +172,39 @@ export function InfoDialog() {
                                         <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 border border-border/40 rounded-md px-2.5 py-2">
                                             <Info className="h-3.5 w-3.5 mt-0.5 shrink-0 text-muted-foreground/70" />
                                             <span>Yetişkinler için günlük önerilen kalori alımı ortalama 2000-2500 kcal&apos;dir.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* Beğen/Beğenme */}
+                            <section className="rounded-lg bg-muted/30 border border-border/40 p-3">
+                                <div className="flex items-start gap-2.5">
+                                    <div className="p-1.5 rounded-md bg-primary/10 shrink-0">
+                                        <ThumbsUp className="h-4 w-4 text-primary" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="text-sm font-medium mb-1">Beğen/Beğenme</h3>
+                                        <p className="text-xs text-muted-foreground leading-relaxed mb-2.5">
+                                            Günlük menüler için beğen veya beğenme tepkisi verebilirsiniz. Diğer kullanıcıların tepkilerini de canlı olarak görebilirsiniz.
+                                        </p>
+                                        <div className="flex items-center gap-3 mb-2.5">
+                                            <div className="flex items-center gap-1.5">
+                                                <div className="p-1 rounded bg-green-500/10 border border-green-500/30">
+                                                    <ThumbsUp className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+                                                </div>
+                                                <span className="text-xs text-muted-foreground">Beğen</span>
+                                            </div>
+                                            <div className="flex items-center gap-1.5">
+                                                <div className="p-1 rounded bg-red-500/10 border border-red-500/30">
+                                                    <ThumbsDown className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
+                                                </div>
+                                                <span className="text-xs text-muted-foreground">Beğenme</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 border border-border/40 rounded-md px-2.5 py-2">
+                                            <Info className="h-3.5 w-3.5 mt-0.5 shrink-0 text-muted-foreground/70" />
+                                            <span>Her menü için sadece bir tepki verebilirsiniz. Tepkinizi değiştirmek isterseniz diğer butona tıklayabilirsiniz.</span>
                                         </div>
                                     </div>
                                 </div>
