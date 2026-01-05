@@ -1,7 +1,7 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2025-12-30T04:35:41.798Z",
-  "scrapeDate": "2025-12-30",
+  "lastUpdated": "2026-01-05T04:54:27.920Z",
+  "scrapeDate": "2026-01-05",
   "totalDays": 24,
   "days": [
     {
@@ -14,6 +14,12 @@
           "id": "77",
           "name": "Arap Tava",
           "calories": 234,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "271",
+          "name": "Patates Musakka (Etsiz)",
+          "calories": 220,
           "category": "ana_yemek"
         },
         {
@@ -707,12 +713,6 @@
           "id": "288",
           "name": "Soslu Fırın Tavuk",
           "calories": 535,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "87",
-          "name": "Fırın Bezelye (Etsiz)",
-          "calories": 190,
           "category": "ana_yemek"
         },
         {
