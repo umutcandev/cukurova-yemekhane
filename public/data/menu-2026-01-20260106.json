@@ -1,7 +1,7 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2026-01-01T04:44:54.280Z",
-  "scrapeDate": "2026-01-01",
+  "lastUpdated": "2026-01-06T04:37:01.726Z",
+  "scrapeDate": "2026-01-06",
   "totalDays": 24,
   "days": [
     {
@@ -50,9 +50,15 @@
           "category": "ana_yemek"
         },
         {
-          "id": "2",
-          "name": "Tel Şehriyeli Pirinç Pilavı",
-          "calories": 275,
+          "id": "3",
+          "name": "Zeytinyağlı Taze Fasülye",
+          "calories": 153,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2315",
+          "name": "Mercimekli Bulgur Pilavı",
+          "calories": 364,
           "category": "ana_yemek"
         },
         {
@@ -68,7 +74,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 665
+      "totalCalories": 754
     },
     {
       "ymk": 3,
