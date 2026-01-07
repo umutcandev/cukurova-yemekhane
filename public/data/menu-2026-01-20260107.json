@@ -1,7 +1,7 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2026-01-02T04:37:43.050Z",
-  "scrapeDate": "2026-01-02",
+  "lastUpdated": "2026-01-07T04:37:43.080Z",
+  "scrapeDate": "2026-01-07",
   "totalDays": 24,
   "days": [
     {
@@ -50,9 +50,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "2",
-          "name": "Tel Şehriyeli Pirinç Pilavı",
-          "calories": 275,
+          "id": "2315",
+          "name": "Mercimekli Bulgur Pilavı",
+          "calories": 364,
           "category": "ana_yemek"
         },
         {
@@ -68,7 +68,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 665
+      "totalCalories": 754
     },
     {
       "ymk": 3,
@@ -83,9 +83,15 @@
           "category": "ana_yemek"
         },
         {
-          "id": "2315",
-          "name": "Mercimekli Bulgur Pilavı",
-          "calories": 364,
+          "id": "190",
+          "name": "Ispanak Kavurma",
+          "calories": 42,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2",
+          "name": "Tel Şehriyeli Pirinç Pilavı",
+          "calories": 275,
           "category": "ana_yemek"
         },
         {
@@ -101,7 +107,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1215
+      "totalCalories": 1126
     },
     {
       "ymk": 4,
@@ -773,12 +779,6 @@
           "id": "7",
           "name": "Etli Taze Fasulye",
           "calories": 262,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "3",
-          "name": "Zeytinyağlı Taze Fasülye",
-          "calories": 153,
           "category": "ana_yemek"
         },
         {
