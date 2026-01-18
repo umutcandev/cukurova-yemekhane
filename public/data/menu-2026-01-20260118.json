@@ -1,7 +1,7 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2026-01-13T04:37:16.429Z",
-  "scrapeDate": "2026-01-13",
+  "lastUpdated": "2026-01-18T04:39:03.776Z",
+  "scrapeDate": "2026-01-18",
   "totalDays": 20,
   "days": [
     {
@@ -212,12 +212,6 @@
           "id": "294",
           "name": "Etli Bezelye",
           "calories": 390,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "87",
-          "name": "Fırın Bezelye (Etsiz)",
-          "calories": 190,
           "category": "ana_yemek"
         },
         {
