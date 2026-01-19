@@ -1,7 +1,7 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2026-01-14T04:43:56.009Z",
-  "scrapeDate": "2026-01-14",
+  "lastUpdated": "2026-01-19T04:48:48.773Z",
+  "scrapeDate": "2026-01-19",
   "totalDays": 20,
   "days": [
     {
@@ -248,12 +248,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "146",
-          "name": "Karnabahar Kızartma",
-          "calories": 184,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2314",
           "name": "Şehriyeli Bulgur Pilavı",
           "calories": 352,
@@ -350,6 +344,12 @@
           "id": "157",
           "name": "Ekşili Köfte",
           "calories": 294,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "14",
+          "name": "Kabak Musakka (Etsiz)",
+          "calories": 133,
           "category": "ana_yemek"
         },
         {
