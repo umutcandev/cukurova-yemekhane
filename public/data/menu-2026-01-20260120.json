@@ -1,7 +1,7 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2026-01-15T04:37:16.905Z",
-  "scrapeDate": "2026-01-15",
+  "lastUpdated": "2026-01-20T04:41:32.762Z",
+  "scrapeDate": "2026-01-20",
   "totalDays": 20,
   "days": [
     {
@@ -281,12 +281,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "190",
-          "name": "Ispanak Kavurma",
-          "calories": 42,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2315",
           "name": "Mercimekli Bulgur Pilavı",
           "calories": 364,
@@ -383,6 +377,12 @@
           "id": "22",
           "name": "Etli Nohut",
           "calories": 373,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "204",
+          "name": "Etsiz Nohut Yahnisi",
+          "calories": 277,
           "category": "ana_yemek"
         },
         {
