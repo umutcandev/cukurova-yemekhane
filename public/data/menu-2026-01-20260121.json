@@ -1,7 +1,7 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2026-01-16T04:37:29.072Z",
-  "scrapeDate": "2026-01-16",
+  "lastUpdated": "2026-01-21T04:40:46.784Z",
+  "scrapeDate": "2026-01-21",
   "totalDays": 20,
   "days": [
     {
@@ -314,12 +314,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "132",
-          "name": "Kuru Fasülye (Etsiz)",
-          "calories": 267,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2",
           "name": "Tel Şehriyeli Pirinç Pilavı",
           "calories": 275,
@@ -419,6 +413,12 @@
           "category": "ana_yemek"
         },
         {
+          "id": "198",
+          "name": "Fırın Karnabahar",
+          "calories": 1,
+          "category": "ana_yemek"
+        },
+        {
           "id": "2315",
           "name": "Mercimekli Bulgur Pilavı",
           "calories": 364,
@@ -446,9 +446,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "117",
-          "name": "Mantarlı Çoban Kavurma",
-          "calories": 278,
+          "id": "16",
+          "name": "Çoban Kavurma",
+          "calories": 309,
           "category": "ana_yemek"
         },
         {
@@ -470,7 +470,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 828
+      "totalCalories": 859
     },
     {
       "ymk": 15,
