@@ -68,12 +68,14 @@ export function MobileBottomNav({
     return (
         <nav className="dark text-foreground fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border">
             {/* Info Bar */}
-            <div className="flex items-center justify-between px-4 py-1.5 bg-muted/20 border-b border-border/50 text-xs text-muted-foreground">
-                <span>Son Güncelleme: <span className="font-mono text-foreground/80" suppressHydrationWarning>{formatLastUpdated(lastUpdated)}</span></span>
-                <span>Menünün Gün Sayısı: <span className="font-mono text-foreground/80">{totalDays}</span></span>
+            <div className="bg-muted/20 border-b border-border/50">
+                <div className="container mx-auto flex items-center justify-between px-4 py-1.5 text-xs text-muted-foreground">
+                    <span>Son Güncelleme: <span className="font-mono text-foreground/80" suppressHydrationWarning>{formatLastUpdated(lastUpdated)}</span></span>
+                    <span>Menünün Gün Sayısı: <span className="font-mono text-foreground/80">{totalDays}</span></span>
+                </div>
             </div>
 
-            <div className="flex items-center justify-between px-4 py-3">
+            <div className="container mx-auto flex items-center justify-between px-4 py-3">
                 {/* Left: Arrow Navigation with Date */}
                 <div className="flex items-center gap-2">
                     <Button

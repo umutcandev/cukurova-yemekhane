@@ -1,0 +1,305 @@
+"use client"
+
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { MoreVertical, ChevronRight } from "lucide-react"
+import { motion } from "framer-motion"
+import {
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+} from "@/components/ui/table"
+import { LikeDislikeButtons } from "@/components/like-dislike-buttons"
+import { MenuShareBar } from "@/components/menu-share-bar"
+import { Button } from "@/components/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+// AI Icons
+function ChatGptIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className={className}
+        >
+            <path d="M20.5624 10.1875C20.8124 9.5 20.8749 8.8125 20.8124 8.125C20.7499 7.4375 20.4999 6.75 20.1874 6.125C19.6249 5.1875 18.8124 4.4375 17.8749 4C16.8749 3.5625 15.8124 3.4375 14.7499 3.6875C14.2499 3.1875 13.6874 2.75 13.0624 2.4375C12.4374 2.125 11.6874 2 10.9999 2C9.9374 2 8.8749 2.3125 7.9999 2.9375C7.1249 3.5625 6.4999 4.4375 6.1874 5.4375C5.4374 5.625 4.8124 5.9375 4.1874 6.3125C3.6249 6.75 3.1874 7.3125 2.8124 7.875C2.24991 8.8125 2.06241 9.875 2.18741 10.9375C2.31241 12 2.7499 13 3.4374 13.8125C3.1874 14.5 3.1249 15.1875 3.1874 15.875C3.2499 16.5625 3.4999 17.25 3.8124 17.875C4.3749 18.8125 5.1874 19.5625 6.1249 20C7.1249 20.4375 8.1874 20.5625 9.2499 20.3125C9.7499 20.8125 10.3124 21.25 10.9374 21.5625C11.5624 21.875 12.3124 22 12.9999 22C14.0624 22 15.1249 21.6875 15.9999 21.0625C16.8749 20.4375 17.4999 19.5625 17.8124 18.5625C18.4999 18.4375 19.1874 18.125 19.7499 17.6875C20.3124 17.25 20.8124 16.75 21.1249 16.125C21.6874 15.1875 21.8749 14.125 21.7499 13.0625C21.6249 12 21.2499 11 20.5624 10.1875ZM13.0624 20.6875C12.0624 20.6875 11.3124 20.375 10.6249 19.8125C10.6249 19.8125 10.6874 19.75 10.7499 19.75L14.7499 17.4375C14.8749 17.375 14.9374 17.3125 14.9999 17.1875C15.0624 17.0625 15.0624 17 15.0624 16.875V11.25L16.7499 12.25V16.875C16.8124 19.0625 15.0624 20.6875 13.0624 20.6875ZM4.9999 17.25C4.5624 16.5 4.3749 15.625 4.5624 14.75C4.5624 14.75 4.6249 14.8125 4.6874 14.8125L8.6874 17.125C8.8124 17.1875 8.8749 17.1875 8.9999 17.1875C9.1249 17.1875 9.2499 17.1875 9.3124 17.125L14.1874 14.3125V16.25L10.1249 18.625C9.2499 19.125 8.2499 19.25 7.3124 19C6.3124 18.75 5.4999 18.125 4.9999 17.25ZM3.9374 8.5625C4.3749 7.8125 5.0624 7.25 5.8749 6.9375V7.0625V11.6875C5.8749 11.8125 5.8749 11.9375 5.9374 12C5.9999 12.125 6.0624 12.1875 6.1874 12.25L11.0624 15.0625L9.3749 16.0625L5.3749 13.75C4.4999 13.25 3.8749 12.4375 3.6249 11.5C3.3749 10.5625 3.4374 9.4375 3.9374 8.5625ZM17.7499 11.75L12.8749 8.9375L14.5624 7.9375L18.5624 10.25C19.1874 10.625 19.6874 11.125 19.9999 11.75C20.3124 12.375 20.4999 13.0625 20.4374 13.8125C20.3749 14.5 20.1249 15.1875 19.6874 15.75C19.2499 16.3125 18.6874 16.75 17.9999 17V12.25C17.9999 12.125 17.9999 12 17.9374 11.9375C17.9374 11.9375 17.8749 11.8125 17.7499 11.75ZM19.4374 9.25C19.4374 9.25 19.3749 9.1875 19.3124 9.1875L15.3124 6.875C15.1874 6.8125 15.1249 6.8125 14.9999 6.8125C14.8749 6.8125 14.7499 6.8125 14.6874 6.875L9.8124 9.6875V7.75L13.8749 5.375C14.4999 5 15.1874 4.875 15.9374 4.875C16.6249 4.875 17.3124 5.125 17.9374 5.5625C18.4999 6 18.9999 6.5625 19.2499 7.1875C19.4999 7.8125 19.5624 8.5625 19.4374 9.25ZM8.9374 12.75L7.2499 11.75V7.0625C7.2499 6.375 7.4374 5.625 7.8124 5.0625C8.1874 4.4375 8.7499 4 9.3749 3.6875C9.9999 3.375 10.7499 3.25 11.4374 3.375C12.1249 3.4375 12.8124 3.75 13.3749 4.1875C13.3749 4.1875 13.3124 4.25 13.2499 4.25L9.2499 6.5625C9.1249 6.625 9.0624 6.6875 8.9999 6.8125C8.9374 6.9375 8.9374 7 8.9374 7.125V12.75ZM9.8124 10.75L11.9999 9.5L14.1874 10.75V13.25L11.9999 14.5L9.8124 13.25V10.75Z" />
+        </svg>
+    )
+}
+
+function MagicIcon({ className }: { className?: string }) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+            <path d="M17.0007 1.20825 18.3195 3.68108 20.7923 4.99992 18.3195 6.31876 17.0007 8.79159 15.6818 6.31876 13.209 4.99992 15.6818 3.68108 17.0007 1.20825ZM8.00065 4.33325 10.6673 9.33325 15.6673 11.9999 10.6673 14.6666 8.00065 19.6666 5.33398 14.6666.333984 11.9999 5.33398 9.33325 8.00065 4.33325ZM19.6673 16.3333 18.0007 13.2083 16.334 16.3333 13.209 17.9999 16.334 19.6666 18.0007 22.7916 19.6673 19.6666 22.7923 17.9999 19.6673 16.3333Z"></path>
+        </svg>
+    )
+}
+
+function ClaudeBrandIcon({ className }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 1200 1200" className={className} fill="currentColor">
+            <path d="M 233.959793 800.214905 L 468.644287 668.536987 L 472.590637 657.100647 L 468.644287 650.738403 L 457.208069 650.738403 L 417.986633 648.322144 L 283.892639 644.69812 L 167.597321 639.865845 L 54.926208 633.825623 L 26.577238 627.785339 L 3.3e-05 592.751709 L 2.73832 575.27533 L 26.577238 559.248352 L 60.724873 562.228149 L 136.187973 567.382629 L 249.422867 575.194763 L 331.570496 580.026978 L 453.261841 592.671082 L 472.590637 592.671082 L 475.328857 584.859009 L 468.724915 580.026978 L 463.570557 575.194763 L 346.389313 495.785217 L 219.543671 411.865906 L 153.100723 363.543762 L 117.181267 339.060425 L 99.060455 316.107361 L 91.248367 266.01355 L 123.865784 230.093994 L 167.677887 233.073853 L 178.872513 236.053772 L 223.248367 270.201477 L 318.040283 343.570496 L 441.825592 434.738342 L 459.946411 449.798706 L 467.194672 444.64447 L 468.080597 441.020203 L 459.946411 427.409485 L 392.617493 305.718323 L 320.778564 181.932983 L 288.80542 130.630859 L 280.348999 99.865845 C 277.369171 87.221436 275.194641 76.590698 275.194641 63.624268 L 312.322174 13.20813 L 332.8591 6.604126 L 382.389313 13.20813 L 403.248352 31.328979 L 434.013519 101.71814 L 483.865753 212.537048 L 561.181274 363.221497 L 583.812134 407.919434 L 595.892639 449.315491 L 600.40271 461.959839 L 608.214783 461.959839 L 608.214783 454.711609 L 614.577271 369.825623 L 626.335632 265.61084 L 637.771851 131.516846 L 641.718201 93.745117 L 660.402832 48.483276 L 697.530334 24.000122 L 726.52356 37.852417 L 750.362549 72 L 747.060486 94.067139 L 732.886047 186.201416 L 705.100708 330.52356 L 686.979919 427.167847 L 697.530334 427.167847 L 709.61084 415.087341 L 758.496704 350.174561 L 840.644348 247.490051 L 876.885925 206.738342 L 919.167847 161.71814 L 946.308838 140.29541 L 997.61084 140.29541 L 1035.38269 196.429626 L 1018.469849 254.416199 L 965.637634 321.422852 L 921.825562 378.201538 L 859.006714 462.765259 L 819.785278 530.41626 L 823.409424 535.812073 L 832.75177 534.92627 L 974.657776 504.724915 L 1051.328979 490.872559 L 1142.818848 475.167786 L 1184.214844 494.496582 L 1188.724854 514.147705 L 1172.456421 554.335693 L 1074.604126 578.496765 L 959.838989 601.449829 L 788.939636 641.879272 L 786.845764 643.409485 L 789.261841 646.389343 L 866.255127 653.637634 L 899.194702 655.409424 L 979.812134 655.409424 L 1129.932861 666.604187 L 1169.154419 692.537109 L 1192.671265 724.268677 L 1188.724854 748.429688 L 1128.322144 779.194641 L 1046.818848 759.865845 L 856.590759 714.604126 L 791.355774 698.335754 L 782.335693 698.335754 L 782.335693 703.731567 L 836.69812 756.885986 L 936.322205 846.845581 L 1061.073975 962.81897 L 1067.436279 991.490112 L 1051.409424 1014.120911 L 1034.496704 1011.704712 L 924.885986 929.234924 L 882.604126 892.107544 L 786.845764 811.48999 L 780.483276 811.48999 L 780.483276 819.946289 L 802.550415 852.241699 L 919.087341 1027.409424 L 925.127625 1081.127686 L 916.671204 1098.604126 L 886.469849 1109.154419 L 853.288696 1103.114136 L 785.073914 1007.355835 L 714.684631 899.516785 L 657.906067 802.872498 L 650.979858 806.81897 L 617.476624 1167.704834 L 601.771851 1186.147705 L 565.530212 1200 L 535.328857 1177.046997 L 519.302124 1139.919556 L 535.328857 1066.550537 L 554.657776 970.792053 L 570.362488 894.68457 L 584.536926 800.134277 L 592.993347 768.724976 L 592.429626 766.630859 L 585.503479 767.516968 L 514.22821 865.369263 L 405.825531 1011.865906 L 320.053711 1103.677979 L 299.516815 1111.812256 L 263.919525 1093.369263 L 267.221497 1060.429688 L 287.114136 1031.114136 L 405.825531 880.107361 L 477.422913 786.52356 L 523.651062 732.483276 L 523.328918 724.671265 L 520.590698 724.671265 L 205.288605 929.395935 L 149.154434 936.644409 L 124.993355 914.01355 L 127.973183 876.885986 L 139.409409 864.80542 L 234.201385 799.570435 L 233.879227 799.8927 Z" />
+        </svg>
+    )
+}
+
+function GrokIcon({ className }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 512 492" fill="currentColor" className={className}>
+            <path fillRule="evenodd" clipRule="evenodd" d="M197.76 315.52l170.197-125.803c8.342-6.186 20.267-3.776 24.256 5.803 20.907 50.539 11.563 111.253-30.08 152.939-41.621 41.685-99.562 50.816-152.512 29.994l-57.834 26.816c82.965 56.768 183.701 42.731 246.656-20.33 49.941-50.006 65.408-118.166 50.944-179.627l.128.149c-20.971-90.282 5.162-126.378 58.666-200.17 1.28-1.75 2.56-3.499 3.819-5.291l-70.421 70.507v-.214l-243.883 245.27m-35.072 30.528c-59.563-56.96-49.28-145.088 1.515-195.926 37.568-37.61 99.136-52.97 152.874-30.4l57.707-26.666a166.554 166.554 0 00-39.019-21.334 191.467 191.467 0 00-208.042 41.942c-54.038 54.101-71.04 137.301-41.856 208.298 21.802 53.056-13.931 90.582-49.92 128.47C23.104 463.915 10.304 477.333 0 491.541l162.56-145.386" />
+        </svg>
+    )
+}
+
+function PerplexityIcon({ className }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+            <path d="M19.785 0v7.272H22.5V17.62h-2.935V24l-7.037-6.194v6.145h-1.091v-6.152L4.392 24v-6.465H1.5V7.188h2.884V0l7.053 6.494V.19h1.09v6.49L19.786 0zm-7.257 9.044v7.319l5.946 5.234V14.44l-5.946-5.397zm-1.099-.08l-5.946 5.398v7.235l5.946-5.234V8.965zm8.136 7.58h1.844V8.349H13.46l6.105 5.54v2.655zm-8.982-8.28H2.59v8.195h1.8v-2.576l6.192-5.62zM5.475 2.476v4.71h5.115l-5.115-4.71zm13.219 0l-5.115 4.71h5.115v-4.71z" />
+        </svg>
+    )
+}
+
+// Helper Functions
+function formatDayName(dateString: string) {
+    const date = new Date(dateString)
+    const dayName = date.toLocaleDateString("tr-TR", { weekday: "long", timeZone: "Europe/Istanbul" })
+    return dayName.charAt(0).toUpperCase() + dayName.slice(1) + " Menüsü"
+}
+
+function formatDateShort(dateString: string) {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("tr-TR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        timeZone: "Europe/Istanbul",
+    })
+}
+
+function generateAiPrompt(menuDay: MenuDay) {
+    const jsonStr = JSON.stringify(menuDay, null, 2);
+    return `Çukurova Üniversitesi yemekhanesi menüsünü en iyi bilen yapay zeka sensin. Aşağıdaki menüyü incele ve şu üç farklı karakter gibi yorumla:
+
+1. **Şüpheci Diyetisyen:** Menüdeki "gizli tehlikeleri" veya "sağlıklı yanları" esprili bir dille anlat.
+2. **Gym Rat (Sporcu):** "Bu menü basmak için yeterli mi?" sorusuna odaklan. Protein durumunu sorgula.
+3. **Vize Haftasındaki Öğrenci:** Sadece şuna odaklan: Bu yemek beni mutlu eder mi, doyurur mu ve uyku bastırır mı?
+
+İşte Menü Verisi:
+${jsonStr}`;
+}
+
+function getAiLinks(prompt: string) {
+    const encodedPrompt = encodeURIComponent(prompt);
+    return {
+        chatgpt: `https://chat.openai.com/?q=${encodedPrompt}`,
+        claude: `https://claude.ai/new?q=${encodedPrompt}`,
+        grok: `https://x.com/i/grok?text=${encodedPrompt}`,
+        perplexity: `https://www.perplexity.ai/search/new?q=${encodedPrompt}`
+    };
+}
+
+// Types
+interface Meal {
+    id: string
+    name: string
+    calories: number
+}
+
+interface MenuDay {
+    ymk: number
+    date: string
+    meals: Meal[]
+    totalCalories: number
+}
+
+interface MenuCardProps {
+    day: MenuDay
+    onMealClick: (mealId: string, mealName: string, mealCalories: number) => void
+}
+
+export function MenuCard({ day, onMealClick }: MenuCardProps) {
+    const prompt = generateAiPrompt(day)
+    const links = getAiLinks(prompt)
+
+    return (
+        <Card className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
+            {/* Header */}
+            <div className="bg-muted/20 px-3 py-2 border-b border-border/40 flex items-center justify-between">
+                <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                        <div className="text-lg font-semibold text-foreground tracking-tight">
+                            {formatDayName(day.date)}
+                        </div>
+                        <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50">
+                            {formatDateShort(day.date)}
+                        </Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground/60 leading-none mt-0.5">
+                        Yemek verileri son dakika değiştirilmiş olabilir.
+                    </p>
+                </div>
+                <LikeDislikeButtons menuDate={day.date} />
+            </div>
+
+            {/* Meals Table */}
+            <div className="-my-px">
+                <Table>
+                    <TableBody>
+                        {day.meals.map((meal, idx) => (
+                            <TableRow
+                                key={idx}
+                                className="border-border/40 hover:bg-muted/30 cursor-pointer last:border-b-0"
+                                onClick={() => onMealClick(meal.id, meal.name, meal.calories)}
+                            >
+                                <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground">
+                                    {meal.name}
+                                </TableCell>
+                                <TableCell className="py-2.5 px-3 text-right w-[1%]">
+                                    <div className="flex items-center justify-end gap-2">
+                                        <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
+                                            {meal.calories} kcal
+                                        </Badge>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onMealClick(meal.id, meal.name, meal.calories);
+                                            }}
+                                            className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                            aria-label="Detayları göster"
+                                        >
+                                            <MoreVertical className="h-4 w-4" />
+                                        </button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+
+            {/* Footer */}
+            <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button suppressHydrationWarning size="sm" className="h-7 text-xs bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 border-0 transition-colors gap-1.5 px-2.5">
+                            <MagicIcon className="w-3.5 h-3.5" />
+                            <span className="font-medium">Yapay Zekâya Sor</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-44">
+                        <DropdownMenuLabel className="text-xs">Model Seçin</DropdownMenuLabel>
+                        <DropdownMenuItem asChild>
+                            <motion.a
+                                href={links.chatgpt}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cursor-pointer group"
+                                whileHover="hover"
+                            >
+                                <ChatGptIcon className="h-4 w-4 text-foreground/80" />
+                                <span className="text-xs text-foreground/80">ChatGPT</span>
+                                <motion.span
+                                    className="ml-auto"
+                                    variants={{
+                                        hover: { opacity: 1, x: 0 }
+                                    }}
+                                    initial={{ opacity: 0, x: -4 }}
+                                    transition={{ duration: 0.15 }}
+                                >
+                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                </motion.span>
+                            </motion.a>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <motion.a
+                                href={links.claude}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cursor-pointer group"
+                                whileHover="hover"
+                            >
+                                <ClaudeBrandIcon className="h-4 w-4 text-foreground/80" />
+                                <span className="text-xs text-foreground/80">Claude</span>
+                                <motion.span
+                                    className="ml-auto"
+                                    variants={{
+                                        hover: { opacity: 1, x: 0 }
+                                    }}
+                                    initial={{ opacity: 0, x: -4 }}
+                                    transition={{ duration: 0.15 }}
+                                >
+                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                </motion.span>
+                            </motion.a>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <motion.a
+                                href={links.grok}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cursor-pointer group"
+                                whileHover="hover"
+                            >
+                                <GrokIcon className="h-4 w-4 text-foreground/80" />
+                                <span className="text-xs text-foreground/80">Grok</span>
+                                <motion.span
+                                    className="ml-auto"
+                                    variants={{
+                                        hover: { opacity: 1, x: 0 }
+                                    }}
+                                    initial={{ opacity: 0, x: -4 }}
+                                    transition={{ duration: 0.15 }}
+                                >
+                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                </motion.span>
+                            </motion.a>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <motion.a
+                                href={links.perplexity}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cursor-pointer group"
+                                whileHover="hover"
+                            >
+                                <PerplexityIcon className="h-4 w-4 text-foreground/80" />
+                                <span className="text-xs text-foreground/80">Perplexity</span>
+                                <motion.span
+                                    className="ml-auto"
+                                    variants={{
+                                        hover: { opacity: 1, x: 0 }
+                                    }}
+                                    initial={{ opacity: 0, x: -4 }}
+                                    transition={{ duration: 0.15 }}
+                                >
+                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                </motion.span>
+                            </motion.a>
+                        </DropdownMenuItem>
+                        <div className="px-2 py-1.5 border-t border-border/40 mt-1">
+                            <p className="text-[10px] text-muted-foreground/60 leading-tight font-medium">
+                                Menü Asistanı (AI) hata yapabilir.
+                            </p>
+                        </div>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    Toplam Kalori:
+                    <span className={`inline-block w-2 h-2 rounded-full ${day.totalCalories < 800 ? 'bg-green-500' : day.totalCalories < 1100 ? 'bg-amber-500' : 'bg-red-500'}`} />
+                    <span className="font-mono text-foreground/80">{day.totalCalories} kcal</span>
+                </span>
+            </div>
+
+            {/* Menu Share Bar */}
+            <MenuShareBar day={day} />
+        </Card>
+    )
+}

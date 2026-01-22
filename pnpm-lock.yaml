@@ -125,6 +125,9 @@ importers:
       framer-motion:
         specifier: ^12.23.26
         version: 12.23.26(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      html-to-image:
+        specifier: ^1.11.13
+        version: 1.11.13
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
@@ -2585,6 +2588,9 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
+
+  html-to-image@1.11.13:
+    resolution: {integrity: sha512-cuOPoI7WApyhBElTTb9oqsawRvZ0rHhaHwghRLlTuffoD1B2aDemlCruLeZrUIIdvG7gs9xeELEPm6PhuASqrg==}
 
   htmlparser2@10.0.0:
     resolution: {integrity: sha512-TwAZM+zE5Tq3lrEHvOlvwgj1XLWQCtaaibSN11Q+gGBAS7Y1uZSWwXXRe4iF6OXnaq1riyQAPFOBtYc77Mxq0g==}
@@ -6210,6 +6216,8 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  html-to-image@1.11.13: {}
 
   htmlparser2@10.0.0:
     dependencies:
