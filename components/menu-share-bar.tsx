@@ -478,35 +478,29 @@ export function MenuShareBar({ day }: MenuShareBarProps) {
                                         </AvatarGroupCount>
                                     </AvatarGroup>
 
-                                    {/* Text */}
-                                    <p className="text-xs text-muted-foreground/80 leading-tight flex-1 min-w-0">
+                                    {/* Text - Clickable */}
+                                    <button
+                                        onClick={handleShareClick}
+                                        className="text-xs text-muted-foreground/80 leading-tight flex-1 min-w-0 text-left transition-colors cursor-pointer"
+                                    >
                                         Sende bu menüyü arkadaşlarınla{" "}
                                         <span className="font-semibold text-foreground">hemen paylaş!</span>
-                                    </p>
+                                    </button>
                                 </div>
 
                                 {/* Sağ Kısım - Share Butonu */}
-                                <motion.div whileHover="hover">
-                                    <Button
-                                        size="sm"
-                                        variant="ghost"
-                                        onClick={handleShareClick}
-                                        className="h-8 w-8 p-0 rounded-full bg-muted/50 hover:bg-muted border border-border/40 hover:border-border/60 transition-all group relative overflow-hidden"
-                                    >
-                                        {/* Hover gradient background */}
-                                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={handleShareClick}
+                                    className="h-8 w-8 p-0 rounded-full bg-muted/50 hover:bg-muted border border-border/40 hover:border-border/60 transition-all group relative overflow-hidden"
+                                >
+                                    {/* Hover gradient background */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                                        {/* Icon */}
-                                        <motion.div
-                                            variants={{
-                                                hover: { rotate: 15, scale: 1.1 }
-                                            }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <ChevronRight className="h-4 w-4 text-foreground/70 group-hover:text-foreground transition-colors relative z-10" />
-                                        </motion.div>
-                                    </Button>
-                                </motion.div>
+                                    {/* Icon - No hover animation */}
+                                    <ChevronRight className="h-4 w-4 text-foreground/70 group-hover:text-foreground transition-colors relative z-10" />
+                                </Button>
                             </div>
                         </motion.div>
                     )}
