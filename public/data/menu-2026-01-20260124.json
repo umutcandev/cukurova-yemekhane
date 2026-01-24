@@ -1,8 +1,8 @@
 {
   "month": "2026-01",
-  "lastUpdated": "2026-01-19T04:48:48.773Z",
-  "scrapeDate": "2026-01-19",
-  "totalDays": 20,
+  "lastUpdated": "2026-01-24T04:33:00.499Z",
+  "scrapeDate": "2026-01-24",
+  "totalDays": 25,
   "days": [
     {
       "ymk": 1,
@@ -347,12 +347,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "14",
-          "name": "Kabak Musakka (Etsiz)",
-          "calories": 133,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2314",
           "name": "Şehriyeli Bulgur Pilavı",
           "calories": 352,
@@ -446,9 +440,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "117",
-          "name": "Mantarlı Çoban Kavurma",
-          "calories": 278,
+          "id": "16",
+          "name": "Çoban Kavurma",
+          "calories": 309,
           "category": "ana_yemek"
         },
         {
@@ -470,7 +464,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 828
+      "totalCalories": 859
     },
     {
       "ymk": 15,
@@ -512,9 +506,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "1",
-          "name": "Terbiyeli Köfte",
-          "calories": 295,
+          "id": "157",
+          "name": "Ekşili Köfte",
+          "calories": 294,
           "category": "ana_yemek"
         },
         {
@@ -536,7 +530,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 809
+      "totalCalories": 808
     },
     {
       "ymk": 17,
@@ -596,13 +590,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "148",
-          "name": "Meyve (Portakal)",
-          "calories": 171,
+          "id": "63",
+          "name": "Meyve (Armut)",
+          "calories": 128,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1215
+      "totalCalories": 1172
     },
     {
       "ymk": 19,
@@ -629,13 +623,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "287",
-          "name": "Meyve (Muz)",
-          "calories": 90,
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 936
+      "totalCalories": 988
     },
     {
       "ymk": 20,
@@ -669,6 +663,171 @@
         }
       ],
       "totalCalories": 749
+    },
+    {
+      "ymk": 21,
+      "date": "2026-02-02",
+      "dayName": "Pazartesi",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "157",
+          "name": "Ekşili Köfte",
+          "calories": 294,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2",
+          "name": "Tel Şehriyeli Pirinç Pilavı",
+          "calories": 275,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "148",
+          "name": "Meyve (Portakal)",
+          "calories": 171,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 858
+    },
+    {
+      "ymk": 22,
+      "date": "2026-02-03",
+      "dayName": "Salı",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "7",
+          "name": "Etli Taze Fasulye",
+          "calories": 262,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2315",
+          "name": "Mercimekli Bulgur Pilavı",
+          "calories": 364,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 751
+    },
+    {
+      "ymk": 23,
+      "date": "2026-02-04",
+      "dayName": "Çarşamba",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "181",
+          "name": "Tavuk Kavurma",
+          "calories": 275,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2",
+          "name": "Tel Şehriyeli Pirinç Pilavı",
+          "calories": 275,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "11",
+          "name": "Ayran",
+          "calories": 60,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 825
+    },
+    {
+      "ymk": 24,
+      "date": "2026-02-05",
+      "dayName": "Perşembe",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "22",
+          "name": "Etli Nohut",
+          "calories": 373,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2314",
+          "name": "Şehriyeli Bulgur Pilavı",
+          "calories": 352,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "64",
+          "name": "Türlü Turşu",
+          "calories": 10,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 853
+    },
+    {
+      "ymk": 25,
+      "date": "2026-02-06",
+      "dayName": "Cuma",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "12",
+          "name": "Et Haşlama",
+          "calories": 396,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2",
+          "name": "Tel Şehriyeli Pirinç Pilavı",
+          "calories": 275,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2332",
+          "name": "Meyve (elma)",
+          "calories": 142,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 1028
     }
   ]
 }
