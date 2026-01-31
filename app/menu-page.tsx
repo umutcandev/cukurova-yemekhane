@@ -8,6 +8,7 @@ import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { InfoDialog } from "@/components/info-dialog"
 import { MenuCard } from "@/components/menu-card"
+import { MonthlyFavorites } from "@/components/monthly-favorites"
 import { Button } from "@/components/ui/button"
 import type { DateRange } from "react-day-picker"
 import type { MenuData } from "@/lib/types"
@@ -161,6 +162,9 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                             <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} />
                         </div>
                     ) : null}
+
+                    {/* Monthly Favorites */}
+                    <MonthlyFavorites menuData={menuData} />
                 </section>
 
 

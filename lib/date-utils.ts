@@ -55,3 +55,13 @@ export function parseScrapeDate(filename: string): string | null {
     const match = filename.match(/menu-\d{4}-\d{2}-(\d{8})\.json/);
     return match ? match[1] : null;
 }
+
+/**
+ * Get Turkish month name from date
+ */
+export function getTurkishMonthName(date?: Date): string {
+    const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+        'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+    const d = date || new Date();
+    return months[d.getMonth()];
+}
