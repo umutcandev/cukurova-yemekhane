@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import {
@@ -80,16 +81,31 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [menuNotFound, setMenuNotFound] = useState(false)
 
-    // Get previous month (completed month has meaningful data)
-    const now = new Date()
-    const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+    // Client-side only: calculate month name and target month after hydration
+    const [monthInfo, setMonthInfo] = useState<{ monthName: string; targetMonth: string } | null>(null)
 
-    // Get Turkish month name for display
-    const monthName = previousMonth.toLocaleDateString("tr-TR", { month: "long" })
-    const capitalizedMonthName = monthName.charAt(0).toUpperCase() + monthName.slice(1)
+    useEffect(() => {
+        // Calculate on client-side only to prevent hydration mismatch
+        const timer = setTimeout(() => {
+            const now = new Date()
+            const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
 
-    // Get previous month in YYYY-MM format for API
-    const targetMonth = `${previousMonth.getFullYear()}-${String(previousMonth.getMonth() + 1).padStart(2, '0')}`
+            // Get Turkish month name for display
+            const monthName = previousMonth.toLocaleDateString("tr-TR", { month: "long" })
+            const capitalizedMonthName = monthName.charAt(0).toUpperCase() + monthName.slice(1)
+
+            // Get previous month in YYYY-MM format for API
+            const targetMonth = `${previousMonth.getFullYear()}-${String(previousMonth.getMonth() + 1).padStart(2, '0')}`
+
+            setMonthInfo({ monthName: capitalizedMonthName, targetMonth })
+        }, 3000) // 3 saniye yapay gecikme
+
+        return () => clearTimeout(timer)
+    }, [])
+
+    // Use derived values, render placeholder until client-side calculation is ready
+    const capitalizedMonthName = monthInfo?.monthName ?? ""
+    const targetMonth = monthInfo?.targetMonth ?? ""
 
     // Fetch monthly data only when dialog opens
     const fetchMonthlyData = useCallback(async () => {
@@ -214,22 +230,29 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
     return (
         <>
             {/* Clickable Header - Styled like MenuCard header */}
-            <button
-                onClick={handleDialogOpen}
-                className="w-full bg-muted/20 px-3 py-2.5 border border-border/40 rounded-lg flex items-center justify-between hover:bg-muted/30 transition-colors mb-4"
-            >
-                <div className="text-left">
-                    <h2 className="text-lg font-semibold text-foreground tracking-tight">
-                        {capitalizedMonthName} Ayının Enleri
-                    </h2>
-                    <p className="text-xs text-muted-foreground/70 leading-tight mt-1">
-                        En beğenilen ve en beğenilmeyen menüleri keşfet!
-                    </p>
-                </div>
-                <div className="ml-3 shrink-0">
-                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                </div>
-            </button>
+            <AnimatePresence>
+                {monthInfo && (
+                    <motion.button
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        onClick={handleDialogOpen}
+                        className="w-full bg-muted/20 px-3 py-2.5 border border-border/40 rounded-lg flex items-center justify-between hover:bg-muted/30 transition-colors mb-4"
+                    >
+                        <div className="text-left">
+                            <h2 className="text-lg font-semibold text-foreground tracking-tight">
+                                {capitalizedMonthName} Ayının Enleri
+                            </h2>
+                            <p className="text-xs text-muted-foreground/70 leading-tight mt-1">
+                                Geçen ayın en beğenilen ve en beğenilmeyen menülerini sizin için derledik. Buraya tıklayarak detayları görüntüleyebilirsiniz.
+                            </p>
+                        </div>
+                        <div className="ml-3 shrink-0">
+                            <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                        </div>
+                    </motion.button>
+                )}
+            </AnimatePresence>
 
             {/* Dialog with Tabs and Table */}
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

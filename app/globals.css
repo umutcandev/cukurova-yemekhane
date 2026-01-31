@@ -124,3 +124,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Marquee animation for PWA banner */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
