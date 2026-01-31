@@ -23,7 +23,7 @@ import {
     DrawerTitle,
 } from "@/components/ui/drawer"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ThumbsUp, ThumbsDown, AlertCircle, TrendingUp, TrendingDown, ArrowRight } from "lucide-react"
+import { ThumbsUp, ThumbsDown, AlertCircle, ArrowRight } from "lucide-react"
 import type { MenuData, DayMenu } from "@/lib/types"
 
 // Rank Badge Component - filled square with number inside
@@ -256,7 +256,7 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
 
             {/* Dialog with Tabs and Table */}
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <DialogContent className="max-w-md max-h-[85vh] overflow-hidden p-0">
+                <DialogContent className="max-w-[360px] sm:max-w-md max-h-[85vh] overflow-hidden p-0">
                     <DialogHeader className="px-4 pt-4 pb-0">
                         <DialogTitle className="text-lg font-semibold">
                             {capitalizedMonthName} Ayının Enleri
@@ -276,14 +276,12 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
                                         value="liked"
                                         className="flex-1 gap-1.5 h-7 text-xs rounded-sm data-[state=active]:bg-background data-[state=active]:shadow-sm whitespace-nowrap"
                                     >
-                                        <TrendingUp className="h-3.5 w-3.5" />
                                         En Beğenilenler
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="disliked"
                                         className="flex-1 gap-1.5 h-7 text-xs rounded-sm data-[state=active]:bg-background data-[state=active]:shadow-sm whitespace-nowrap"
                                     >
-                                        <TrendingDown className="h-3.5 w-3.5" />
                                         En Beğenilmeyenler
                                     </TabsTrigger>
                                 </TabsList>
