@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import {
@@ -11,14 +10,19 @@ import {
     TableCell,
 } from "@/components/ui/table"
 import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
+import {
     Drawer,
     DrawerContent,
     DrawerHeader,
     DrawerTitle,
 } from "@/components/ui/drawer"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ThumbsUp, ThumbsDown, AlertCircle, TrendingUp, TrendingDown, ChevronDown } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { ThumbsUp, ThumbsDown, AlertCircle, TrendingUp, TrendingDown, ArrowRight } from "lucide-react"
 import type { MenuData, DayMenu } from "@/lib/types"
 
 // Rank Badge Component - filled square with number inside
@@ -66,7 +70,7 @@ interface MonthlyFavoritesProps {
 }
 
 export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
-    const [isExpanded, setIsExpanded] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(false)
     const [topLiked, setTopLiked] = useState<MonthlyReaction[]>([])
     const [topDisliked, setTopDisliked] = useState<MonthlyReaction[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -76,14 +80,18 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [menuNotFound, setMenuNotFound] = useState(false)
 
-    // Get Turkish month name from browser
-    const monthName = new Date().toLocaleDateString("tr-TR", { month: "long" })
+    // Get previous month (completed month has meaningful data)
+    const now = new Date()
+    const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+
+    // Get Turkish month name for display
+    const monthName = previousMonth.toLocaleDateString("tr-TR", { month: "long" })
     const capitalizedMonthName = monthName.charAt(0).toUpperCase() + monthName.slice(1)
 
-    // Get current month in YYYY-MM format
-    const currentMonth = new Date().toISOString().slice(0, 7)
+    // Get previous month in YYYY-MM format for API
+    const targetMonth = `${previousMonth.getFullYear()}-${String(previousMonth.getMonth() + 1).padStart(2, '0')}`
 
-    // Fetch monthly data only when expanded
+    // Fetch monthly data only when dialog opens
     const fetchMonthlyData = useCallback(async () => {
         if (hasFetched) return
 
@@ -91,7 +99,7 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
         setError(null)
 
         try {
-            const response = await fetch(`/api/reactions/monthly?month=${currentMonth}`)
+            const response = await fetch(`/api/reactions/monthly?month=${targetMonth}`)
 
             if (!response.ok) {
                 throw new Error("Veri yüklenemedi")
@@ -108,14 +116,12 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
         } finally {
             setIsLoading(false)
         }
-    }, [currentMonth, hasFetched])
+    }, [targetMonth, hasFetched])
 
-    // Handle expand toggle
-    const handleExpandToggle = () => {
-        const newExpanded = !isExpanded
-        setIsExpanded(newExpanded)
-
-        if (newExpanded && !hasFetched) {
+    // Handle dialog open
+    const handleDialogOpen = () => {
+        setDialogOpen(true)
+        if (!hasFetched) {
             fetchMonthlyData()
         }
     }
@@ -207,98 +213,90 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
 
     return (
         <>
-            <Card className="border border-border/40 bg-card overflow-hidden shadow-sm mt-4 mb-20 gap-0">
-                {/* Header - Clickable to expand */}
-                <button
-                    onClick={handleExpandToggle}
-                    className="w-full px-3 py-2.5 flex items-center justify-between hover:bg-muted/30 transition-colors"
-                >
-                    <div className="text-left">
-                        <h2 className="text-lg font-semibold text-foreground tracking-tight">
+            {/* Clickable Header - Styled like MenuCard header */}
+            <button
+                onClick={handleDialogOpen}
+                className="w-full bg-muted/20 px-3 py-2.5 border border-border/40 rounded-lg flex items-center justify-between hover:bg-muted/30 transition-colors mb-4"
+            >
+                <div className="text-left">
+                    <h2 className="text-lg font-semibold text-foreground tracking-tight">
+                        {capitalizedMonthName} Ayının Enleri
+                    </h2>
+                    <p className="text-xs text-muted-foreground/70 leading-tight mt-1">
+                        En beğenilen ve en beğenilmeyen menüleri keşfet!
+                    </p>
+                </div>
+                <div className="ml-3 shrink-0">
+                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                </div>
+            </button>
+
+            {/* Dialog with Tabs and Table */}
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogContent className="max-w-md max-h-[85vh] overflow-hidden p-0">
+                    <DialogHeader className="px-4 pt-4 pb-0">
+                        <DialogTitle className="text-lg font-semibold">
                             {capitalizedMonthName} Ayının Enleri
-                        </h2>
-                        <p className="text-xs text-muted-foreground/70 leading-tight mt-1">
-                            En beğenilen ve en beğenilmeyen menüleri senin için hazırladık. Hemen buraya tıklayarak göz gezdirebilirsin!
-                        </p>
-                    </div>
-                    <motion.div
-                        animate={{ rotate: isExpanded ? 180 : 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="ml-3 shrink-0"
-                    >
-                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                    </motion.div>
-                </button>
+                        </DialogTitle>
+                    </DialogHeader>
 
-                {/* Expandable Content */}
-                <AnimatePresence initial={false}>
-                    {isExpanded && (
-                        <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.25, ease: "easeInOut" }}
-                            className="overflow-hidden"
-                        >
-                            <div className="border-t border-border/40">
-                                {error ? (
-                                    <div className="flex flex-col items-center justify-center py-6 space-y-2">
-                                        <AlertCircle className="h-6 w-6 text-destructive" />
-                                        <p className="text-sm text-muted-foreground">{error}</p>
-                                    </div>
-                                ) : (
-                                    <Tabs defaultValue="liked" className="w-full gap-0">
-                                        <TabsList className="w-full h-9 bg-muted/50 p-1 rounded-none">
-                                            <TabsTrigger
-                                                value="liked"
-                                                className="flex-1 gap-1.5 h-7 text-xs rounded-sm data-[state=active]:bg-background data-[state=active]:shadow-sm whitespace-nowrap"
-                                            >
-                                                <TrendingUp className="h-3.5 w-3.5" />
-                                                En Beğenilenler
-                                            </TabsTrigger>
-                                            <TabsTrigger
-                                                value="disliked"
-                                                className="flex-1 gap-1.5 h-7 text-xs rounded-sm data-[state=active]:bg-background data-[state=active]:shadow-sm whitespace-nowrap"
-                                            >
-                                                <TrendingDown className="h-3.5 w-3.5" />
-                                                En Beğenilmeyenler
-                                            </TabsTrigger>
-                                        </TabsList>
-
-                                        <TabsContent value="liked" className="mt-0 pb-2">
-                                            {isLoading ? (
-                                                renderSkeleton()
-                                            ) : topLiked.length === 0 ? (
-                                                renderEmpty("liked")
-                                            ) : (
-                                                <Table>
-                                                    <TableBody>
-                                                        {topLiked.map((item, index) => renderMenuRow(item, index, "liked"))}
-                                                    </TableBody>
-                                                </Table>
-                                            )}
-                                        </TabsContent>
-
-                                        <TabsContent value="disliked" className="mt-0 pb-2">
-                                            {isLoading ? (
-                                                renderSkeleton()
-                                            ) : topDisliked.length === 0 ? (
-                                                renderEmpty("disliked")
-                                            ) : (
-                                                <Table>
-                                                    <TableBody>
-                                                        {topDisliked.map((item, index) => renderMenuRow(item, index, "disliked"))}
-                                                    </TableBody>
-                                                </Table>
-                                            )}
-                                        </TabsContent>
-                                    </Tabs>
-                                )}
+                    <div className="overflow-y-auto">
+                        {error ? (
+                            <div className="flex flex-col items-center justify-center py-6 space-y-2">
+                                <AlertCircle className="h-6 w-6 text-destructive" />
+                                <p className="text-sm text-muted-foreground">{error}</p>
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </Card>
+                        ) : (
+                            <Tabs defaultValue="liked" className="w-full">
+                                <TabsList className="w-full h-9 bg-muted/50 p-1 rounded-none">
+                                    <TabsTrigger
+                                        value="liked"
+                                        className="flex-1 gap-1.5 h-7 text-xs rounded-sm data-[state=active]:bg-background data-[state=active]:shadow-sm whitespace-nowrap"
+                                    >
+                                        <TrendingUp className="h-3.5 w-3.5" />
+                                        En Beğenilenler
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value="disliked"
+                                        className="flex-1 gap-1.5 h-7 text-xs rounded-sm data-[state=active]:bg-background data-[state=active]:shadow-sm whitespace-nowrap"
+                                    >
+                                        <TrendingDown className="h-3.5 w-3.5" />
+                                        En Beğenilmeyenler
+                                    </TabsTrigger>
+                                </TabsList>
+
+                                <TabsContent value="liked" className="mt-0 pb-4">
+                                    {isLoading ? (
+                                        renderSkeleton()
+                                    ) : topLiked.length === 0 ? (
+                                        renderEmpty("liked")
+                                    ) : (
+                                        <Table>
+                                            <TableBody>
+                                                {topLiked.map((item, index) => renderMenuRow(item, index, "liked"))}
+                                            </TableBody>
+                                        </Table>
+                                    )}
+                                </TabsContent>
+
+                                <TabsContent value="disliked" className="mt-0 pb-4">
+                                    {isLoading ? (
+                                        renderSkeleton()
+                                    ) : topDisliked.length === 0 ? (
+                                        renderEmpty("disliked")
+                                    ) : (
+                                        <Table>
+                                            <TableBody>
+                                                {topDisliked.map((item, index) => renderMenuRow(item, index, "disliked"))}
+                                            </TableBody>
+                                        </Table>
+                                    )}
+                                </TabsContent>
+                            </Tabs>
+                        )}
+                    </div>
+                </DialogContent>
+            </Dialog>
 
             {/* Menu Detail Drawer */}
             <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>

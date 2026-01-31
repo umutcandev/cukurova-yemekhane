@@ -113,15 +113,18 @@ export async function scrapeFullMonth(): Promise<MenuData> {
     });
   });
 
-  // Ay bilgisini ilk günden al
-  const firstDay = days[0];
-  const monthMatch = firstDay?.date.match(/(\d{4})-(\d{2})/);
-  const month = monthMatch ? `${monthMatch[1]}-${monthMatch[2]}` : '';
-
   // Bugünün tarihini al (scrape tarihi için)
   const today = new Date();
-  const scrapeDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-  const scrapeDateFilename = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+  const year = today.getFullYear();
+  const monthNum = String(today.getMonth() + 1).padStart(2, '0');
+  const dayNum = String(today.getDate()).padStart(2, '0');
+
+  // scrapeDate ve month değerlerini bugünün tarihinden al
+  const scrapeDate = `${year}-${monthNum}-${dayNum}`;
+  const scrapeDateFilename = `${year}${monthNum}${dayNum}`;
+  const month = `${year}-${monthNum}`;
+
+
 
   // 8. JSON'a kaydet
   const menuData: MenuData = {
@@ -129,7 +132,7 @@ export async function scrapeFullMonth(): Promise<MenuData> {
     lastUpdated: new Date().toISOString(),
     scrapeDate,
     totalDays: days.length,
-    days: days.sort((a, b) => a.ymk - b.ymk), // YMK'ye göre sırala
+    days: days.sort((a, b) => a.date.localeCompare(b.date)), // Tarihe göre sırala
   };
 
   return { ...menuData, _filename: `menu-${month}-${scrapeDateFilename}.json` } as MenuData & { _filename: string };

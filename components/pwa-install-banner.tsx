@@ -4,11 +4,11 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { motion, AnimatePresence } from "framer-motion"
 
 export function PwaInstallBanner() {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
     const [isVisible, setIsVisible] = useState(false)
+    const [shouldRender, setShouldRender] = useState(false)
 
     useEffect(() => {
         // Check if user has already dismissed the banner
@@ -18,7 +18,11 @@ export function PwaInstallBanner() {
         const handler = (e: Event) => {
             e.preventDefault()
             setDeferredPrompt(e)
-            setIsVisible(true)
+            setShouldRender(true)
+            // Small delay to trigger CSS transition
+            requestAnimationFrame(() => {
+                setIsVisible(true)
+            })
         }
 
         window.addEventListener("beforeinstallprompt", handler)
@@ -33,63 +37,66 @@ export function PwaInstallBanner() {
 
         const { outcome } = await deferredPrompt.userChoice
         if (outcome === "accepted") {
-            setIsVisible(false)
+            handleClose()
         }
         setDeferredPrompt(null)
     }
 
-    const handleCloseClick = () => {
+    const handleClose = () => {
         setIsVisible(false)
+        // Wait for transition to complete before removing from DOM
+        setTimeout(() => {
+            setShouldRender(false)
+        }, 200)
+    }
+
+    const handleCloseClick = () => {
+        handleClose()
         localStorage.setItem("pwa-install-banner-closed", "true")
     }
 
-    return (
-        <AnimatePresence>
-            {isVisible && (
-                <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="dark w-full bg-[#101010] border-b border-white/10 overflow-hidden"
-                >
-                    <div className="container mx-auto flex items-center justify-between gap-4 p-3 px-4 sm:py-3">
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={handleCloseClick}
-                                className="text-white/50 hover:text-white transition-colors"
-                                aria-label="Kapat"
-                            >
-                                <X className="h-5 w-5" />
-                            </button>
-                            <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1.5 sm:h-12 sm:w-12 sm:p-2">
-                                <Image
-                                    src="/icon/icon-512x512.png"
-                                    alt="App Icon"
-                                    width={48}
-                                    height={48}
-                                    className="h-full w-full object-contain"
-                                />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-white sm:text-base">Yemekhane</span>
-                                <span className="text-xs text-white/60 sm:text-sm">
-                                    Çukurova Üniversitesi yemekhane uygulaması.
-                                </span>
-                            </div>
-                        </div>
+    if (!shouldRender) return null
 
-                        <Button
-                            onClick={handleInstallClick}
-                            variant="default"
-                            size="sm"
-                            className="shrink-0 font-medium"
-                        >
-                            Yükle
-                        </Button>
+    return (
+        <div
+            className={`dark w-full bg-[#101010] border-b border-white/10 transition-all duration-200 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+                }`}
+        >
+            <div className="container mx-auto flex items-center justify-between gap-3 py-2 px-4">
+                <div className="flex items-center gap-2.5">
+                    <button
+                        onClick={handleCloseClick}
+                        className="text-white/50 hover:text-white transition-colors"
+                        aria-label="Kapat"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                    <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/5 p-1">
+                        <Image
+                            src="/icon/icon-512x512.png"
+                            alt="App Icon"
+                            width={20}
+                            height={20}
+                            className="h-full w-full object-contain"
+                        />
                     </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
+                    <div className="flex flex-col gap-0">
+                        <span className="text-xs font-semibold text-white leading-tight">Yemekhane</span>
+                        <span className="text-[10px] text-white/60 leading-tight hidden sm:block">
+                            Çukurova Üniversitesi yemekhane uygulaması.
+                        </span>
+                    </div>
+                </div>
+
+                <Button
+                    onClick={handleInstallClick}
+                    variant="default"
+                    size="sm"
+                    className="shrink-0 font-medium h-7 text-xs px-3"
+                >
+                    Yükle
+                </Button>
+            </div>
+        </div>
     )
 }

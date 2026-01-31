@@ -149,6 +149,9 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
 
                 {/* Mobile Menu View - Shows selected date(s) from mobile navigation */}
                 <section className="max-w-md mx-auto">
+                    {/* Monthly Favorites - Above Menu Card */}
+                    <MonthlyFavorites menuData={menuData} />
+
                     {selectedDateRange?.from && selectedDateMenus.length > 0 ? (
                         // Show range of menus if date range is selected
                         <div className="grid gap-4">
@@ -162,9 +165,6 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                             <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} />
                         </div>
                     ) : null}
-
-                    {/* Monthly Favorites */}
-                    <MonthlyFavorites menuData={menuData} />
                 </section>
 
 

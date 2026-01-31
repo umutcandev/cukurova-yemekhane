@@ -57,93 +57,107 @@ function ShareableMenuTemplate({ day, templateRef }: { day: MenuDay; templateRef
     }
 
     return (
+        // Wrapper: viewport dışına taşınmış, overflow hidden - görünmez ama içerik render ediliyor
         <div
-            ref={templateRef}
+            aria-hidden="true"
             style={{
                 position: "fixed",
-                left: "0",
-                top: "0",
-                zIndex: -9999,
-                pointerEvents: "none",
-                width: "400px",
-                fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif",
-                background: "#000000",
-                borderRadius: "20px",
-                padding: "24px",
-                color: "#ffffff",
-                border: "1px solid #333333",
+                left: 0,
+                top: 0,
+                width: "1px",
+                height: "1px",
+                overflow: "hidden",
+                clip: "rect(0, 0, 0, 0)",
+                whiteSpace: "nowrap",
+                border: 0,
             }}
         >
-            {/* Header */}
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                <div style={{
-                    fontSize: "24px",
-                    fontWeight: "700",
+            <div
+                ref={templateRef}
+                style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    width: "400px",
+                    fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif",
+                    background: "#000000",
+                    borderRadius: "20px",
+                    padding: "24px",
                     color: "#ffffff",
-                    marginBottom: "8px"
-                }}>
-                    Çukurova Yemekhane'de Bugün
+                    border: "1px solid #333333",
+                }}
+            >
+                {/* Header */}
+                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                    <div style={{
+                        fontSize: "24px",
+                        fontWeight: "700",
+                        color: "#ffffff",
+                        marginBottom: "8px"
+                    }}>
+                        Çukurova Yemekhane'de Bugün
+                    </div>
+                    <div style={{ fontSize: "14px", color: "#ffffff" }}>
+                        {formattedDate}
+                    </div>
                 </div>
-                <div style={{ fontSize: "14px", color: "#ffffff" }}>
-                    {formattedDate}
-                </div>
-            </div>
 
-            {/* Meals */}
-            <div style={{
-                background: "#000000",
-                borderRadius: "12px",
-                padding: "16px",
-                marginBottom: "16px",
-                border: "1px solid #333333"
-            }}>
-                {day.meals.map((meal, idx) => (
-                    <div
-                        key={idx}
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            padding: "10px 0",
-                            borderBottom: idx < day.meals.length - 1 ? "1px solid #000000" : "none"
-                        }}
-                    >
-                        <span style={{ fontSize: "15px", fontWeight: "500", color: "#ffffff" }}>{meal.name}</span>
-                        <span style={{
-                            fontSize: "12px",
-                            color: "#ffffff",
-                            background: "#000000",
-                            padding: "4px 8px",
-                            borderRadius: "6px",
-                            fontFamily: "var(--font-geist-mono), ui-monospace, monospace"
-                        }}>
-                            {meal.calories} kcal
+                {/* Meals */}
+                <div style={{
+                    background: "#000000",
+                    borderRadius: "12px",
+                    padding: "16px",
+                    marginBottom: "16px",
+                    border: "1px solid #333333"
+                }}>
+                    {day.meals.map((meal, idx) => (
+                        <div
+                            key={idx}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                padding: "10px 0",
+                                borderBottom: idx < day.meals.length - 1 ? "1px solid #000000" : "none"
+                            }}
+                        >
+                            <span style={{ fontSize: "15px", fontWeight: "500", color: "#ffffff" }}>{meal.name}</span>
+                            <span style={{
+                                fontSize: "12px",
+                                color: "#ffffff",
+                                background: "#000000",
+                                padding: "4px 8px",
+                                borderRadius: "6px",
+                                fontFamily: "var(--font-geist-mono), ui-monospace, monospace"
+                            }}>
+                                {meal.calories} kcal
+                            </span>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Footer */}
+                <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingTop: "12px",
+                    borderTop: "1px solid #000000"
+                }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <div style={{
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: "50%",
+                            background: getCalorieColor(day.totalCalories)
+                        }} />
+                        <span style={{ fontSize: "14px", fontWeight: "600", color: "#ffffff" }}>
+                            Toplam: {day.totalCalories} kcal
                         </span>
                     </div>
-                ))}
-            </div>
-
-            {/* Footer */}
-            <div style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingTop: "12px",
-                borderTop: "1px solid #000000"
-            }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <div style={{
-                        width: "10px",
-                        height: "10px",
-                        borderRadius: "50%",
-                        background: getCalorieColor(day.totalCalories)
-                    }} />
-                    <span style={{ fontSize: "14px", fontWeight: "600", color: "#ffffff" }}>
-                        Toplam: {day.totalCalories} kcal
-                    </span>
-                </div>
-                <div style={{ fontSize: "12px", color: "#ffffff" }}>
-                    https://www.cukurova.app
+                    <div style={{ fontSize: "12px", color: "#ffffff" }}>
+                        https://www.cukurova.app
+                    </div>
                 </div>
             </div>
         </div>
