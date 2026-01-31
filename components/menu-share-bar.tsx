@@ -78,38 +78,71 @@ function ShareableMenuTemplate({ day, templateRef }: { day: MenuDay; templateRef
                     position: "absolute",
                     left: 0,
                     top: 0,
-                    width: "400px",
+                    width: "420px",
                     fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif",
-                    background: "#000000",
-                    borderRadius: "20px",
-                    padding: "24px",
-                    color: "#ffffff",
-                    border: "1px solid #333333",
+                    background: "#0a0a0a",
+                    borderRadius: "16px",
+                    padding: "28px",
+                    color: "#fafafa",
                 }}
             >
                 {/* Header */}
-                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                <div style={{ textAlign: "center", marginBottom: "24px" }}>
                     <div style={{
-                        fontSize: "24px",
+                        fontSize: "22px",
                         fontWeight: "700",
-                        color: "#ffffff",
-                        marginBottom: "8px"
+                        color: "#fafafa",
+                        letterSpacing: "-0.025em",
+                        marginBottom: "6px"
                     }}>
                         Çukurova Yemekhane'de Bugün
                     </div>
-                    <div style={{ fontSize: "14px", color: "#ffffff" }}>
+                    <div style={{
+                        fontSize: "13px",
+                        color: "#a1a1aa",
+                        fontWeight: "500"
+                    }}>
                         {formattedDate}
                     </div>
                 </div>
 
-                {/* Meals */}
+                {/* Table Container */}
                 <div style={{
-                    background: "#000000",
                     borderRadius: "12px",
-                    padding: "16px",
-                    marginBottom: "16px",
-                    border: "1px solid #333333"
+                    overflow: "hidden",
+                    border: "1px solid #27272a",
+                    marginBottom: "20px",
                 }}>
+                    {/* Table Header */}
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "12px 16px",
+                        background: "#121212",
+                        borderBottom: "1px solid #27272a",
+                    }}>
+                        <span style={{
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            color: "#71717a",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em"
+                        }}>
+                            Yemek
+                        </span>
+                        <span style={{
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            color: "#71717a",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em"
+                        }}>
+                            Kalori
+                        </span>
+                    </div>
+
+                    {/* Table Body - Zebra striped rows */}
                     {day.meals.map((meal, idx) => (
                         <div
                             key={idx}
@@ -117,18 +150,24 @@ function ShareableMenuTemplate({ day, templateRef }: { day: MenuDay; templateRef
                                 display: "flex",
                                 justifyContent: "space-between",
                                 alignItems: "center",
-                                padding: "10px 0",
-                                borderBottom: idx < day.meals.length - 1 ? "1px solid #000000" : "none"
+                                padding: "14px 16px",
+                                background: idx % 2 === 0 ? "#0a0a0a" : "#101010",
+                                borderBottom: idx < day.meals.length - 1 ? "1px solid #27272a" : "none"
                             }}
                         >
-                            <span style={{ fontSize: "15px", fontWeight: "500", color: "#ffffff" }}>{meal.name}</span>
                             <span style={{
-                                fontSize: "12px",
-                                color: "#ffffff",
-                                background: "#000000",
-                                padding: "4px 8px",
-                                borderRadius: "6px",
-                                fontFamily: "var(--font-geist-mono), ui-monospace, monospace"
+                                fontSize: "14px",
+                                fontWeight: "500",
+                                color: "#fafafa",
+                                maxWidth: "260px"
+                            }}>
+                                {meal.name}
+                            </span>
+                            <span style={{
+                                fontSize: "13px",
+                                color: "#a1a1aa",
+                                fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
+                                fontWeight: "500"
                             }}>
                                 {meal.calories} kcal
                             </span>
@@ -141,22 +180,30 @@ function ShareableMenuTemplate({ day, templateRef }: { day: MenuDay; templateRef
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    paddingTop: "12px",
-                    borderTop: "1px solid #000000"
+                    paddingTop: "16px",
+                    borderTop: "1px solid #27272a"
                 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                         <div style={{
-                            width: "10px",
-                            height: "10px",
+                            width: "8px",
+                            height: "8px",
                             borderRadius: "50%",
                             background: getCalorieColor(day.totalCalories)
                         }} />
-                        <span style={{ fontSize: "14px", fontWeight: "600", color: "#ffffff" }}>
+                        <span style={{
+                            fontSize: "14px",
+                            fontWeight: "600",
+                            color: "#fafafa"
+                        }}>
                             Toplam: {day.totalCalories} kcal
                         </span>
                     </div>
-                    <div style={{ fontSize: "12px", color: "#ffffff" }}>
-                        https://www.cukurova.app
+                    <div style={{
+                        fontSize: "12px",
+                        color: "#71717a",
+                        fontWeight: "500"
+                    }}>
+                        www.cukurova.app
                     </div>
                 </div>
             </div>
