@@ -71,7 +71,7 @@ export function MobileBottomNav({
             <div className="bg-muted/20 border-b border-border/50">
                 <div className="container mx-auto flex items-center justify-between px-4 py-1.5 text-xs text-muted-foreground">
                     <span>Son Güncelleme: <span className="font-mono text-foreground/80" suppressHydrationWarning>{formatLastUpdated(lastUpdated)}</span></span>
-                    <span>Menünün Gün Sayısı: <span className="font-mono text-foreground/80">{totalDays}</span></span>
+                    <span>Menüdeki Gün Sayısı: <span className="font-mono text-foreground/80">{totalDays}</span></span>
                 </div>
             </div>
 

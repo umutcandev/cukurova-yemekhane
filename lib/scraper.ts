@@ -43,7 +43,7 @@ export async function scrapeFullMonth(): Promise<MenuData> {
     $font.find('br').replaceWith(' ');
     let dateText = $font.text().replace(/\s+/g, ' ').trim();
     // Örnek: "03.11.2025 Pazartesi" veya sadece "03.11.2025"
-    const dateMatch = dateText.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+    const dateMatch = dateText.match(/(\d{1,2})\.(\d{2})\.(\d{4})/);
 
     if (!dateMatch || !ymk) {
       console.warn(`⚠️  Geçersiz kart atlandı (index: ${index})`);
@@ -51,7 +51,7 @@ export async function scrapeFullMonth(): Promise<MenuData> {
     }
 
     const [, day, month, year] = dateMatch;
-    const date = `${year}-${month}-${day}`; // ISO format: "2025-11-03"
+    const date = `${year}-${month}-${day.padStart(2, '0')}`; // ISO format: "2025-11-03"
 
     // Gün adını bul (tarihten sonraki kelime veya FONT[size="5"] içinden)
     let dayName = dateText.split(/\s+/)[1] || '';

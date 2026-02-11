@@ -160,7 +160,19 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                 onClick={() => onMealClick(meal.id, meal.name, meal.calories)}
                             >
                                 <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground">
-                                    {meal.name}
+                                    <div className="flex items-center gap-1.5">
+                                        {meal.name}
+                                        {day.meals.length === 5 && idx === 0 && (
+                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50">
+                                                Ana Yemek
+                                            </Badge>
+                                        )}
+                                        {day.meals.length === 5 && idx === 1 && (
+                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50">
+                                                Seçenek
+                                            </Badge>
+                                        )}
+                                    </div>
                                 </TableCell>
                                 <TableCell className="py-2.5 px-3 text-right w-[1%]">
                                     <div className="flex items-center justify-end gap-2">

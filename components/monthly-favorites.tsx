@@ -1,7 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useCallback, useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import {
@@ -81,31 +80,13 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [menuNotFound, setMenuNotFound] = useState(false)
 
-    // Client-side only: calculate month name and target month after hydration
-    const [monthInfo, setMonthInfo] = useState<{ monthName: string; targetMonth: string } | null>(null)
-
-    useEffect(() => {
-        // Calculate on client-side only to prevent hydration mismatch
-        const timer = setTimeout(() => {
-            const now = new Date()
-            const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
-
-            // Get Turkish month name for display
-            const monthName = previousMonth.toLocaleDateString("tr-TR", { month: "long" })
-            const capitalizedMonthName = monthName.charAt(0).toUpperCase() + monthName.slice(1)
-
-            // Get previous month in YYYY-MM format for API
-            const targetMonth = `${previousMonth.getFullYear()}-${String(previousMonth.getMonth() + 1).padStart(2, '0')}`
-
-            setMonthInfo({ monthName: capitalizedMonthName, targetMonth })
-        }, 3000) // 3 saniye yapay gecikme
-
-        return () => clearTimeout(timer)
+    // Compute target month (previous month in YYYY-MM format) for API call
+    // No month name needed in UI, so no hydration mismatch risk
+    const targetMonth = useMemo(() => {
+        const now = new Date()
+        const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+        return `${previousMonth.getFullYear()}-${String(previousMonth.getMonth() + 1).padStart(2, '0')}`
     }, [])
-
-    // Use derived values, render placeholder until client-side calculation is ready
-    const capitalizedMonthName = monthInfo?.monthName ?? ""
-    const targetMonth = monthInfo?.targetMonth ?? ""
 
     // Fetch monthly data only when dialog opens
     const fetchMonthlyData = useCallback(async () => {
@@ -229,37 +210,24 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
 
     return (
         <>
-            {/* Clickable Header - Styled like MenuCard header */}
-            <AnimatePresence>
-                {monthInfo && (
-                    <motion.button
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                        onClick={handleDialogOpen}
-                        className="w-full bg-muted/20 px-3 py-2.5 border border-border/40 rounded-lg flex items-center justify-between hover:bg-muted/30 transition-colors mb-4"
-                    >
-                        <div className="text-left">
-                            <h2 className="text-lg font-semibold text-foreground tracking-tight">
-                                {capitalizedMonthName} Ayının Enleri
-                            </h2>
-                            <p className="text-xs text-muted-foreground/70 leading-tight mt-1">
-                                Geçen ayın en beğenilen ve en beğenilmeyen menülerini sizin için derledik. Buraya tıklayarak detayları görüntüleyebilirsiniz.
-                            </p>
-                        </div>
-                        <div className="ml-3 shrink-0">
-                            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                        </div>
-                    </motion.button>
-                )}
-            </AnimatePresence>
+            {/* Simple text trigger */}
+            <button
+                onClick={handleDialogOpen}
+                className="w-full justify-center group inline-flex items-center gap-1.5 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors mb-6"
+            >
+                <span>🎉</span>
+                <span className="underline decoration-foreground/20 underline-offset-4 decoration-1">
+                    Geçtiğimiz ayın en beğenilen menüleri
+                </span>
+                <ArrowRight className="h-3.5 w-3.5" />
+            </button>
 
             {/* Dialog with Tabs and Table */}
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogContent className="max-w-[360px] sm:max-w-md max-h-[85vh] overflow-hidden p-0">
                     <DialogHeader className="px-4 pt-4 pb-0">
                         <DialogTitle className="text-lg font-semibold">
-                            {capitalizedMonthName} Ayının Enleri
+                            Geçtiğimiz Ayın Enleri
                         </DialogTitle>
                     </DialogHeader>
 
