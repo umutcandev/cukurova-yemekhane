@@ -184,8 +184,15 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                     ) : null}
                 </section>
 
-
-
+                {/* Ad Banner */}
+                <div className="max-w-md mx-auto mt-4">
+                    <a
+                        href="mailto:hi@umutcan.xyz?subject=cukurova.app%20reklam&amp;body=Selamlar%2C%20cukurova.app%20i%C3%A7in%20reklam%20yay%C4%B1nlamak%20istiyorum."
+                        className="block border border-dashed border-border rounded-lg px-4 py-3 text-center text-xs text-muted-foreground/80 bg-muted/20 cursor-pointer"
+                    >
+                        Bu alana reklam vermek için dokunun.
+                    </a>
+                </div>
 
             </div>
 
