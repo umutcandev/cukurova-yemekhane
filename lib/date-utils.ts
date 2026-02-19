@@ -52,8 +52,12 @@ export function isPast(date: string): boolean {
  * Example: menu-2025-12-20251213.json -> 20251213
  */
 export function parseScrapeDate(filename: string): string | null {
-    const match = filename.match(/menu-\d{4}-\d{2}-(\d{8})\.json/);
-    return match ? match[1] : null;
+    // Yeni format: menu-YYYYMMDD.json
+    const newMatch = filename.match(/^menu-(\d{8})\.json$/);
+    if (newMatch) return newMatch[1];
+    // Eski format: menu-YYYY-MM-YYYYMMDD.json (geriye dönük uyumluluk)
+    const oldMatch = filename.match(/menu-\d{4}-\d{2}-(\d{8})\.json/);
+    return oldMatch ? oldMatch[1] : null;
 }
 
 /**

@@ -1,8 +1,10 @@
 "use client"
 
+import { useState } from "react"
+import { useSession } from "next-auth/react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MoreVertical, ChevronRight } from "lucide-react"
+import { MoreVertical, ChevronRight, Heart, Plus, Check } from "lucide-react"
 import { motion } from "framer-motion"
 import {
     Table,
@@ -12,14 +14,20 @@ import {
 } from "@/components/ui/table"
 import { LikeDislikeButtons } from "@/components/like-dislike-buttons"
 import { MenuShareBar } from "@/components/menu-share-bar"
+import { AuthDrawer } from "@/components/auth-drawer"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useFavorites } from "@/hooks/use-favorites"
+import { useDailyLog } from "@/hooks/use-daily-log"
+import { toast } from "sonner"
+import { cn, toTitleCase } from "@/lib/utils"
 
 // AI Icons
 function ChatGptIcon({ className }: { className?: string }) {
@@ -126,8 +134,54 @@ interface MenuCardProps {
 }
 
 export function MenuCard({ day, onMealClick }: MenuCardProps) {
+    const { data: session } = useSession()
+    const { isFavorited, toggleFavorite } = useFavorites()
+    const { isConsumed, addMeal, removeMeal } = useDailyLog(day.date)
+    const [showAuthDrawer, setShowAuthDrawer] = useState(false)
     const prompt = generateAiPrompt(day)
     const links = getAiLinks(prompt)
+
+    const handleFavoriteClick = async (mealName: string) => {
+        if (!session?.user) {
+            setShowAuthDrawer(true)
+            return
+        }
+        const favorited = isFavorited(mealName)
+        const success = await toggleFavorite(mealName)
+        if (success) {
+            toast.success(
+                favorited
+                    ? `${mealName} favorilerden çıkarıldı`
+                    : `${mealName} favorilere eklendi`,
+                { duration: 2000 }
+            )
+        } else {
+            toast.error("Bir hata oluştu", { duration: 2000 })
+        }
+    }
+
+    const handleAddMealClick = async (mealName: string, calories: number) => {
+        if (!session?.user) {
+            setShowAuthDrawer(true)
+            return
+        }
+        const consumed = isConsumed(mealName)
+        if (consumed) {
+            const success = await removeMeal(mealName)
+            if (success) {
+                toast.success(`${mealName} günlükten çıkarıldı`, { duration: 2000 })
+            } else {
+                toast.error("Bir hata oluştu", { duration: 2000 })
+            }
+        } else {
+            const success = await addMeal(mealName, calories)
+            if (success) {
+                toast.success(`${mealName} (${calories} kcal) günlüğünüze eklendi`, { duration: 2000 })
+            } else {
+                toast.error("Bir hata oluştu", { duration: 2000 })
+            }
+        }
+    }
 
     return (
         <Card className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
@@ -161,7 +215,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                             >
                                 <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground">
                                     <div className="flex items-center gap-1.5">
-                                        {meal.name}
+                                        {toTitleCase(meal.name)}
                                         {day.meals.length === 5 && idx === 0 && (
                                             <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50">
                                                 Ana Yemek
@@ -175,20 +229,69 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                     </div>
                                 </TableCell>
                                 <TableCell className="py-2.5 px-3 text-right w-[1%]">
-                                    <div className="flex items-center justify-end gap-2">
+                                    <div className="flex items-center justify-end gap-1.5">
                                         <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
                                             {meal.calories} kcal
                                         </Badge>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                onMealClick(meal.id, meal.name, meal.calories);
-                                            }}
-                                            className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                            aria-label="Detayları göster"
-                                        >
-                                            <MoreVertical className="h-4 w-4" />
-                                        </button>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <button
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                                    aria-label="Seçenekler"
+                                                >
+                                                    <MoreVertical className="h-4 w-4" />
+                                                </button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end" className="w-48">
+                                                <DropdownMenuItem
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        handleFavoriteClick(meal.name)
+                                                    }}
+                                                    className="cursor-pointer"
+                                                >
+                                                    <Heart
+                                                        className={cn(
+                                                            "h-4 w-4 mr-2",
+                                                            isFavorited(meal.name)
+                                                                ? "text-red-500 fill-red-500"
+                                                                : "text-muted-foreground"
+                                                        )}
+                                                    />
+                                                    <span className="text-xs">
+                                                        {isFavorited(meal.name) ? "Favorilerden Çıkar" : "Favorilere Ekle"}
+                                                    </span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        handleAddMealClick(meal.name, meal.calories)
+                                                    }}
+                                                    className="cursor-pointer"
+                                                >
+                                                    {isConsumed(meal.name) ? (
+                                                        <Check className="h-4 w-4 mr-2 text-emerald-500" />
+                                                    ) : (
+                                                        <Plus className="h-4 w-4 mr-2 text-muted-foreground" />
+                                                    )}
+                                                    <span className="text-xs">
+                                                        {isConsumed(meal.name) ? "Günlükten Çıkar" : "Bunu Yedim"}
+                                                    </span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        onMealClick(meal.id, meal.name, meal.calories)
+                                                    }}
+                                                    className="cursor-pointer"
+                                                >
+                                                    <ChevronRight className="h-4 w-4 mr-2 text-muted-foreground" />
+                                                    <span className="text-xs">Detayları Göster</span>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -312,6 +415,13 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
 
             {/* Menu Share Bar */}
             <MenuShareBar day={day} />
+
+            {/* Auth Drawer for unauthenticated users */}
+            <AuthDrawer
+                open={showAuthDrawer}
+                onOpenChange={setShowAuthDrawer}
+                message="Bu özelliği kullanabilmek için giriş yapmanız gerekiyor."
+            />
         </Card>
     )
 }

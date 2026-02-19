@@ -3,12 +3,15 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { Download } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { InfoDialog } from "@/components/info-dialog"
 import { MenuCard } from "@/components/menu-card"
 import { MonthlyFavorites } from "@/components/monthly-favorites"
+import { AuthButton } from "@/components/auth-button"
+
 import { Button } from "@/components/ui/button"
 import { usePwaInstall } from "@/hooks/use-pwa-install"
 import type { DateRange } from "react-day-picker"
@@ -132,12 +135,13 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                         <div className="flex items-center gap-2">
                             {isInstallable && (
                                 <Button
-                                    variant="default"
+                                    variant="ghost"
                                     size="sm"
-                                    className="hidden md:inline-flex h-8 px-2 text-xs"
+                                    className="hidden md:inline-flex h-8 w-8 border border-border/40"
                                     onClick={install}
+                                    title="Uygulamayı Yükle"
                                 >
-                                    Uygulamayı Yükle
+                                    <Download className="h-4 w-4" />
                                 </Button>
                             )}
                             <Button variant="ghost" size="sm" className="h-8 w-8 border border-border/40" asChild>
@@ -148,6 +152,7 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
                                 </Link>
                             </Button>
                             <InfoDialog />
+                            <AuthButton />
                             <div className="h-4 w-px bg-border/60 mx-1" aria-hidden="true" />
                             <ThemeToggle />
                         </div>
@@ -160,6 +165,7 @@ export default function MenuPage({ menuData, initialDate }: { menuData: MenuData
 
                 {/* Mobile Menu View - Shows selected date(s) from mobile navigation */}
                 <section className="max-w-md mx-auto">
+
                     {/* Monthly Favorites - Above Menu Card */}
                     <MonthlyFavorites menuData={menuData} />
 

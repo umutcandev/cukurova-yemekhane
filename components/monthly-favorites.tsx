@@ -79,6 +79,7 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
     const [selectedMenu, setSelectedMenu] = useState<DayMenu | null>(null)
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [menuNotFound, setMenuNotFound] = useState(false)
+    const [isPending, setIsPending] = useState(false)
 
     // Compute target month (previous month in YYYY-MM format) for API call
     // No month name needed in UI, so no hydration mismatch risk
@@ -123,18 +124,38 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
         }
     }
 
-    // Handle menu click
-    const handleMenuClick = useCallback((date: string) => {
-        const menu = menuData.days.find(day => day.date === date)
+    // Handle menu click — önce mevcut menuData'da arar, bulamazsa API'den çeker
+    const handleMenuClick = useCallback(async (date: string) => {
+        const local = menuData.days.find(day => day.date === date)
 
-        if (menu) {
-            setSelectedMenu(menu)
+        if (local) {
+            setSelectedMenu(local)
             setMenuNotFound(false)
-        } else {
-            setSelectedMenu(null)
-            setMenuNotFound(true)
+            setDrawerOpen(true)
+            return
         }
+
+        // Geçmiş aylarda arama yap
+        setSelectedMenu(null)
+        setMenuNotFound(false)
+        setIsPending(true)
         setDrawerOpen(true)
+
+        try {
+            const res = await fetch(`/api/menu/date/${date}`)
+            const data = await res.json()
+
+            if (data.found && data.day) {
+                setSelectedMenu(data.day)
+                setMenuNotFound(false)
+            } else {
+                setMenuNotFound(true)
+            }
+        } catch {
+            setMenuNotFound(true)
+        } finally {
+            setIsPending(false)
+        }
     }, [menuData.days])
 
     // Render menu row
@@ -296,7 +317,11 @@ export function MonthlyFavorites({ menuData }: MonthlyFavoritesProps) {
                         </DrawerTitle>
                     </DrawerHeader>
 
-                    {menuNotFound ? (
+                    {isPending ? (
+                        <div className="flex items-center justify-center py-12">
+                            <div className="h-5 w-5 border-2 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
+                        </div>
+                    ) : menuNotFound ? (
                         <div className="flex flex-col items-center justify-center py-8 space-y-3">
                             <AlertCircle className="h-12 w-12 text-amber-500" />
                             <div className="text-center">

@@ -9,6 +9,7 @@ import { useMediaQuery } from "../hooks/use-media-query"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import type { MealDetail } from "@/lib/types"
+import { toTitleCase } from "@/lib/utils"
 
 interface MealDetailProps {
     mealId: string
@@ -79,7 +80,7 @@ function MealDetailContent({ mealId, mealName, mealCalories }: Omit<MealDetailPr
 
     // Use the fetched data or fallback to props
     const displayCalories = mealDetail?.calories ?? mealCalories
-    const displayName = mealName
+    const displayName = toTitleCase(mealName)
 
     return (
         <div className="space-y-5 md:space-y-6">
@@ -169,7 +170,7 @@ export function MealDetailModal({ mealId, mealName, mealCalories, open, onOpenCh
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle className="text-xl">{mealName}</DialogTitle>
+                        <DialogTitle className="text-xl">{toTitleCase(mealName)}</DialogTitle>
                     </DialogHeader>
                     <MealDetailContent mealId={mealId} mealName={mealName} mealCalories={mealCalories} />
                 </DialogContent>
@@ -181,7 +182,7 @@ export function MealDetailModal({ mealId, mealName, mealCalories, open, onOpenCh
         <Drawer open={open} onOpenChange={onOpenChange}>
             <DrawerContent className="max-h-[85vh] px-4 pb-6">
                 <DrawerHeader className="px-0 pt-2 pb-4">
-                    <DrawerTitle className="text-lg font-semibold">{mealName}</DrawerTitle>
+                    <DrawerTitle className="text-lg font-semibold">{toTitleCase(mealName)}</DrawerTitle>
                 </DrawerHeader>
                 <div className="overflow-y-auto px-1 -mx-1">
                     <MealDetailContent mealId={mealId} mealName={mealName} mealCalories={mealCalories} />
