@@ -62,7 +62,7 @@ export function AuthDrawer({ open, onOpenChange, message }: AuthDrawerProps) {
                             Google ile Giriş Yap
                         </Button>
                         <p className="text-center text-[11px] text-muted-foreground/60 mt-3">
-                            Giriş yaparak favorilerinizi ve kalori takibinizi kaydedin.
+                            Ücretsiz hesabınızla tüm kişisel özelliklere erişin.
                         </p>
                     </div>
                     <DrawerFooter className="pt-2">

@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MoreVertical, ChevronRight, Heart, Plus, Check } from "lucide-react"
+import { ChevronRight, Bookmark, CirclePlus, CircleCheck } from "lucide-react"
 import { motion } from "framer-motion"
 import {
     Table,
@@ -21,7 +21,6 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useFavorites } from "@/hooks/use-favorites"
@@ -138,11 +137,14 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const { isFavorited, toggleFavorite } = useFavorites()
     const { isConsumed, addMeal, removeMeal } = useDailyLog(day.date)
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
+    const [authDrawerMessage, setAuthDrawerMessage] = useState("")
     const prompt = generateAiPrompt(day)
     const links = getAiLinks(prompt)
 
-    const handleFavoriteClick = async (mealName: string, mealId?: string) => {
+    const handleFavoriteClick = async (e: React.MouseEvent, mealName: string, mealId?: string) => {
+        e.stopPropagation()
         if (!session?.user) {
+            setAuthDrawerMessage("Favori yemeklerinizi kaydedin, menüde çıktığında haberdar olun! Giriş yaparak bu özelliği kullanabilirsiniz.")
             setShowAuthDrawer(true)
             return
         }
@@ -160,8 +162,10 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
         }
     }
 
-    const handleAddMealClick = async (mealName: string, calories: number) => {
+    const handleAddMealClick = async (e: React.MouseEvent, mealName: string, calories: number) => {
+        e.stopPropagation()
         if (!session?.user) {
+            setAuthDrawerMessage("Yediğiniz yemekleri işaretleyin, günlük kalori alımınızı kolayca takip edin! Giriş yaparak bu özelliği kullanabilirsiniz.")
             setShowAuthDrawer(true)
             return
         }
@@ -186,13 +190,13 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     return (
         <Card className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
             {/* Header */}
-            <div className="bg-muted/20 px-3 py-2 border-b border-border/40 flex items-center justify-between">
-                <div className="flex-1">
-                    <div className="flex items-center gap-2">
+            <div className="bg-muted/20 px-3 py-2 border-b border-border/40 flex items-center justify-between gap-2">
+                <div className="flex-1 min-w-0 overflow-hidden" style={{ maskImage: 'linear-gradient(to right, black 85%, transparent)' }}>
+                    <div className="flex items-center gap-2 whitespace-nowrap">
                         <div className="text-lg font-semibold text-foreground tracking-tight">
                             {formatDayName(day.date)}
                         </div>
-                        <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50">
+                        <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
                             {formatDateShort(day.date)}
                         </Badge>
                     </div>
@@ -200,98 +204,66 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                         Yemek verileri son dakika değiştirilmiş olabilir.
                     </p>
                 </div>
-                <LikeDislikeButtons menuDate={day.date} />
+                <div className="shrink-0">
+                    <LikeDislikeButtons menuDate={day.date} />
+                </div>
             </div>
 
             {/* Meals Table */}
-            <div className="-my-px">
-                <Table>
+            <div className="-my-px overflow-hidden">
+                <Table className="table-fixed w-full">
                     <TableBody>
                         {day.meals.map((meal, idx) => (
                             <TableRow
                                 key={idx}
-                                className="border-border/40 hover:bg-muted/30 cursor-pointer last:border-b-0"
+                                className="group border-border/40 hover:bg-muted/30 cursor-pointer last:border-b-0"
                                 onClick={() => onMealClick(meal.id, meal.name, meal.calories)}
                             >
-                                <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground">
-                                    <div className="flex items-center gap-1.5">
+                                <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground overflow-hidden" style={{ maskImage: 'linear-gradient(to right, black 80%, transparent)' }}>
+                                    <div className="flex items-center gap-1.5 whitespace-nowrap">
                                         {toTitleCase(meal.name)}
                                         {day.meals.length === 5 && idx === 0 && (
-                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50">
+                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
                                                 Ana Yemek
                                             </Badge>
                                         )}
                                         {day.meals.length === 5 && idx === 1 && (
-                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50">
+                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
                                                 Seçenek
                                             </Badge>
                                         )}
                                     </div>
                                 </TableCell>
-                                <TableCell className="py-2.5 px-3 text-right w-[1%]">
-                                    <div className="flex items-center justify-end gap-1.5">
+                                <TableCell className="py-2.5 px-3 text-right w-[140px] whitespace-nowrap">
+                                    <div className="flex items-center justify-end gap-1">
                                         <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
                                             {meal.calories} kcal
                                         </Badge>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <button
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                                    aria-label="Seçenekler"
-                                                >
-                                                    <MoreVertical className="h-4 w-4" />
-                                                </button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" className="w-48">
-                                                <DropdownMenuItem
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        handleFavoriteClick(meal.name, meal.id)
-                                                    }}
-                                                    className="cursor-pointer"
-                                                >
-                                                    <Heart
-                                                        className={cn(
-                                                            "h-4 w-4 mr-2",
-                                                            isFavorited(meal.name)
-                                                                ? "text-red-500 fill-red-500"
-                                                                : "text-muted-foreground"
-                                                        )}
-                                                    />
-                                                    <span className="text-xs">
-                                                        {isFavorited(meal.name) ? "Favorilerden Çıkar" : "Favorilere Ekle"}
-                                                    </span>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        handleAddMealClick(meal.name, meal.calories)
-                                                    }}
-                                                    className="cursor-pointer"
-                                                >
-                                                    {isConsumed(meal.name) ? (
-                                                        <Check className="h-4 w-4 mr-2 text-emerald-500" />
-                                                    ) : (
-                                                        <Plus className="h-4 w-4 mr-2 text-muted-foreground" />
-                                                    )}
-                                                    <span className="text-xs">
-                                                        {isConsumed(meal.name) ? "Günlükten Çıkar" : "Bunu Yedim"}
-                                                    </span>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        onMealClick(meal.id, meal.name, meal.calories)
-                                                    }}
-                                                    className="cursor-pointer"
-                                                >
-                                                    <ChevronRight className="h-4 w-4 mr-2 text-muted-foreground" />
-                                                    <span className="text-xs">Detayları Göster</span>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <button
+                                            onClick={(e) => handleFavoriteClick(e, meal.name, meal.id)}
+                                            className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                            aria-label={isFavorited(meal.name) ? "Favorilerden Çıkar" : "Favorilere Ekle"}
+                                        >
+                                            <Bookmark
+                                                className={cn(
+                                                    "h-4 w-4 transition-colors",
+                                                    isFavorited(meal.name)
+                                                        ? "text-foreground fill-foreground"
+                                                        : ""
+                                                )}
+                                            />
+                                        </button>
+                                        <button
+                                            onClick={(e) => handleAddMealClick(e, meal.name, meal.calories)}
+                                            className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                            aria-label={isConsumed(meal.name) ? "Günlükten Çıkar" : "Bunu Yedim"}
+                                        >
+                                            {isConsumed(meal.name) ? (
+                                                <CircleCheck className="h-4 w-4 text-foreground" />
+                                            ) : (
+                                                <CirclePlus className="h-4 w-4" />
+                                            )}
+                                        </button>
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -420,7 +392,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
             <AuthDrawer
                 open={showAuthDrawer}
                 onOpenChange={setShowAuthDrawer}
-                message="Bu özelliği kullanabilmek için giriş yapmanız gerekiyor."
+                message={authDrawerMessage}
             />
         </Card>
     )

@@ -155,14 +155,48 @@ function ShareableMenuTemplate({ day, templateRef }: { day: MenuDay; templateRef
                                 borderBottom: idx < day.meals.length - 1 ? "1px solid #27272a" : "none"
                             }}
                         >
-                            <span style={{
-                                fontSize: "14px",
-                                fontWeight: "500",
-                                color: "#fafafa",
+                            <div style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "8px",
                                 maxWidth: "260px"
                             }}>
-                                {meal.name}
-                            </span>
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: "#fafafa",
+                                }}>
+                                    {meal.name}
+                                </span>
+                                {day.meals.length === 5 && idx === 0 && (
+                                    <span style={{
+                                        fontSize: "10px",
+                                        fontWeight: "500",
+                                        color: "#a1a1aa",
+                                        background: "#27272a",
+                                        borderRadius: "6px",
+                                        padding: "2px 8px",
+                                        whiteSpace: "nowrap",
+                                        fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
+                                    }}>
+                                        Ana Yemek
+                                    </span>
+                                )}
+                                {day.meals.length === 5 && idx === 1 && (
+                                    <span style={{
+                                        fontSize: "10px",
+                                        fontWeight: "500",
+                                        color: "#a1a1aa",
+                                        background: "#27272a",
+                                        borderRadius: "6px",
+                                        padding: "2px 8px",
+                                        whiteSpace: "nowrap",
+                                        fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
+                                    }}>
+                                        Seçenek
+                                    </span>
+                                )}
+                            </div>
                             <span style={{
                                 fontSize: "13px",
                                 color: "#a1a1aa",
