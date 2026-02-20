@@ -16,16 +16,22 @@ jobs:
       - name: Depoyu Çek (Checkout)
         uses: actions/checkout@v4
 
+      - name: pnpm Kur
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Node.js Kur
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'pnpm'
 
       - name: Bağımlılıkları Yükle
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Menüyü Scrape Et
-        run: npm run scrape
+        run: pnpm run scrape
 
       - name: Değişiklikleri Kontrol Et ve Pushla
         run: |
@@ -40,4 +46,4 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
-        run: npx tsx scripts/send-favorite-notifications.ts
+        run: pnpm tsx scripts/send-favorite-notifications.ts
