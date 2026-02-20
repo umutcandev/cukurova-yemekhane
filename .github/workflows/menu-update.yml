@@ -2,7 +2,7 @@ name: Update Menu Data
 
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 4 * * 1-5'
   workflow_dispatch:
 
 permissions:
