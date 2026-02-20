@@ -27,9 +27,9 @@ Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekili
 
 - **Günlük Menü Görüntüleme**: Yemekhane menüleri gün gün kartlarda listelenir; her yemek için kalori bilgisi gösterilir.
 - **Like / Dislike Sistemi**: Kullanıcılar oturum açmadan menüleri beğenebilir veya beğenmeyebilir. IP tabanlı rate limiting uygulanır.
-- **Aylık En Beğenilen / En Beğenilmeyen Menüler**: Geçmiş ayın en çok ve en az beğenilen menüleri drawer içerisinde sıralama ile gösterilir.
 - **Google ile Oturum Açma**: NextAuth.js (Auth.js v5) ve Google OAuth kullanılarak JWT tabanlı kimlik doğrulama.
 - **Favori Yemekler**: Oturum açan kullanıcılar yemekleri favorilere ekleyip çıkarabilir. Ayrı `/favorilerim` sayfası üzerinden yönetim.
+- **Favori E-posta Bildirimleri**: Kullanıcılar favorilediği yemekler günün menüsünde yer aldığında Google SMTP üzerinden e-posta bildirimi alabilir. Bildirim tercihi `/favorilerim` sayfasından yönetilir.
 - **Kalori Takibi**: Kullanıcılar günde yedikleri yemekleri işaretleyerek toplam kalori takibi yapabilir. Tüm günlük loglar `/kalori-takibi` sayfasında listelenir.
 - **Yemek Detay Modalı**: Herhangi bir yemeğe tıklandığında malzeme listesi ve görseli scrape edilerek modal/drawer ile gösterilir.
 - **Menü Paylaşımı**: Seçili günün menüsü görsel olarak oluşturulur (`html-to-image`), indirilebilir veya paylaşım API'si ile gönderilebilir.
@@ -41,6 +41,7 @@ Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekili
 - **PWA Kurulum Bannerı**: Mobil cihazlarda uygulama kurulum teklifini gösteren banner.
 - **Responsive Tasarım**: Masaüstü ve mobil için ayrı görünüm mantıkları (`useMediaQuery`, `useMobile`).
 - **Otomatik Veri Güncelleme**: GitHub Actions ile her gün saat 07:00'de (UTC+3) menü verisi otomatik scrape edilir ve repo'ya commit atılır.
+- **Otomatik Favori Bildirimi**: Scrape adımının ardından GitHub Actions ile favori yemek eşleştirmesi yapılır ve e-posta gönderilir.
 - **Vercel Analytics ve Google Analytics**: Kullanıcı etkileşimleri iki farklı analiz aracı ile izlenir.
 
 ---
@@ -72,7 +73,8 @@ Proje, **Extract-Transform-Load (ETL)** benzeri bir veri akışı üzerine kurul
 -   **Görsel Oluşturma**: `html-to-image`
 -   **Takvim**: `react-day-picker`, `date-fns`
 -   **Form ve Validasyon**: `react-hook-form`, `zod`
--   **Bildirimler**: `sonner`
+-   **Bildirimler (Toast)**: `sonner`
+-   **E-posta**: `nodemailer` (Google SMTP)
 -   **PWA**: `@ducanh2912/next-pwa`
 -   **Analitik**: `@vercel/analytics`, `@next/third-parties` (Google Analytics)
 -   **Paket Yöneticisi**: pnpm
@@ -87,9 +89,10 @@ cu-yemekhane/
 │   ├── api/                      # API rotaları
 │   │   ├── auth/[...nextauth]/   # NextAuth.js handler
 │   │   ├── reactions/            # Like/Dislike işlemleri
-│   │   │   ├── route.ts          # GET & POST /api/reactions
-│   │   │   └── monthly/route.ts  # GET /api/reactions/monthly
+│   │   │   └── route.ts          # GET & POST /api/reactions
 │   │   ├── favorites/route.ts    # GET & POST /api/favorites
+│   │   ├── email-preferences/    # E-posta bildirim tercihleri
+│   │   │   └── route.ts          # GET & POST /api/email-preferences
 │   │   ├── daily-log/            # Kalori takibi
 │   │   │   ├── route.ts          # GET & POST /api/daily-log
 │   │   │   └── all/route.ts      # GET /api/daily-log/all
@@ -104,9 +107,9 @@ cu-yemekhane/
 │   └── globals.css               # Global stiller
 ├── components/                   # UI bileşenleri
 │   ├── ui/                       # shadcn/ui temel komponentleri
+│   ├── header.tsx                # Üst navigasyon çubuğu
 │   ├── menu-card.tsx             # Günlük menü kartı
 │   ├── like-dislike-buttons.tsx  # Beğeni/beğenmeme butonları
-│   ├── monthly-favorites.tsx     # Aylık en beğenilen menüler
 │   ├── menu-share-bar.tsx        # Menü paylaşım aracı
 │   ├── meal-detail-modal.tsx     # Yemek detay modalı
 │   ├── auth-button.tsx           # Giriş/profil butonu ve dropdown
@@ -139,14 +142,15 @@ cu-yemekhane/
 │   ├── types.ts                  # TypeScript tip tanımları
 │   └── utils.ts                  # Genel yardımcı fonksiyonlar
 ├── scripts/
-│   └── scrape-menu.ts            # Scraper CLI scripti
+│   ├── scrape-menu.ts            # Scraper CLI scripti
+│   └── send-favorite-notifications.ts  # Favori e-posta bildirim scripti
 ├── public/
 │   └── data/                     # Scrape edilen JSON menü dosyaları
 │       └── <YYYY-MM>/            # Aylık klasörler (örn. 2026-02/)
 │           └── menu-YYYYMMDD.json
 ├── .github/
 │   ├── workflows/
-│   │   └── menu-update.yml       # Günlük otomatik scraping
+│   │   └── menu-update.yml       # Günlük otomatik scraping + bildirim
 │   ├── CONTRIBUTING.md
 │   └── SECURITY.md
 ├── middleware.ts                  # Korumalı rota middleware'i
@@ -164,9 +168,10 @@ cu-yemekhane/
 | `/api/auth/[...nextauth]` | GET/POST | NextAuth.js handler (Google OAuth) | - |
 | `/api/reactions?date=YYYY-MM-DD` | GET | Belirtilen günün beğeni sayılarını getirir | Hayır |
 | `/api/reactions` | POST | Beğeni/beğenmeme işlemi (like, dislike, removeLike, removeDislike) | Hayır (rate limited) |
-| `/api/reactions/monthly?month=YYYY-MM` | GET | Ayın en beğenilen ve en beğenilmeyen 5 menüsünü getirir | Hayır |
 | `/api/favorites` | GET | Kullanıcının favori yemek listesini getirir | Evet |
 | `/api/favorites` | POST | Favori yemek ekle/çıkar (toggle) | Evet |
+| `/api/email-preferences` | GET | Kullanıcının e-posta bildirim tercihini getirir | Evet |
+| `/api/email-preferences` | POST | E-posta bildirim tercihini güncelle (notifyFavorites: boolean) | Evet |
 | `/api/daily-log?date=YYYY-MM-DD` | GET | Belirtilen gündeki tüketilen yemekleri getirir | Evet |
 | `/api/daily-log` | POST | Yemek ekle/çıkar (action: add/remove) | Evet |
 | `/api/daily-log/all` | GET | Kullanıcının tüm günlük loglarını getirir | Evet |
@@ -218,10 +223,24 @@ Kullanıcıların favori yemekleri.
 |-------|-----|----------|
 | id | serial | Birincil anahtar |
 | user_id | text (FK -> users) | Kullanıcı ID |
+| meal_id | text (nullable) | Yemekhane sistemindeki yemek ID (bildirim eşleştirmesi için) |
 | meal_name | text | Yemek adı |
 | created_at | timestamp | Eklenme zamanı |
 
 Benzersiz index: `(user_id, meal_name)`
+
+### email_preferences
+Kullanıcıların e-posta bildirim tercihleri.
+
+| Sütun | Tip | Açıklama |
+|-------|-----|----------|
+| id | serial | Birincil anahtar |
+| user_id | text (FK -> users) | Kullanıcı ID |
+| notify_favorites | boolean | Favori yemek bildirimi aktif mi |
+| created_at | timestamp | Oluşturulma zamanı |
+| updated_at | timestamp | Son güncelleme zamanı |
+
+Benzersiz index: `(user_id)`
 
 ### daily_logs
 Günlük kalori takibi kayıtları.
@@ -254,6 +273,7 @@ Projede `.github/workflows/menu-update.yml` dosyasında tanımlanan bir GitHub A
 - **Tetikleme**: Her gün UTC 04:00'te (Türkiye saati 07:00) ve manuel (`workflow_dispatch`).
 - **İşlem**: Repoyu checkout eder, Node.js kurar, bağımlılıkları yükler, `npm run scrape` çalıştırır.
 - **Sonuç**: Yeni veri varsa `public/data/` dizinindeki değişiklikleri otomatik olarak commit ve push eder.
+- **Favori Bildirimleri**: Scrape adımından sonra `send-favorite-notifications.ts` scripti çalıştırılır. Bugünkü menüdeki yemekler kullanıcıların favorileriyle eşleştirilir ve eşleşme varsa Google SMTP üzerinden e-posta gönderilir. (Gerekli GitHub Secrets: `DATABASE_URL`, `SMTP_USER`, `SMTP_PASS`)
 
 ---
 
@@ -286,6 +306,8 @@ cp .env.example .env.local
 | `NEXTAUTH_URL` | Uygulama URL'si (yerel: `http://localhost:3000`) | - |
 | `GOOGLE_CLIENT_ID` | Google OAuth istemci ID'si | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth istemci şifresi | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
+| `SMTP_USER` | Google SMTP e-posta adresi (bildirimler için) | Gmail hesabınız |
+| `SMTP_PASS` | Google SMTP uygulama şifresi (16 karakter) | [Google Hesabı → Güvenlik → Uygulama Şifreleri](https://myaccount.google.com/apppasswords) |
 
 ### 4. Veritabanını Hazırlayın
 Drizzle ORM ile veritabanı şemalarını oluşturun:
@@ -391,6 +413,7 @@ Dosya adlandırma formatı: `menu-YYYYMMDD.json` (scrape tarihine göre).
 | `start` | `pnpm start` | Üretim sunucusunu başlatır |
 | `lint` | `pnpm lint` | ESLint ile kod kontrolü |
 | `scrape` | `pnpm scrape` | Menü verisini scrape eder |
+| Bildirim | `npx tsx scripts/send-favorite-notifications.ts` | Favori yemek e-posta bildirimi gönderir |
 
 ---
 

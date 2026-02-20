@@ -56,7 +56,7 @@ export async function loadMenuData(month: string): Promise<MenuData> {
 
 /**
  * Search all month folders for a specific date's menu.
- * Used by the monthly-favorites drawer for past months.
+ * Used by the /api/menu/date/:date endpoint.
  *
  * @param date - Date in YYYY-MM-DD format (e.g., "2026-01-15")
  * @returns The DayMenu for that date, or null if not found

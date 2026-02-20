@@ -141,13 +141,13 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const prompt = generateAiPrompt(day)
     const links = getAiLinks(prompt)
 
-    const handleFavoriteClick = async (mealName: string) => {
+    const handleFavoriteClick = async (mealName: string, mealId?: string) => {
         if (!session?.user) {
             setShowAuthDrawer(true)
             return
         }
         const favorited = isFavorited(mealName)
-        const success = await toggleFavorite(mealName)
+        const success = await toggleFavorite(mealName, mealId)
         if (success) {
             toast.success(
                 favorited
@@ -247,7 +247,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                                 <DropdownMenuItem
                                                     onClick={(e) => {
                                                         e.stopPropagation()
-                                                        handleFavoriteClick(meal.name)
+                                                        handleFavoriteClick(meal.name, meal.id)
                                                     }}
                                                     className="cursor-pointer"
                                                 >

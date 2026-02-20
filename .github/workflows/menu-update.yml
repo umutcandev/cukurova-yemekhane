@@ -34,3 +34,10 @@ jobs:
           git add public/data/
           # Eğer değişiklik varsa commit at ve pushla
           git diff --quiet && git diff --staged --quiet || (git commit -m "scraping: Günlük menü güncellemesi" && git push)
+
+      - name: Favori Bildirimleri Gönder
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        run: npx tsx scripts/send-favorite-notifications.ts

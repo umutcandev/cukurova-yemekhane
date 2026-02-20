@@ -3,30 +3,33 @@
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
-import Link from "next/link"
-import { Heart, Trash2, ArrowLeft, Loader2 } from "lucide-react"
+import { Heart, Trash2, ArrowLeft, Loader2, Mail, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner"
 import { toTitleCase } from "@/lib/utils"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { InfoDialog } from "@/components/info-dialog"
-import { AuthButton } from "@/components/auth-button"
+import { Header } from "@/components/header"
+import { MealDetailModal } from "@/components/meal-detail-modal"
 
 interface FavoriteItem {
     mealName: string
+    mealId: string | null
 }
 
 export default function FavorilerimPage() {
     const { data: session, status } = useSession()
     const router = useRouter()
-    const [favorites, setFavorites] = useState<string[]>([])
+    const [favorites, setFavorites] = useState<FavoriteItem[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const [notifyFavorites, setNotifyFavorites] = useState(false)
+    const [isTogglingNotify, setIsTogglingNotify] = useState(false)
+    const [selectedMeal, setSelectedMeal] = useState<{ id: string; name: string } | null>(null)
 
     useEffect(() => {
         if (session?.user) {
             fetchFavorites()
+            fetchEmailPreference()
         }
     }, [session?.user])
 
@@ -45,9 +48,51 @@ export default function FavorilerimPage() {
         }
     }
 
+    const fetchEmailPreference = async () => {
+        try {
+            const res = await fetch("/api/email-preferences")
+            if (res.ok) {
+                const data = await res.json()
+                setNotifyFavorites(data.notifyFavorites || false)
+            }
+        } catch (error) {
+            console.error("Failed to fetch email preference:", error)
+        }
+    }
+
+    const handleToggleNotify = async (checked: boolean) => {
+        setIsTogglingNotify(true)
+        setNotifyFavorites(checked)
+
+        try {
+            const res = await fetch("/api/email-preferences", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ notifyFavorites: checked }),
+            })
+
+            if (res.ok) {
+                toast.success(
+                    checked
+                        ? "E-posta bildirimleri açıldı"
+                        : "E-posta bildirimleri kapatıldı",
+                    { duration: 2000 }
+                )
+            } else {
+                setNotifyFavorites(!checked)
+                toast.error("Bir hata oluştu", { duration: 2000 })
+            }
+        } catch {
+            setNotifyFavorites(!checked)
+            toast.error("Bir hata oluştu", { duration: 2000 })
+        } finally {
+            setIsTogglingNotify(false)
+        }
+    }
+
     const handleRemoveFavorite = async (mealName: string) => {
         // Optimistic update
-        setFavorites(prev => prev.filter(f => f !== mealName))
+        setFavorites(prev => prev.filter(f => f.mealName !== mealName))
 
         try {
             const res = await fetch("/api/favorites", {
@@ -60,34 +105,30 @@ export default function FavorilerimPage() {
                 toast.success(`${mealName} favorilerden çıkarıldı`, { duration: 2000 })
             } else {
                 // Rollback
-                setFavorites(prev => [...prev, mealName])
+                setFavorites(prev => [...prev, { mealName, mealId: null }])
                 toast.error("Bir hata oluştu", { duration: 2000 })
             }
         } catch {
             // Rollback
-            setFavorites(prev => [...prev, mealName])
+            setFavorites(prev => [...prev, { mealName, mealId: null }])
             toast.error("Bir hata oluştu", { duration: 2000 })
+        }
+    }
+
+    const handleShowDetail = (fav: FavoriteItem) => {
+        if (fav.mealId) {
+            setSelectedMeal({ id: fav.mealId, name: fav.mealName })
+        } else {
+            // mealId yoksa mealName'den türetelim (mealName'in lowercase + kebab-case hali)
+            const generatedId = fav.mealName.toLowerCase().replace(/\s+/g, "-")
+            setSelectedMeal({ id: generatedId, name: fav.mealName })
         }
     }
 
     if (status === "loading" || (status === "authenticated" && isLoading)) {
         return (
             <main className="min-h-screen bg-background">
-                <header className="dark text-foreground sticky top-0 z-50 border-b border-border bg-background">
-                    <div className="container mx-auto px-4 py-3">
-                        <div className="flex items-center justify-between">
-                            <div className="relative h-9 w-40 md:w-48">
-                                <Image src="/logo-cu.png" alt="ÇÜ Yemekhane" fill className="object-contain object-left" priority />
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <InfoDialog />
-                                <AuthButton />
-                                <div className="h-4 w-px bg-border/60 mx-1" aria-hidden="true" />
-                                <ThemeToggle />
-                            </div>
-                        </div>
-                    </div>
-                </header>
+                <Header />
                 <div className="flex items-center justify-center py-20">
                     <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                 </div>
@@ -98,21 +139,7 @@ export default function FavorilerimPage() {
     return (
         <main className="min-h-screen bg-background">
             {/* Header */}
-            <header className="dark text-foreground sticky top-0 z-50 border-b border-border bg-background">
-                <div className="container mx-auto px-4 py-3">
-                    <div className="flex items-center justify-between">
-                        <div className="relative h-9 w-40 md:w-48">
-                            <Image src="/logo-cu.png" alt="ÇÜ Yemekhane" fill className="object-contain object-left" priority />
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <InfoDialog />
-                            <AuthButton />
-                            <div className="h-4 w-px bg-border/60 mx-1" aria-hidden="true" />
-                            <ThemeToggle />
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Header />
 
             <div className="container mx-auto px-4 py-6 md:py-8 max-w-md">
                 {/* Back button + Title */}
@@ -129,11 +156,34 @@ export default function FavorilerimPage() {
                         <h1 className="text-lg font-semibold text-foreground">
                             Favorilerim
                         </h1>
-                        <p className="text-xs text-muted-foreground">
-                            {favorites.length} favori yemek
-                        </p>
                     </div>
                 </div>
+
+                {/* Email Notification Opt-in */}
+                {favorites.length > 0 && (
+                    <Card className="border border-border/40 bg-card p-3 mb-4">
+                        <div className="flex items-start gap-3">
+                            <div className="p-1.5 rounded-md bg-muted/50 flex-shrink-0 mt-0.5">
+                                <Mail className="h-4 w-4 text-muted-foreground" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="text-sm font-medium text-foreground">
+                                        E-posta Bildirimi
+                                    </p>
+                                    <Switch
+                                        checked={notifyFavorites}
+                                        onCheckedChange={handleToggleNotify}
+                                        disabled={isTogglingNotify}
+                                    />
+                                </div>
+                                <p className="text-xs text-muted-foreground mt-0.5">
+                                    Favori yemeğiniz menüde olduğunda e-posta{session?.user?.email ? ` (${session.user.email})` : ""} ile bilgilendirilirsiniz.
+                                </p>
+                            </div>
+                        </div>
+                    </Card>
+                )}
 
                 {/* Favorites List */}
                 {favorites.length === 0 ? (
@@ -156,30 +206,51 @@ export default function FavorilerimPage() {
                     </Card>
                 ) : (
                     <div className="space-y-2">
-                        {favorites.map((mealName) => (
+                        {favorites.map((fav) => (
                             <Card
-                                key={mealName}
-                                className="border border-border/40 bg-card px-3 py-2.5 flex items-center justify-between gap-3"
+                                key={fav.mealName}
+                                className="border border-border/40 bg-card px-3 py-2.5 flex flex-row items-center justify-between gap-3"
                             >
-                                <div className="flex items-center gap-2.5 min-w-0">
-                                    <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500 flex-shrink-0" />
-                                    <span className="text-sm font-medium text-foreground truncate">
-                                        {toTitleCase(mealName)}
-                                    </span>
+                                <span className="text-sm font-medium text-foreground truncate min-w-0">
+                                    {toTitleCase(fav.mealName)}
+                                </span>
+                                <div className="flex items-center gap-0.5 flex-shrink-0">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+                                        onClick={() => handleShowDetail(fav)}
+                                    >
+                                        <Eye className="h-3.5 w-3.5" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                                        onClick={() => handleRemoveFavorite(fav.mealName)}
+                                    >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                    </Button>
                                 </div>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive flex-shrink-0"
-                                    onClick={() => handleRemoveFavorite(mealName)}
-                                >
-                                    <Trash2 className="h-3.5 w-3.5" />
-                                </Button>
                             </Card>
                         ))}
                     </div>
                 )}
             </div>
+
+            {/* Meal Detail Modal */}
+            {selectedMeal && (
+                <MealDetailModal
+                    mealId={selectedMeal.id}
+                    mealName={selectedMeal.name}
+                    mealCalories={0}
+                    open={!!selectedMeal}
+                    onOpenChange={(open) => {
+                        if (!open) setSelectedMeal(null)
+                    }}
+                />
+            )}
         </main>
     )
 }
+

@@ -8,6 +8,7 @@ import {
     date,
     serial,
     uniqueIndex,
+    boolean,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -95,11 +96,28 @@ export const favorites = pgTable(
         userId: text("user_id")
             .notNull()
             .references(() => users.id, { onDelete: "cascade" }),
+        mealId: text("meal_id"),
         mealName: text("meal_name").notNull(),
         createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     },
     (table) => [
         uniqueIndex("favorites_user_meal_idx").on(table.userId, table.mealName),
+    ]
+);
+
+export const emailPreferences = pgTable(
+    "email_preferences",
+    {
+        id: serial("id").primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        notifyFavorites: boolean("notify_favorites").default(false).notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        uniqueIndex("email_prefs_user_idx").on(table.userId),
     ]
 );
 

@@ -13,12 +13,15 @@ export async function GET() {
         }
 
         const result = await db
-            .select({ mealName: favorites.mealName })
+            .select({ mealName: favorites.mealName, mealId: favorites.mealId })
             .from(favorites)
             .where(eq(favorites.userId, session.user.id));
 
         return NextResponse.json({
-            favorites: result.map((r) => r.mealName),
+            favorites: result.map((r) => ({
+                mealName: r.mealName,
+                mealId: r.mealId,
+            })),
         });
     } catch (error) {
         console.error("Favorites GET error:", error);
@@ -42,7 +45,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { mealName } = body;
+        const { mealName, mealId } = body;
 
         if (!mealName || typeof mealName !== "string") {
             return NextResponse.json(
@@ -78,6 +81,7 @@ export async function POST(request: NextRequest) {
             await db.insert(favorites).values({
                 userId: session.user.id,
                 mealName,
+                mealId: mealId || null,
             });
             return NextResponse.json({ action: "added", mealName });
         }

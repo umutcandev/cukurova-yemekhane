@@ -3,16 +3,13 @@
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
 import { Flame, ArrowLeft, Loader2, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { toTitleCase } from "@/lib/utils"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { InfoDialog } from "@/components/info-dialog"
-import { AuthButton } from "@/components/auth-button"
+import { Header } from "@/components/header"
 
 interface ConsumedMeal {
     mealName: string
@@ -119,21 +116,7 @@ export default function KaloriTakibiPage() {
     if (status === "loading" || (status === "authenticated" && isLoading)) {
         return (
             <main className="min-h-screen bg-background">
-                <header className="dark text-foreground sticky top-0 z-50 border-b border-border bg-background">
-                    <div className="container mx-auto px-4 py-3">
-                        <div className="flex items-center justify-between">
-                            <div className="relative h-9 w-40 md:w-48">
-                                <Image src="/logo-cu.png" alt="ÇÜ Yemekhane" fill className="object-contain object-left" priority />
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <InfoDialog />
-                                <AuthButton />
-                                <div className="h-4 w-px bg-border/60 mx-1" aria-hidden="true" />
-                                <ThemeToggle />
-                            </div>
-                        </div>
-                    </div>
-                </header>
+                <Header />
                 <div className="flex items-center justify-center py-20">
                     <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                 </div>
@@ -148,21 +131,7 @@ export default function KaloriTakibiPage() {
     return (
         <main className="min-h-screen bg-background">
             {/* Header */}
-            <header className="dark text-foreground sticky top-0 z-50 border-b border-border bg-background">
-                <div className="container mx-auto px-4 py-3">
-                    <div className="flex items-center justify-between">
-                        <div className="relative h-9 w-40 md:w-48">
-                            <Image src="/logo-cu.png" alt="ÇÜ Yemekhane" fill className="object-contain object-left" priority />
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <InfoDialog />
-                            <AuthButton />
-                            <div className="h-4 w-px bg-border/60 mx-1" aria-hidden="true" />
-                            <ThemeToggle />
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Header />
 
             <div className="container mx-auto px-4 py-6 md:py-8 max-w-md">
                 {/* Back button + Title */}

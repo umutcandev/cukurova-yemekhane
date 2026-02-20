@@ -14,7 +14,9 @@ export function useFavorites() {
             const res = await fetch("/api/favorites")
             if (res.ok) {
                 const data = await res.json()
-                setFavorites(data.favorites || [])
+                // API now returns array of { mealName, mealId } objects
+                const favs = data.favorites || []
+                setFavorites(favs.map((f: { mealName: string }) => f.mealName))
             }
         } catch (error) {
             console.error("Failed to fetch favorites:", error)
@@ -26,7 +28,7 @@ export function useFavorites() {
     }, [fetchFavorites])
 
     const toggleFavorite = useCallback(
-        async (mealName: string) => {
+        async (mealName: string, mealId?: string) => {
             if (!session?.user) return false
 
             // Optimistic update
@@ -41,7 +43,7 @@ export function useFavorites() {
                 const res = await fetch("/api/favorites", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ mealName }),
+                    body: JSON.stringify({ mealName, mealId }),
                 })
 
                 if (!res.ok) {
