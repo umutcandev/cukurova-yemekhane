@@ -182,7 +182,7 @@ export default function KaloriTakibiPage() {
         setTimeout(() => setIsPageTransitioning(false), 300)
     }, [maxPage])
 
-    const handleRemoveMeal = async (date: string, mealName: string, calories: number) => {
+    const handleRemoveMeal = async (date: string, mealName: string, calories: number, mealId: string) => {
         // Optimistic update
         setLogs(prev => prev.map(log => {
             if (log.date !== date) return log
@@ -198,7 +198,7 @@ export default function KaloriTakibiPage() {
             const res = await fetch("/api/daily-log", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ date, mealName, calories, action: "remove" }),
+                body: JSON.stringify({ date, mealName, calories, mealId, action: "remove" }),
             })
 
             if (res.ok) {
@@ -450,7 +450,7 @@ export default function KaloriTakibiPage() {
                                                             className="h-5 w-5 p-0 text-muted-foreground/50 hover:text-destructive shrink-0"
                                                             onClick={(e) => {
                                                                 e.stopPropagation()
-                                                                handleRemoveMeal(selectedLog.date, meal.mealName, meal.calories)
+                                                                handleRemoveMeal(selectedLog.date, meal.mealName, meal.calories, meal.mealId)
                                                             }}
                                                         >
                                                             <Trash2 className="h-3 w-3" />
