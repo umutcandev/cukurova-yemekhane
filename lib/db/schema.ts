@@ -37,6 +37,7 @@ export const users = pgTable("users", {
     email: text("email").unique(),
     emailVerified: timestamp("emailVerified", { mode: "date" }),
     image: text("image"),
+    calorieGoal: integer("calorie_goal"),
 });
 
 export const accounts = pgTable(
@@ -131,7 +132,7 @@ export const dailyLogs = pgTable(
         date: date("date").notNull(),
         totalCalories: integer("total_calories").default(0).notNull(),
         consumedMeals: jsonb("consumed_meals")
-            .$type<Array<{ mealName: string; calories: number }>>()
+            .$type<Array<{ mealName: string; calories: number; mealId: string }>>()
             .default([])
             .notNull(),
     },

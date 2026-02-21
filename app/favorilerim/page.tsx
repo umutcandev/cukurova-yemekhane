@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { Heart, Trash2, ArrowLeft, Loader2, Mail, Eye } from "lucide-react"
+import { Bookmark, Trash2, ArrowLeft, Loader2, Mail, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
@@ -188,17 +188,14 @@ export default function FavorilerimPage() {
                 {/* Favorites List */}
                 {favorites.length === 0 ? (
                     <Card className="border border-border/40 bg-card p-8 text-center">
-                        <Heart className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" />
+                        <Bookmark className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" />
                         <p className="text-sm text-muted-foreground">
-                            Henüz favori yemeğiniz yok.
-                        </p>
-                        <p className="text-xs text-muted-foreground/60 mt-1">
-                            Menüdeki yemeklerin yanındaki üç nokta menüsünden favorilere ekleyebilirsiniz.
+                            Henüz favori yemeğiniz yok. Hemen favori yemeğinizi ekleyin!
                         </p>
                         <Button
                             variant="outline"
                             size="sm"
-                            className="mt-4 text-xs"
+                            className="mt-2 text-xs"
                             onClick={() => router.push("/")}
                         >
                             Menüye Dön

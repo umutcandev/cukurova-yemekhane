@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import { useSession, signIn, signOut } from "next-auth/react"
-import { ChevronRight } from "lucide-react"
+import { Bookmark, Flame, LogOut } from "lucide-react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import {
     Avatar,
@@ -155,55 +154,36 @@ export function AuthButton() {
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col gap-1">
-                        <p className="text-sm font-medium leading-none">{session.user?.name}</p>
+            <DropdownMenuContent align="end" className="w-40 p-0 rounded-lg overflow-hidden">
+                <DropdownMenuLabel className="font-normal px-3 py-2">
+                    <div className="flex flex-col gap-0.5 overflow-hidden">
+                        <p className="text-sm font-semibold leading-none truncate">{session.user?.name}</p>
                         <p className="text-xs text-muted-foreground truncate">{session.user?.email}</p>
                     </div>
                 </DropdownMenuLabel>
-                <DropdownMenuItem asChild className="cursor-pointer">
-                    <motion.div whileHover="hover">
+                <DropdownMenuSeparator className="my-0" />
+                <div className="p-1">
+                    <DropdownMenuItem asChild className="cursor-pointer rounded-md px-2.5 py-1.5 gap-2">
                         <Link href="/favorilerim" className="flex items-center w-full">
-                            <span className="text-xs">Favorilerim</span>
-                            <motion.span
-                                className="ml-auto"
-                                variants={{
-                                    hover: { opacity: 1, x: 0 }
-                                }}
-                                initial={{ opacity: 0, x: -4 }}
-                                transition={{ duration: 0.15 }}
-                            >
-                                <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                            </motion.span>
+                            <Bookmark className="h-3.5 w-3.5 text-muted-foreground" />
+                            <span className="text-sm">Favorilerim</span>
                         </Link>
-                    </motion.div>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="cursor-pointer">
-                    <motion.div whileHover="hover">
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="cursor-pointer rounded-md px-2.5 py-1.5 gap-2">
                         <Link href="/kalori-takibi" className="flex items-center w-full">
-                            <span className="text-xs">Kalori Takibi</span>
-                            <motion.span
-                                className="ml-auto"
-                                variants={{
-                                    hover: { opacity: 1, x: 0 }
-                                }}
-                                initial={{ opacity: 0, x: -4 }}
-                                transition={{ duration: 0.15 }}
-                            >
-                                <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                            </motion.span>
+                            <Flame className="h-3.5 w-3.5 text-muted-foreground" />
+                            <span className="text-sm">Kalori Takibi</span>
                         </Link>
-                    </motion.div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                    className="cursor-pointer bg-destructive/10 text-destructive dark:bg-destructive/20 rounded-md"
-                    variant="destructive"
-                    onClick={() => signOut()}
-                >
-                    <span className="text-xs font-medium">Çıkış Yap</span>
-                </DropdownMenuItem>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="my-1" />
+                    <DropdownMenuItem
+                        className="cursor-pointer rounded-md px-2.5 py-1.5 gap-2"
+                        onClick={() => signOut()}
+                    >
+                        <LogOut className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span className="text-sm">Çıkış Yap</span>
+                    </DropdownMenuItem>
+                </div>
             </DropdownMenuContent>
         </DropdownMenu>
     )

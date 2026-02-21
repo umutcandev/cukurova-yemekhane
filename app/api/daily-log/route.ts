@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { date, mealName, calories, action } = body;
+        const { date, mealName, calories, action, mealId } = body;
 
         if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
             return NextResponse.json(
@@ -77,9 +77,9 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (!mealName || typeof calories !== "number") {
+        if (!mealName || typeof calories !== "number" || !mealId) {
             return NextResponse.json(
-                { error: "mealName and calories are required" },
+                { error: "mealName, calories and mealId are required" },
                 { status: 400 }
             );
         }
@@ -102,8 +102,8 @@ export async function POST(request: NextRequest) {
                 )
             );
 
-        let currentMeals: Array<{ mealName: string; calories: number }> =
-            existing.length > 0 ? (existing[0].consumedMeals as Array<{ mealName: string; calories: number }>) || [] : [];
+        let currentMeals: Array<{ mealName: string; calories: number; mealId: string }> =
+            existing.length > 0 ? (existing[0].consumedMeals as Array<{ mealName: string; calories: number; mealId: string }>) || [] : [];
         let totalCalories = existing.length > 0 ? existing[0].totalCalories : 0;
 
         if (action === "add") {
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
                     { status: 409 }
                 );
             }
-            currentMeals = [...currentMeals, { mealName, calories }];
+            currentMeals = [...currentMeals, { mealName, calories, mealId }];
             totalCalories += calories;
         } else {
             // Remove meal

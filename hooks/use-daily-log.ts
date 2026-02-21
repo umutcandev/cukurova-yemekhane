@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react"
 interface ConsumedMeal {
     mealName: string
     calories: number
+    mealId: string
 }
 
 export function useDailyLog(date: string) {
@@ -36,18 +37,18 @@ export function useDailyLog(date: string) {
     }, [fetchLog])
 
     const addMeal = useCallback(
-        async (mealName: string, calories: number) => {
+        async (mealName: string, calories: number, mealId: string) => {
             if (!session?.user) return false
 
             // Optimistic update
-            setConsumedMeals((prev) => [...prev, { mealName, calories }])
+            setConsumedMeals((prev) => [...prev, { mealName, calories, mealId }])
             setTotalCalories((prev) => prev + calories)
 
             try {
                 const res = await fetch("/api/daily-log", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ date, mealName, calories, action: "add" }),
+                    body: JSON.stringify({ date, mealName, calories, mealId, action: "add" }),
                 })
 
                 if (!res.ok) {

@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useFavorites } from "@/hooks/use-favorites"
 import { useDailyLog } from "@/hooks/use-daily-log"
+import { useCalorieGoal } from "@/hooks/use-calorie-goal"
+import { CalorieGoalModal } from "@/components/calorie-goal-modal"
 import { toast } from "sonner"
 import { cn, toTitleCase } from "@/lib/utils"
 
@@ -136,8 +138,11 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const { data: session } = useSession()
     const { isFavorited, toggleFavorite } = useFavorites()
     const { isConsumed, addMeal, removeMeal } = useDailyLog(day.date)
+    const { calorieGoal, needsGoal, setCalorieGoal } = useCalorieGoal()
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
     const [authDrawerMessage, setAuthDrawerMessage] = useState("")
+    const [showCalorieGoalModal, setShowCalorieGoalModal] = useState(false)
+    const [pendingMeal, setPendingMeal] = useState<{ name: string; calories: number; id: string } | null>(null)
     const prompt = generateAiPrompt(day)
     const links = getAiLinks(prompt)
 
@@ -162,7 +167,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
         }
     }
 
-    const handleAddMealClick = async (e: React.MouseEvent, mealName: string, calories: number) => {
+    const handleAddMealClick = async (e: React.MouseEvent, mealName: string, calories: number, mealId: string) => {
         e.stopPropagation()
         if (!session?.user) {
             setAuthDrawerMessage("Yediğiniz yemekleri işaretleyin, günlük kalori alımınızı kolayca takip edin! Giriş yaparak bu özelliği kullanabilirsiniz.")
@@ -178,12 +183,46 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                 toast.error("Bir hata oluştu", { duration: 2000 })
             }
         } else {
-            const success = await addMeal(mealName, calories)
+            // Gelecek tarih kontrolü
+            const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Istanbul" }))
+            today.setHours(0, 0, 0, 0)
+            const menuDate = new Date(day.date + "T00:00:00")
+            if (menuDate > today) {
+                toast.error("Henüz günü gelmemiş bir yemeği ekleyemezsiniz.", {
+                    description: "Yalnızca bugün veya geçmiş tarihlerdeki yemekleri günlüğünüze ekleyebilirsiniz.",
+                    duration: 3000,
+                })
+                return
+            }
+
+            if (needsGoal) {
+                setPendingMeal({ name: mealName, calories, id: mealId })
+                setShowCalorieGoalModal(true)
+                return
+            }
+            const success = await addMeal(mealName, calories, mealId)
             if (success) {
                 toast.success(`${mealName} (${calories} kcal) günlüğünüze eklendi`, { duration: 2000 })
             } else {
                 toast.error("Bir hata oluştu", { duration: 2000 })
             }
+        }
+    }
+
+    const handleCalorieGoalSet = async (goal: number) => {
+        const success = await setCalorieGoal(goal)
+        if (success) {
+            toast.success(`Kalori hedefi ${goal} kcal olarak belirlendi`, { duration: 2000 })
+            // Add the pending meal after setting goal
+            if (pendingMeal) {
+                const mealSuccess = await addMeal(pendingMeal.name, pendingMeal.calories, pendingMeal.id)
+                if (mealSuccess) {
+                    toast.success(`${pendingMeal.name} (${pendingMeal.calories} kcal) günlüğünüze eklendi`, { duration: 2000 })
+                }
+                setPendingMeal(null)
+            }
+        } else {
+            toast.error("Kalori hedefi kaydedilemedi", { duration: 2000 })
         }
     }
 
@@ -254,7 +293,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                             />
                                         </button>
                                         <button
-                                            onClick={(e) => handleAddMealClick(e, meal.name, meal.calories)}
+                                            onClick={(e) => handleAddMealClick(e, meal.name, meal.calories, meal.id)}
                                             className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
                                             aria-label={isConsumed(meal.name) ? "Günlükten Çıkar" : "Bunu Yedim"}
                                         >
@@ -393,6 +432,17 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                 open={showAuthDrawer}
                 onOpenChange={setShowAuthDrawer}
                 message={authDrawerMessage}
+            />
+
+            {/* Calorie Goal Modal */}
+            <CalorieGoalModal
+                open={showCalorieGoalModal}
+                onOpenChange={(open) => {
+                    setShowCalorieGoalModal(open)
+                    if (!open) setPendingMeal(null)
+                }}
+                currentGoal={calorieGoal}
+                onGoalSet={handleCalorieGoalSet}
             />
         </Card>
     )
