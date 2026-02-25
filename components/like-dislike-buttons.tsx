@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import { AuthDrawer } from "@/components/auth-drawer"
+import type { Session } from "next-auth"
 
 // Custom Like icon (Geist)
 function LikeIcon({ className }: { className?: string }) {
@@ -46,7 +47,7 @@ function AnimatedCounter({ value }: { value: number }) {
 
 interface LikeDislikeButtonsProps {
     menuDate: string // "2025-12-30" format
-    session: unknown | null
+    session: Session | null
 }
 
 type UserAction = "like" | "dislike" | null
@@ -61,10 +62,14 @@ export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProp
 
     const DEBOUNCE_MS = 300
 
+    // Stable storage key scoped by user ID to prevent cross-account leakage
+    const userId = session?.user?.id
+    const storageKey = `reaction_${userId}_${menuDate}`
+
     // Load initial counts and user action from localStorage
     useEffect(() => {
         // Don't fetch if not authenticated
-        if (!session) return
+        if (!session || !userId) return
 
         // Reset state immediately when menuDate changes to prevent stale state
         setUserAction(null)
@@ -72,8 +77,8 @@ export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProp
         setDislikeCount(null)
         setIsLoading(false)
 
-        // Load user action from localStorage for this specific date
-        const storedAction = localStorage.getItem(`reaction_${menuDate}`)
+        // Load user action from localStorage for this specific date & user
+        const storedAction = localStorage.getItem(storageKey)
         if (storedAction === "like" || storedAction === "dislike") {
             setUserAction(storedAction)
         }
@@ -95,7 +100,7 @@ export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProp
         }
 
         fetchCounts()
-    }, [menuDate, session])
+    }, [menuDate, session, userId, storageKey])
 
     const handleReaction = useCallback(async (action: "like" | "dislike") => {
         // Debounce protection
@@ -151,9 +156,9 @@ export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProp
 
         // Save to localStorage immediately for instant feedback
         if (newUserAction) {
-            localStorage.setItem(`reaction_${menuDate}`, newUserAction)
+            localStorage.setItem(storageKey, newUserAction)
         } else {
-            localStorage.removeItem(`reaction_${menuDate}`)
+            localStorage.removeItem(storageKey)
         }
 
         try {
@@ -191,14 +196,14 @@ export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProp
             setDislikeCount(previousDislikeCount)
             // Revert localStorage
             if (previousAction) {
-                localStorage.setItem(`reaction_${menuDate}`, previousAction)
+                localStorage.setItem(storageKey, previousAction)
             } else {
-                localStorage.removeItem(`reaction_${menuDate}`)
+                localStorage.removeItem(storageKey)
             }
         } finally {
             setIsLoading(false)
         }
-    }, [menuDate, userAction, likeCount, dislikeCount, isLoading, lastClickTime])
+    }, [menuDate, userAction, likeCount, dislikeCount, isLoading, lastClickTime, storageKey])
 
     // Unauthenticated: show buttons without counts, open AuthDrawer on click
     if (!session) {
