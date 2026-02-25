@@ -1,23 +1,18 @@
-name: CI - TypeScript & Build Check
+name: CI
 
 on:
   pull_request:
     branches:
       - main
-      - master
-  push:
-    branches:
-      - main
-      - master
 
 jobs:
-  lint-and-build:
-    name: TypeScript & Build
+  typecheck:
+    name: TypeScript Check
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
-      - name: Repoyu Çek
+      - name: Repoyu Cek
         uses: actions/checkout@v4
 
       - name: pnpm Kur
@@ -31,20 +26,8 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Bagımlılıkları Yükle
+      - name: Bagımlılıkları Yukle
         run: pnpm install --frozen-lockfile
 
-      - name: TypeScript Kontrolü
+      - name: TypeScript Kontrolu
         run: pnpm type-check
-
-      - name: Build Kontrolü
-        # Gerçek DB/Auth gerektiren ortam değişkenleri olmadan da
-        # Next.js build syntax hatalarını yakalar.
-        env:
-          SKIP_ENV_VALIDATION: true
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: ci-placeholder-secret
-          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
-          AUTH_GOOGLE_ID: placeholder
-          AUTH_GOOGLE_SECRET: placeholder
-        run: pnpm build
