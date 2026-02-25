@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useSession } from "next-auth/react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ChevronRight, Bookmark, CirclePlus, CircleCheck } from "lucide-react"
@@ -23,9 +22,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useFavorites } from "@/hooks/use-favorites"
-import { useDailyLog } from "@/hooks/use-daily-log"
-import { useCalorieGoal } from "@/hooks/use-calorie-goal"
+import { useMenuData } from "@/components/menu-data-provider"
 import { CalorieGoalModal } from "@/components/calorie-goal-modal"
 import { toast } from "sonner"
 import { cn, toTitleCase } from "@/lib/utils"
@@ -135,10 +132,22 @@ interface MenuCardProps {
 }
 
 export function MenuCard({ day, onMealClick }: MenuCardProps) {
-    const { data: session } = useSession()
-    const { isFavorited, toggleFavorite } = useFavorites()
-    const { isConsumed, addMeal, removeMeal } = useDailyLog(day.date)
-    const { calorieGoal, needsGoal, setCalorieGoal } = useCalorieGoal()
+    const {
+        session,
+        isFavorited,
+        toggleFavorite,
+        isConsumed: isConsumedCtx,
+        addMeal: addMealCtx,
+        removeMeal: removeMealCtx,
+        calorieGoal,
+        needsGoal,
+        setCalorieGoal,
+    } = useMenuData()
+
+    // Wrap context functions with day.date for convenience
+    const isConsumed = (mealName: string) => isConsumedCtx(day.date, mealName)
+    const addMeal = (mealName: string, calories: number, mealId: string) => addMealCtx(day.date, mealName, calories, mealId)
+    const removeMeal = (mealName: string) => removeMealCtx(day.date, mealName)
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
     const [authDrawerMessage, setAuthDrawerMessage] = useState("")
     const [showCalorieGoalModal, setShowCalorieGoalModal] = useState(false)
@@ -148,7 +157,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
 
     const handleFavoriteClick = async (e: React.MouseEvent, mealName: string, mealId?: string) => {
         e.stopPropagation()
-        if (!session?.user) {
+        if (!session) {
             setAuthDrawerMessage("Favori yemeklerinizi kaydedin, menüde çıktığında haberdar olun! Giriş yaparak bu özelliği kullanabilirsiniz.")
             setShowAuthDrawer(true)
             return
@@ -169,7 +178,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
 
     const handleAddMealClick = async (e: React.MouseEvent, mealName: string, calories: number, mealId: string) => {
         e.stopPropagation()
-        if (!session?.user) {
+        if (!session) {
             setAuthDrawerMessage("Yediğiniz yemekleri işaretleyin, günlük kalori alımınızı kolayca takip edin! Giriş yaparak bu özelliği kullanabilirsiniz.")
             setShowAuthDrawer(true)
             return

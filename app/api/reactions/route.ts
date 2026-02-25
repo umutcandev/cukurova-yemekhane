@@ -26,11 +26,13 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        // Fetch counters
+        // Fetch counters (legacy + auth-era counts)
         const counters = await db
             .select({
                 likeCount: menuReactions.likeCount,
                 dislikeCount: menuReactions.dislikeCount,
+                legacyLikeCount: menuReactions.legacyLikeCount,
+                legacyDislikeCount: menuReactions.legacyDislikeCount,
             })
             .from(menuReactions)
             .where(eq(menuReactions.menuDate, date));
@@ -46,9 +48,11 @@ export async function GET(request: NextRequest) {
                 )
             );
 
+        const row = counters.length > 0 ? counters[0] : null;
+
         return NextResponse.json({
-            likeCount: counters.length > 0 ? counters[0].likeCount : 0,
-            dislikeCount: counters.length > 0 ? counters[0].dislikeCount : 0,
+            likeCount: row ? row.legacyLikeCount + row.likeCount : 0,
+            dislikeCount: row ? row.legacyDislikeCount + row.dislikeCount : 0,
             userAction: userReaction.length > 0 ? userReaction[0].action : null,
         });
     } catch (error) {
@@ -159,7 +163,8 @@ export async function POST(request: NextRequest) {
                 );
         }
 
-        // Recalculate counters from user_reactions (atomic, race-condition safe)
+        // Recalculate auth-era counters from user_reactions (atomic, race-condition safe)
+        // Legacy counts are preserved separately and not recalculated
         await db
             .update(menuReactions)
             .set({
@@ -169,11 +174,13 @@ export async function POST(request: NextRequest) {
             })
             .where(eq(menuReactions.menuDate, menuDate));
 
-        // Return updated counters + user action
+        // Return updated counters (legacy + auth-era) + user action
         const result = await db
             .select({
                 likeCount: menuReactions.likeCount,
                 dislikeCount: menuReactions.dislikeCount,
+                legacyLikeCount: menuReactions.legacyLikeCount,
+                legacyDislikeCount: menuReactions.legacyDislikeCount,
             })
             .from(menuReactions)
             .where(eq(menuReactions.menuDate, menuDate));
@@ -181,8 +188,8 @@ export async function POST(request: NextRequest) {
         const newUserAction = previousAction === action ? null : action;
 
         return NextResponse.json({
-            likeCount: result[0].likeCount,
-            dislikeCount: result[0].dislikeCount,
+            likeCount: result[0].legacyLikeCount + result[0].likeCount,
+            dislikeCount: result[0].legacyDislikeCount + result[0].dislikeCount,
             userAction: newUserAction,
         }, {
             headers: {
