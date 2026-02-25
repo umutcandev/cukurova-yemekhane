@@ -52,7 +52,7 @@ interface LikeDislikeButtonsProps {
 type UserAction = "like" | "dislike" | null
 
 export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
-    const { data: session, status } = useSession()
+    const { status } = useSession()
     const isAuthenticated = status === "authenticated"
 
     const [likeCount, setLikeCount] = useState<number | null>(null)

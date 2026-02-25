@@ -9,12 +9,6 @@ import { checkRateLimit, isValidDateFormat } from '@/lib/rate-limiter';
 export async function GET(request: NextRequest) {
     try {
         const session = await auth();
-        if (!session?.user?.id) {
-            return NextResponse.json(
-                { error: 'Authentication required' },
-                { status: 401 }
-            );
-        }
 
         const { searchParams } = new URL(request.url);
         const date = searchParams.get('date');
@@ -35,21 +29,25 @@ export async function GET(request: NextRequest) {
             .from(menuReactions)
             .where(eq(menuReactions.menuDate, date));
 
-        // Fetch user's own reaction
-        const userReaction = await db
-            .select({ action: userReactions.action })
-            .from(userReactions)
-            .where(
-                and(
-                    eq(userReactions.userId, session.user.id),
-                    eq(userReactions.menuDate, date)
-                )
-            );
+        // Fetch user's own reaction (only when authenticated)
+        let userAction: string | null = null;
+        if (session?.user?.id) {
+            const userReaction = await db
+                .select({ action: userReactions.action })
+                .from(userReactions)
+                .where(
+                    and(
+                        eq(userReactions.userId, session.user.id),
+                        eq(userReactions.menuDate, date)
+                    )
+                );
+            userAction = userReaction.length > 0 ? userReaction[0].action : null;
+        }
 
         return NextResponse.json({
             likeCount: counters.length > 0 ? counters[0].likeCount : 0,
             dislikeCount: counters.length > 0 ? counters[0].dislikeCount : 0,
-            userAction: userReaction.length > 0 ? userReaction[0].action : null,
+            userAction,
         });
     } catch (error) {
         console.error('Database error:', error);
