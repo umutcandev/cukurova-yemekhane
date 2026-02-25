@@ -155,6 +155,7 @@ export const userReactions = pgTable(
         menuDate: text("menu_date").notNull(),
         action: text("action").$type<"like" | "dislike">().notNull(),
         createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
     },
     (table) => [
         uniqueIndex("user_reactions_user_date_idx").on(table.userId, table.menuDate),

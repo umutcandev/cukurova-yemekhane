@@ -126,6 +126,7 @@ export async function POST(request: NextRequest) {
             .values({ menuDate, likeCount: 0, dislikeCount: 0 })
             .onConflictDoNothing({ target: menuReactions.menuDate });
 
+        // Mutate user_reactions
         if (previousAction === action) {
             // Toggle off — remove reaction
             await db
@@ -136,25 +137,6 @@ export async function POST(request: NextRequest) {
                         eq(userReactions.menuDate, menuDate)
                     )
                 );
-
-            // Decrement counter
-            if (action === 'like') {
-                await db
-                    .update(menuReactions)
-                    .set({
-                        likeCount: sql`GREATEST(${menuReactions.likeCount} - 1, 0)`,
-                        updatedAt: new Date(),
-                    })
-                    .where(eq(menuReactions.menuDate, menuDate));
-            } else {
-                await db
-                    .update(menuReactions)
-                    .set({
-                        dislikeCount: sql`GREATEST(${menuReactions.dislikeCount} - 1, 0)`,
-                        updatedAt: new Date(),
-                    })
-                    .where(eq(menuReactions.menuDate, menuDate));
-            }
         } else if (previousAction === null) {
             // New reaction — upsert with unique index protection
             await db
@@ -162,59 +144,30 @@ export async function POST(request: NextRequest) {
                 .values({ userId, menuDate, action })
                 .onConflictDoUpdate({
                     target: [userReactions.userId, userReactions.menuDate],
-                    set: { action, createdAt: new Date() },
+                    set: { action, updatedAt: new Date() },
                 });
-
-            if (action === 'like') {
-                await db
-                    .update(menuReactions)
-                    .set({
-                        likeCount: sql`${menuReactions.likeCount} + 1`,
-                        updatedAt: new Date(),
-                    })
-                    .where(eq(menuReactions.menuDate, menuDate));
-            } else {
-                await db
-                    .update(menuReactions)
-                    .set({
-                        dislikeCount: sql`${menuReactions.dislikeCount} + 1`,
-                        updatedAt: new Date(),
-                    })
-                    .where(eq(menuReactions.menuDate, menuDate));
-            }
         } else {
-            // Switching reaction — upsert
+            // Switching reaction
             await db
                 .update(userReactions)
-                .set({ action, createdAt: new Date() })
+                .set({ action, updatedAt: new Date() })
                 .where(
                     and(
                         eq(userReactions.userId, userId),
                         eq(userReactions.menuDate, menuDate)
                     )
                 );
-
-            // Decrement old, increment new in one query
-            if (previousAction === 'like') {
-                await db
-                    .update(menuReactions)
-                    .set({
-                        likeCount: sql`GREATEST(${menuReactions.likeCount} - 1, 0)`,
-                        dislikeCount: sql`${menuReactions.dislikeCount} + 1`,
-                        updatedAt: new Date(),
-                    })
-                    .where(eq(menuReactions.menuDate, menuDate));
-            } else {
-                await db
-                    .update(menuReactions)
-                    .set({
-                        dislikeCount: sql`GREATEST(${menuReactions.dislikeCount} - 1, 0)`,
-                        likeCount: sql`${menuReactions.likeCount} + 1`,
-                        updatedAt: new Date(),
-                    })
-                    .where(eq(menuReactions.menuDate, menuDate));
-            }
         }
+
+        // Recalculate counters from user_reactions (atomic, race-condition safe)
+        await db
+            .update(menuReactions)
+            .set({
+                likeCount: sql`(SELECT COUNT(*) FROM user_reactions WHERE menu_date = ${menuDate} AND action = 'like')`,
+                dislikeCount: sql`(SELECT COUNT(*) FROM user_reactions WHERE menu_date = ${menuDate} AND action = 'dislike')`,
+                updatedAt: new Date(),
+            })
+            .where(eq(menuReactions.menuDate, menuDate));
 
         // Return updated counters + user action
         const result = await db
