@@ -140,23 +140,3 @@ export const dailyLogs = pgTable(
         uniqueIndex("daily_logs_user_date_idx").on(table.userId, table.date),
     ]
 );
-
-// ==========================================
-// Reaction Tables
-// ==========================================
-
-export const userReactions = pgTable(
-    "user_reactions",
-    {
-        id: serial("id").primaryKey(),
-        userId: text("user_id")
-            .notNull()
-            .references(() => users.id, { onDelete: "cascade" }),
-        menuDate: text("menu_date").notNull(),
-        action: text("action").$type<"like" | "dislike">().notNull(),
-        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
-    },
-    (table) => [
-        uniqueIndex("user_reactions_user_date_idx").on(table.userId, table.menuDate),
-    ]
-);
