@@ -63,7 +63,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider>
+          <SessionProvider refetchInterval={0} refetchOnWindowFocus={false}>
 
             {children}
             <Toaster />
