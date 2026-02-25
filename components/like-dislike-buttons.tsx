@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useSession } from "next-auth/react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
+import { AuthDrawer } from "@/components/auth-drawer"
 
 // Custom Like icon (Geist)
 function LikeIcon({ className }: { className?: string }) {
@@ -50,29 +52,29 @@ interface LikeDislikeButtonsProps {
 type UserAction = "like" | "dislike" | null
 
 export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
+    const { data: session, status } = useSession()
+    const isAuthenticated = status === "authenticated"
+
     const [likeCount, setLikeCount] = useState<number | null>(null)
     const [dislikeCount, setDislikeCount] = useState<number | null>(null)
     const [userAction, setUserAction] = useState<UserAction>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [lastClickTime, setLastClickTime] = useState(0)
+    const [showAuthDrawer, setShowAuthDrawer] = useState(false)
 
     const DEBOUNCE_MS = 300
 
-    // Load initial counts and user action from localStorage
+    // Fetch counts and user action from API (only when authenticated)
     useEffect(() => {
-        // Reset state immediately when menuDate changes to prevent stale state
+        // Reset state immediately when menuDate changes
         setUserAction(null)
         setLikeCount(null)
         setDislikeCount(null)
         setIsLoading(false)
 
-        // Load user action from localStorage for this specific date
-        const storedAction = localStorage.getItem(`reaction_${menuDate}`)
-        if (storedAction === "like" || storedAction === "dislike") {
-            setUserAction(storedAction)
-        }
+        // Only fetch if authenticated
+        if (!isAuthenticated) return
 
-        // Fetch counts from API
         const fetchCounts = async () => {
             try {
                 const res = await fetch(`/api/reactions?date=${menuDate}`)
@@ -80,6 +82,7 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
                     const data = await res.json()
                     setLikeCount(data.likeCount)
                     setDislikeCount(data.dislikeCount)
+                    setUserAction(data.userAction)
                 }
             } catch (error) {
                 console.error("Failed to fetch reaction counts:", error)
@@ -89,9 +92,15 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
         }
 
         fetchCounts()
-    }, [menuDate])
+    }, [menuDate, isAuthenticated])
 
     const handleReaction = useCallback(async (action: "like" | "dislike") => {
+        // If not authenticated, open auth drawer
+        if (!isAuthenticated) {
+            setShowAuthDrawer(true)
+            return
+        }
+
         // Debounce protection
         const now = Date.now()
         if (now - lastClickTime < DEBOUNCE_MS) return
@@ -104,30 +113,23 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
         const previousLikeCount = likeCount
         const previousDislikeCount = dislikeCount
 
-        // Determine what actions to send
-        let apiActions: string[] = []
+        // Determine optimistic state
         let newUserAction: UserAction = null
         let optimisticLike = likeCount ?? 0
         let optimisticDislike = dislikeCount ?? 0
 
         if (previousAction === action) {
-            // Toggle off - remove the reaction
-            apiActions = [action === "like" ? "removeLike" : "removeDislike"]
+            // Toggle off
             newUserAction = null
             if (action === "like") optimisticLike = Math.max(0, optimisticLike - 1)
             else optimisticDislike = Math.max(0, optimisticDislike - 1)
         } else if (previousAction === null) {
             // New reaction
-            apiActions = [action]
             newUserAction = action
             if (action === "like") optimisticLike += 1
             else optimisticDislike += 1
         } else {
-            // Switching from one to another
-            apiActions = [
-                previousAction === "like" ? "removeLike" : "removeDislike",
-                action
-            ]
+            // Switching
             newUserAction = action
             if (previousAction === "like") {
                 optimisticLike = Math.max(0, optimisticLike - 1)
@@ -138,97 +140,94 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
             }
         }
 
-        // Optimistic update - instant feedback
+        // Optimistic update
         setUserAction(newUserAction)
         setLikeCount(optimisticLike)
         setDislikeCount(optimisticDislike)
 
-        // Save to localStorage immediately for instant feedback
-        if (newUserAction) {
-            localStorage.setItem(`reaction_${menuDate}`, newUserAction)
-        } else {
-            localStorage.removeItem(`reaction_${menuDate}`)
-        }
-
         try {
-            // Execute all API actions sequentially (in background)
-            let finalData = { likeCount: optimisticLike, dislikeCount: optimisticDislike }
+            const res = await fetch("/api/reactions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ menuDate, action })
+            })
 
-            for (const apiAction of apiActions) {
-                const res = await fetch("/api/reactions", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ menuDate, action: apiAction })
-                })
-
-                if (res.status === 429) {
-                    // Rate limited - show toast
-                    const errorData = await res.json()
-                    const resetInSeconds = Math.ceil((errorData.resetIn || 60000) / 1000)
-                    toast.error(`Çok fazla istek! ${resetInSeconds} saniye bekleyin.`)
-                    throw new Error("Rate limited")
-                }
-
-                if (res.ok) {
-                    finalData = await res.json()
-                }
+            if (res.status === 429) {
+                const errorData = await res.json()
+                const resetInSeconds = Math.ceil((errorData.resetIn || 60000) / 1000)
+                toast.error(`Çok fazla istek! ${resetInSeconds} saniye bekleyin.`)
+                throw new Error("Rate limited")
             }
 
-            // Silently sync with server data (usually same as optimistic)
-            setLikeCount(finalData.likeCount)
-            setDislikeCount(finalData.dislikeCount)
+            if (res.status === 401) {
+                setShowAuthDrawer(true)
+                throw new Error("Unauthorized")
+            }
+
+            if (!res.ok) {
+                toast.error("Bir hata oluştu. Lütfen tekrar deneyin.")
+                throw new Error(`HTTP ${res.status}`)
+            }
+
+            const data = await res.json()
+            setLikeCount(data.likeCount)
+            setDislikeCount(data.dislikeCount)
+            setUserAction(data.userAction)
         } catch (error) {
             // Revert on error
             console.error("Failed to update reaction:", error)
             setUserAction(previousAction)
             setLikeCount(previousLikeCount)
             setDislikeCount(previousDislikeCount)
-            // Revert localStorage
-            if (previousAction) {
-                localStorage.setItem(`reaction_${menuDate}`, previousAction)
-            } else {
-                localStorage.removeItem(`reaction_${menuDate}`)
-            }
         } finally {
             setIsLoading(false)
         }
-    }, [menuDate, userAction, likeCount, dislikeCount, isLoading, lastClickTime])
+    }, [menuDate, userAction, likeCount, dislikeCount, isLoading, lastClickTime, isAuthenticated])
 
     return (
-        <div className="flex items-center gap-1">
-            {/* Like Button */}
-            <motion.button
-                onClick={() => handleReaction("like")}
-                whileTap={{ scale: 0.95 }}
-                className={cn(
-                    "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
-                    "border border-border/40 hover:border-border",
-                    userAction === "like"
-                        ? "bg-green-500/10 border-green-500/50 text-green-600 dark:text-green-400"
-                        : "bg-muted/30 text-muted-foreground hover:bg-muted/50"
-                )}
-                aria-label="Beğen"
-            >
-                <LikeIcon className="h-3.5 w-3.5" />
-                <AnimatedCounter value={likeCount ?? 0} />
-            </motion.button>
+        <>
+            <div className="flex items-center gap-1">
+                {/* Like Button */}
+                <motion.button
+                    onClick={() => handleReaction("like")}
+                    whileTap={{ scale: 0.95 }}
+                    className={cn(
+                        "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
+                        "border border-border/40 hover:border-border",
+                        isAuthenticated && userAction === "like"
+                            ? "bg-green-500/10 border-green-500/50 text-green-600 dark:text-green-400"
+                            : "bg-muted/30 text-muted-foreground hover:bg-muted/50"
+                    )}
+                    aria-label="Beğen"
+                >
+                    <LikeIcon className="h-3.5 w-3.5" />
+                    {isAuthenticated && <AnimatedCounter value={likeCount ?? 0} />}
+                </motion.button>
 
-            {/* Dislike Button */}
-            <motion.button
-                onClick={() => handleReaction("dislike")}
-                whileTap={{ scale: 0.95 }}
-                className={cn(
-                    "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
-                    "border border-border/40 hover:border-border",
-                    userAction === "dislike"
-                        ? "bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400"
-                        : "bg-muted/30 text-muted-foreground hover:bg-muted/50"
-                )}
-                aria-label="Beğenme"
-            >
-                <DislikeIcon className="h-3.5 w-3.5" />
-                <AnimatedCounter value={dislikeCount ?? 0} />
-            </motion.button>
-        </div>
+                {/* Dislike Button */}
+                <motion.button
+                    onClick={() => handleReaction("dislike")}
+                    whileTap={{ scale: 0.95 }}
+                    className={cn(
+                        "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
+                        "border border-border/40 hover:border-border",
+                        isAuthenticated && userAction === "dislike"
+                            ? "bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400"
+                            : "bg-muted/30 text-muted-foreground hover:bg-muted/50"
+                    )}
+                    aria-label="Beğenme"
+                >
+                    <DislikeIcon className="h-3.5 w-3.5" />
+                    {isAuthenticated && <AnimatedCounter value={dislikeCount ?? 0} />}
+                </motion.button>
+            </div>
+
+            {/* Auth Drawer for unauthenticated users */}
+            <AuthDrawer
+                open={showAuthDrawer}
+                onOpenChange={setShowAuthDrawer}
+                message="Reaksiyon özelliğini kullanmak için hemen giriş yapın."
+            />
+        </>
     )
 }
