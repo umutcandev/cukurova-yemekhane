@@ -1,14 +1,16 @@
 import { loadMenuData } from "@/lib/menu-loader"
-import { getCurrentMonth, getTurkeyDate } from "@/lib/date-utils"
+import { getCurrentMonth } from "@/lib/date-utils"
 import MenuPage from "./menu-page"
 
-export const dynamic = 'force-dynamic'
+// Menü verisi sabah bir kez yenilenir, gün içinde değişmez.
+// Saatte bir revalidate yeterli — force-dynamic gereksiz Edge invocation yaratıyordu.
+// Güncel tarih (getTurkeyDate) ise client-side'da hesaplandığından her zaman doğrudur.
+export const revalidate = 3600 // 1 saat
 
 export default async function Home() {
   try {
     const menuData = await loadMenuData(getCurrentMonth())
-    const initialDate = getTurkeyDate()
-    return <MenuPage menuData={menuData} initialDate={initialDate} />
+    return <MenuPage menuData={menuData} />
   } catch (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

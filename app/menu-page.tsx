@@ -5,12 +5,15 @@ import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { MenuCard } from "@/components/menu-card"
 import { Header } from "@/components/header"
+import { getTurkeyDate } from "@/lib/date-utils"
 
 import type { DateRange } from "react-day-picker"
 import type { MenuData } from "@/lib/types"
 
 
-export default function MenuPage({ menuData, initialDate }: { menuData: MenuData, initialDate: string }) {
+export default function MenuPage({ menuData }: { menuData: MenuData }) {
+    // Tarih her zaman client'ta hesaplanır — cache'li sayfada bile doğru değer döner.
+    const initialDate = getTurkeyDate()
 
     const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined)
     const [selectedMeal, setSelectedMeal] = useState<{ id: string; name: string; calories: number } | null>(null)
