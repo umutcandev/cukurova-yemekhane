@@ -3,9 +3,11 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db/index";
 import { dailyLogs } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
+import { AUTH_ENABLED } from "@/lib/feature-flags";
 
 // GET /api/daily-log?date=YYYY-MM-DD
 export async function GET(request: NextRequest) {
+    if (!AUTH_ENABLED) return NextResponse.json({ totalCalories: 0, consumedMeals: [] });
     try {
         const session = await auth();
         if (!session?.user?.id) {
@@ -58,6 +60,7 @@ export async function GET(request: NextRequest) {
 // POST /api/daily-log
 // Body: { date: "YYYY-MM-DD", mealName: "Ekşili Köfte", calories: 294, action: "add" | "remove" }
 export async function POST(request: NextRequest) {
+    if (!AUTH_ENABLED) return NextResponse.json({ error: 'Auth disabled' }, { status: 503 });
     try {
         const session = await auth();
         if (!session?.user?.id) {

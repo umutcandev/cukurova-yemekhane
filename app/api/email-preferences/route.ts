@@ -3,9 +3,11 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db/index";
 import { emailPreferences } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { AUTH_ENABLED } from "@/lib/feature-flags";
 
 // GET /api/email-preferences — get user's notification preferences
 export async function GET() {
+    if (!AUTH_ENABLED) return NextResponse.json({ notifyFavorites: false });
     try {
         const session = await auth();
         if (!session?.user?.id) {
@@ -32,6 +34,7 @@ export async function GET() {
 // POST /api/email-preferences — update notification preference
 // Body: { notifyFavorites: true/false }
 export async function POST(request: NextRequest) {
+    if (!AUTH_ENABLED) return NextResponse.json({ error: 'Auth disabled' }, { status: 503 });
     try {
         const session = await auth();
         if (!session?.user?.id) {

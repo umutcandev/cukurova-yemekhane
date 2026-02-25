@@ -2,9 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { sql } from '@/lib/db';
 import { checkRateLimit, isValidDateFormat } from '@/lib/rate-limiter';
+import { AUTH_ENABLED } from '@/lib/feature-flags';
+
+const AUTH_DISABLED_RESPONSE = NextResponse.json(
+    { error: 'Authentication service is temporarily disabled' },
+    { status: 503 }
+);
 
 // GET /api/reactions?date=2025-12-30
 export async function GET(request: NextRequest) {
+    if (!AUTH_ENABLED) return AUTH_DISABLED_RESPONSE;
     try {
         const session = await auth();
         if (!session) {
@@ -52,6 +59,7 @@ export async function GET(request: NextRequest) {
 // POST /api/reactions
 // Body: { menuDate: "2025-12-30", action: "like" | "dislike" | "removeLike" | "removeDislike" }
 export async function POST(request: NextRequest) {
+    if (!AUTH_ENABLED) return AUTH_DISABLED_RESPONSE;
     try {
         const session = await auth();
         if (!session) {

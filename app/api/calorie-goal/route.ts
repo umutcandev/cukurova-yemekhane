@@ -3,9 +3,11 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db/index";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { AUTH_ENABLED } from "@/lib/feature-flags";
 
 // GET /api/calorie-goal — get the current user's calorie goal
 export async function GET() {
+    if (!AUTH_ENABLED) return NextResponse.json({ error: 'Auth disabled' }, { status: 503 });
     try {
         const session = await auth();
         if (!session?.user?.id) {
@@ -34,6 +36,7 @@ export async function GET() {
 
 // POST /api/calorie-goal — set/update the calorie goal
 export async function POST(request: NextRequest) {
+    if (!AUTH_ENABLED) return NextResponse.json({ error: 'Auth disabled' }, { status: 503 });
     try {
         const session = await auth();
         if (!session?.user?.id) {

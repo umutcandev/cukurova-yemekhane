@@ -3,9 +3,11 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db/index";
 import { dailyLogs } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { AUTH_ENABLED } from "@/lib/feature-flags";
 
 // GET /api/daily-log/all — get all daily logs for the authenticated user
 export async function GET() {
+    if (!AUTH_ENABLED) return NextResponse.json({ logs: [] });
     try {
         const session = await auth();
         if (!session?.user?.id) {
