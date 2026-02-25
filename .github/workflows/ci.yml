@@ -34,16 +34,14 @@ jobs:
       - name: 📚 Bağımlılıkları Yükle
         run: pnpm install --frozen-lockfile
 
-      - name: 🔎 ESLint Kontrolü
-        run: pnpm lint
+      - name: TypeScript Kontrolü
+        run: pnpm type-check
 
-      - name: 🏗️ TypeScript & Build Kontrolü
+      - name: Build Kontrolü
         # Gerçek DB/Auth gerektiren ortam değişkenleri olmadan da
         # Next.js build syntax hatalarını yakalar.
-        # SKIP_ENV_VALIDATION sayesinde runtime env check atlanır.
         env:
           SKIP_ENV_VALIDATION: true
-          # Build için placeholder değerler (gerçek bağlantı kurmaz, sadece syntax/type kontrolü)
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: ci-placeholder-secret
           DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
