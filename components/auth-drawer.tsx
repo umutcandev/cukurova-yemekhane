@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
+import { AUTH_ENABLED } from "@/lib/feature-flags"
 import {
     Drawer,
     DrawerClose,
@@ -47,22 +48,36 @@ export function AuthDrawer({ open, onOpenChange, message }: AuthDrawerProps) {
             <DrawerContent>
                 <div className="mx-auto w-full max-w-sm">
                     <DrawerHeader className="text-center">
-                        <DrawerTitle className="text-lg">Giriş Yapın</DrawerTitle>
+                        <DrawerTitle className="text-lg">
+                            Giriş Yapın
+                            {!AUTH_ENABLED && (
+                                <span className="ml-2 inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400 align-middle">
+                                    Devre Dışı
+                                </span>
+                            )}
+                        </DrawerTitle>
                         <DrawerDescription className="text-sm text-muted-foreground">
-                            {message || "Bu özelliği kullanabilmek için giriş yapmanız gerekiyor."}
+                            {!AUTH_ENABLED
+                                ? "Giriş sistemi şu anda geçici olarak devre dışıdır. Lütfen daha sonra tekrar deneyin."
+                                : (message || "Bu özelliği kullanabilmek için giriş yapmanız gerekiyor.")
+                            }
                         </DrawerDescription>
                     </DrawerHeader>
                     <div className="px-4 pb-2">
                         <Button
                             className="w-full h-11 gap-3 text-sm font-medium"
                             variant="outline"
-                            onClick={() => signIn("google")}
+                            onClick={() => AUTH_ENABLED && signIn("google")}
+                            disabled={!AUTH_ENABLED}
                         >
                             <GoogleIcon className="h-5 w-5" />
                             Google ile Giriş Yap
                         </Button>
                         <p className="text-center text-[11px] text-muted-foreground/60 mt-3">
-                            Ücretsiz hesabınızla tüm kişisel özelliklere erişin.
+                            {!AUTH_ENABLED
+                                ? "Sistem bakım nedeniyle geçici olarak kapatılmıştır."
+                                : "Ücretsiz hesabınızla tüm kişisel özelliklere erişin."
+                            }
                         </p>
                     </div>
                     <DrawerFooter className="pt-2">

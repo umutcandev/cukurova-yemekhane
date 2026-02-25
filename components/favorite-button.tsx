@@ -1,20 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { useSession } from "next-auth/react"
 import { Heart } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import { AuthDrawer } from "@/components/auth-drawer"
 import { useFavorites } from "@/hooks/use-favorites"
+import { useMenuData } from "@/components/menu-data-provider"
 
 interface FavoriteButtonProps {
     mealName: string
 }
 
 export function FavoriteButton({ mealName }: FavoriteButtonProps) {
-    const { data: session } = useSession()
+    const { session } = useMenuData()
     const { isFavorited, toggleFavorite } = useFavorites()
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
     const favorited = isFavorited(mealName)

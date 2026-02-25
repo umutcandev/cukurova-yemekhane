@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useCallback } from "react"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { useSession } from "next-auth/react"
+import { useMenuData } from "@/components/menu-data-provider"
 import { useRouter } from "next/navigation"
 import { Flame, ArrowLeft, Loader2, Trash2, ChevronLeft, ChevronRight, Eye } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
@@ -110,7 +110,7 @@ const CARDS_PER_PAGE_MOBILE = 4
 
 export default function KaloriTakibiPage() {
     const isMobile = useMediaQuery("(max-width: 767px)")
-    const { data: session, status } = useSession()
+    const { session, status } = useMenuData()
     const router = useRouter()
     const [logs, setLogs] = useState<DayLog[]>([])
     const [isLoading, setIsLoading] = useState(true)

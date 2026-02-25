@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { useSession } from "next-auth/react"
+import { useMenuData } from "@/components/menu-data-provider"
 
 export function useCalorieGoal() {
-    const { data: session } = useSession()
+    const { session } = useMenuData()
     const [calorieGoal, setCalorieGoalState] = useState<number | null>(null)
     const [isLoading, setIsLoading] = useState(true)
 

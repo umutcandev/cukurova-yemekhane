@@ -3,9 +3,10 @@ import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { GoogleAnalytics } from "@next/third-parties/google"
-import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { MenuDataProvider } from "@/components/menu-data-provider"
+import { AUTH_ENABLED } from "@/lib/feature-flags"
+import { AuthSessionProvider } from "@/components/auth-session-provider"
 
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
@@ -64,12 +65,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider>
+          <AuthSessionProvider>
             <MenuDataProvider>
               {children}
             </MenuDataProvider>
             <Toaster />
-          </SessionProvider>
+          </AuthSessionProvider>
           <Analytics />
           {process.env.NEXT_PUBLIC_GA_ID && (
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

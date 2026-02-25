@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react"
 import { useSession } from "next-auth/react"
+import { AUTH_ENABLED } from "@/lib/feature-flags"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -18,8 +19,8 @@ interface DailyLogData {
 
 interface MenuDataContextType {
     // Session
-    session: ReturnType<typeof useSession>["data"]
-    status: ReturnType<typeof useSession>["status"]
+    session: ReturnType<typeof useSession>["data"] | null
+    status: ReturnType<typeof useSession>["status"] | "unauthenticated"
     isAuthenticated: boolean
 
     // Favorites (shared across all MenuCards)
@@ -45,6 +46,45 @@ const MenuDataContext = createContext<MenuDataContextType | null>(null)
 // ─── Provider ────────────────────────────────────────────────────────────────
 
 export function MenuDataProvider({ children }: { children: ReactNode }) {
+    // Auth kapalıysa useSession çağırma — SessionProvider olmayacak
+    if (!AUTH_ENABLED) {
+        return <MenuDataProviderDisabled>{children}</MenuDataProviderDisabled>
+    }
+    return <MenuDataProviderEnabled>{children}</MenuDataProviderEnabled>
+}
+
+// ─── Auth Kapalı Provider ────────────────────────────────────────────────────
+
+function MenuDataProviderDisabled({ children }: { children: ReactNode }) {
+    const emptyDailyLog: DailyLogData = { totalCalories: 0, consumedMeals: [] }
+
+    return (
+        <MenuDataContext.Provider
+            value={{
+                session: null,
+                status: "unauthenticated",
+                isAuthenticated: false,
+                favorites: [],
+                isFavorited: () => false,
+                toggleFavorite: async () => false,
+                calorieGoal: null,
+                calorieGoalLoading: false,
+                needsGoal: false,
+                setCalorieGoal: async () => false,
+                getDailyLog: () => emptyDailyLog,
+                addMeal: async () => false,
+                removeMeal: async () => false,
+                isConsumed: () => false,
+            }}
+        >
+            {children}
+        </MenuDataContext.Provider>
+    )
+}
+
+// ─── Auth Açık Provider ──────────────────────────────────────────────────────
+
+function MenuDataProviderEnabled({ children }: { children: ReactNode }) {
     const { data: session, status } = useSession()
     const isAuthenticated = status === "authenticated"
 

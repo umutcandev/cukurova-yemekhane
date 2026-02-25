@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { useSession } from "next-auth/react"
+import { useMenuData } from "@/components/menu-data-provider"
 
 interface ConsumedMeal {
     mealName: string
@@ -10,7 +10,7 @@ interface ConsumedMeal {
 }
 
 export function useDailyLog(date: string) {
-    const { data: session } = useSession()
+    const { session } = useMenuData()
     const [totalCalories, setTotalCalories] = useState(0)
     const [consumedMeals, setConsumedMeals] = useState<ConsumedMeal[]>([])
     const [isLoading, setIsLoading] = useState(false)
