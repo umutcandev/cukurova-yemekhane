@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@/lib/db';
+import { auth } from '@/lib/auth';
+import { db } from '@/lib/db/index';
+import { menuReactions, userReactions } from '@/lib/db/schema';
+import { eq, and, sql } from 'drizzle-orm';
 import { checkRateLimit, isValidDateFormat } from '@/lib/rate-limiter';
 
 // GET /api/reactions?date=2025-12-30
 export async function GET(request: NextRequest) {
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            return NextResponse.json(
+                { error: 'Authentication required' },
+                { status: 401 }
+            );
+        }
+
         const { searchParams } = new URL(request.url);
         const date = searchParams.get('date');
 
@@ -15,19 +26,30 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const result = await sql`
-            SELECT like_count, dislike_count 
-            FROM menu_reactions 
-            WHERE menu_date = ${date}
-        `;
+        // Fetch counters
+        const counters = await db
+            .select({
+                likeCount: menuReactions.likeCount,
+                dislikeCount: menuReactions.dislikeCount,
+            })
+            .from(menuReactions)
+            .where(eq(menuReactions.menuDate, date));
 
-        if (result.length === 0) {
-            return NextResponse.json({ likeCount: 0, dislikeCount: 0 });
-        }
+        // Fetch user's own reaction
+        const userReaction = await db
+            .select({ action: userReactions.action })
+            .from(userReactions)
+            .where(
+                and(
+                    eq(userReactions.userId, session.user.id),
+                    eq(userReactions.menuDate, date)
+                )
+            );
 
         return NextResponse.json({
-            likeCount: result[0].like_count,
-            dislikeCount: result[0].dislike_count
+            likeCount: counters.length > 0 ? counters[0].likeCount : 0,
+            dislikeCount: counters.length > 0 ? counters[0].dislikeCount : 0,
+            userAction: userReaction.length > 0 ? userReaction[0].action : null,
         });
     } catch (error) {
         console.error('Database error:', error);
@@ -39,15 +61,21 @@ export async function GET(request: NextRequest) {
 }
 
 // POST /api/reactions
-// Body: { menuDate: "2025-12-30", action: "like" | "dislike" | "removeLike" | "removeDislike" }
+// Body: { menuDate: "2025-12-30", action: "like" | "dislike" }
 export async function POST(request: NextRequest) {
     try {
-        // Get IP for rate limiting
-        const forwarded = request.headers.get('x-forwarded-for');
-        const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
+        const session = await auth();
+        if (!session?.user?.id) {
+            return NextResponse.json(
+                { error: 'Authentication required' },
+                { status: 401 }
+            );
+        }
 
-        // Check rate limit
-        const rateLimit = checkRateLimit(ip);
+        const userId = session.user.id;
+
+        // User-based rate limiting
+        const rateLimit = checkRateLimit(userId);
         if (!rateLimit.allowed) {
             return NextResponse.json(
                 { error: 'Too many requests. Please wait.', resetIn: rateLimit.resetIn },
@@ -72,70 +100,90 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (!['like', 'dislike', 'removeLike', 'removeDislike'].includes(action)) {
+        if (!['like', 'dislike'].includes(action)) {
             return NextResponse.json(
-                { error: 'Invalid action. Use like, dislike, removeLike, or removeDislike' },
+                { error: 'Invalid action. Use like or dislike' },
                 { status: 400 }
             );
         }
 
-        // First, ensure the record exists (upsert)
-        await sql`
-            INSERT INTO menu_reactions (menu_date, like_count, dislike_count)
-            VALUES (${menuDate}, 0, 0)
-            ON CONFLICT (menu_date) DO NOTHING
-        `;
-
-        // Now update based on action
-        let updateQuery;
-        switch (action) {
-            case 'like':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET like_count = like_count + 1, updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
-                `;
-                break;
-            case 'dislike':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET dislike_count = dislike_count + 1, updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
-                `;
-                break;
-            case 'removeLike':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET like_count = GREATEST(like_count - 1, 0), updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
-                `;
-                break;
-            case 'removeDislike':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET dislike_count = GREATEST(dislike_count - 1, 0), updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
-                `;
-                break;
-        }
-
-        const result = await updateQuery;
-
-        if (!result || result.length === 0) {
-            return NextResponse.json(
-                { error: 'Failed to update reaction' },
-                { status: 500 }
+        // Find user's existing reaction for this date
+        const existing = await db
+            .select({ action: userReactions.action })
+            .from(userReactions)
+            .where(
+                and(
+                    eq(userReactions.userId, userId),
+                    eq(userReactions.menuDate, menuDate)
+                )
             );
+
+        const previousAction = existing.length > 0 ? existing[0].action : null;
+
+        // Ensure menu_reactions row exists
+        await db
+            .insert(menuReactions)
+            .values({ menuDate, likeCount: 0, dislikeCount: 0 })
+            .onConflictDoNothing({ target: menuReactions.menuDate });
+
+        // Mutate user_reactions
+        if (previousAction === action) {
+            // Toggle off — remove reaction
+            await db
+                .delete(userReactions)
+                .where(
+                    and(
+                        eq(userReactions.userId, userId),
+                        eq(userReactions.menuDate, menuDate)
+                    )
+                );
+        } else if (previousAction === null) {
+            // New reaction — upsert with unique index protection
+            await db
+                .insert(userReactions)
+                .values({ userId, menuDate, action })
+                .onConflictDoUpdate({
+                    target: [userReactions.userId, userReactions.menuDate],
+                    set: { action, updatedAt: new Date() },
+                });
+        } else {
+            // Switching reaction
+            await db
+                .update(userReactions)
+                .set({ action, updatedAt: new Date() })
+                .where(
+                    and(
+                        eq(userReactions.userId, userId),
+                        eq(userReactions.menuDate, menuDate)
+                    )
+                );
         }
+
+        // Recalculate counters from user_reactions (atomic, race-condition safe)
+        await db
+            .update(menuReactions)
+            .set({
+                likeCount: sql`(SELECT COUNT(*) FROM user_reactions WHERE menu_date = ${menuDate} AND action = 'like')`,
+                dislikeCount: sql`(SELECT COUNT(*) FROM user_reactions WHERE menu_date = ${menuDate} AND action = 'dislike')`,
+                updatedAt: new Date(),
+            })
+            .where(eq(menuReactions.menuDate, menuDate));
+
+        // Return updated counters + user action
+        const result = await db
+            .select({
+                likeCount: menuReactions.likeCount,
+                dislikeCount: menuReactions.dislikeCount,
+            })
+            .from(menuReactions)
+            .where(eq(menuReactions.menuDate, menuDate));
+
+        const newUserAction = previousAction === action ? null : action;
 
         return NextResponse.json({
-            likeCount: result[0].like_count,
-            dislikeCount: result[0].dislike_count,
-            action
+            likeCount: result[0].likeCount,
+            dislikeCount: result[0].dislikeCount,
+            userAction: newUserAction,
         }, {
             headers: {
                 'X-RateLimit-Remaining': String(rateLimit.remaining)
