@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { useSession } from "next-auth/react"
+import { useMenuData } from "@/components/menu-data-provider"
 
 export function useFavorites() {
-    const { data: session } = useSession()
+    const { session } = useMenuData()
     const [favorites, setFavorites] = useState<string[]>([])
     const [isLoading, setIsLoading] = useState(false)
 

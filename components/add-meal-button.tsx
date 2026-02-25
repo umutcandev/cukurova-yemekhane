@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useSession } from "next-auth/react"
 import { Plus, Check } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
@@ -10,6 +9,7 @@ import { AuthDrawer } from "@/components/auth-drawer"
 import { CalorieGoalModal } from "@/components/calorie-goal-modal"
 import { useDailyLog } from "@/hooks/use-daily-log"
 import { useCalorieGoal } from "@/hooks/use-calorie-goal"
+import { useMenuData } from "@/components/menu-data-provider"
 
 interface AddMealButtonProps {
     mealName: string
@@ -19,7 +19,7 @@ interface AddMealButtonProps {
 }
 
 export function AddMealButton({ mealName, calories, mealId, menuDate }: AddMealButtonProps) {
-    const { data: session } = useSession()
+    const { session } = useMenuData()
     const { isConsumed, addMeal, removeMeal } = useDailyLog(menuDate)
     const { calorieGoal, needsGoal, setCalorieGoal } = useCalorieGoal()
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)

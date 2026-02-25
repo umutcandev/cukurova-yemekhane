@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSession } from "next-auth/react"
+import { useMenuData } from "@/components/menu-data-provider"
 import { useRouter } from "next/navigation"
 import { Bookmark, Trash2, ArrowLeft, Loader2, Mail, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -18,7 +18,7 @@ interface FavoriteItem {
 }
 
 export default function FavorilerimPage() {
-    const { data: session, status } = useSession()
+    const { session, status } = useMenuData()
     const router = useRouter()
     const [favorites, setFavorites] = useState<FavoriteItem[]>([])
     const [isLoading, setIsLoading] = useState(true)

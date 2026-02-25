@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import { Bookmark, Flame, LogOut } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { AUTH_ENABLED } from "@/lib/feature-flags"
 import {
     Avatar,
     AvatarFallback,
@@ -59,20 +60,29 @@ function GoogleIcon({ className }: { className?: string }) {
     )
 }
 
-function AuthDialogContent({ onSignIn }: { onSignIn: () => void }) {
+function AuthDialogContent({ onSignIn, disabled }: { onSignIn: () => void; disabled?: boolean }) {
     return (
         <div className="flex flex-col items-center gap-4 py-2">
+            {disabled && (
+                <span className="inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                    Giriş sistemi geçici olarak devre dışı
+                </span>
+            )}
             <Button
                 className="w-full h-11 gap-3 text-sm font-medium"
                 variant="outline"
                 onClick={onSignIn}
+                disabled={disabled}
             >
                 <GoogleIcon className="h-5 w-5" />
                 Google ile Giriş Yap
             </Button>
             <div className="space-y-2 text-center">
                 <p className="text-[11px] text-muted-foreground/60">
-                    Yalnızca Google hesabınızla giriş yapabilirsiniz.
+                    {disabled
+                        ? "Sistem bakım nedeniyle geçici olarak kapatılmıştır."
+                        : "Yalnızca Google hesabınızla giriş yapabilirsiniz."
+                    }
                 </p>
             </div>
         </div>
@@ -80,6 +90,84 @@ function AuthDialogContent({ onSignIn }: { onSignIn: () => void }) {
 }
 
 export function AuthButton() {
+    // Auth kapalıysa useSession çağırmıyoruz — hook'ları koşullu çağıramayız
+    // ama SessionProvider olmayınca useSession zaten undefined döner.
+    // AUTH_ENABLED false iken SessionProvider yok, bu yüzden
+    // useSession'ı try etmek yerine direkt disabled UI gösteriyoruz.
+
+    if (!AUTH_ENABLED) {
+        return <AuthButtonDisabled />
+    }
+
+    return <AuthButtonEnabled />
+}
+
+function AuthButtonDisabled() {
+    const [authOpen, setAuthOpen] = useState(false)
+    const isDesktop = useMediaQuery("(min-width: 768px)")
+
+    return (
+        <>
+            <Button
+                variant="outline"
+                size="sm"
+                className="h-8 text-xs px-3 opacity-60 cursor-not-allowed"
+                onClick={() => setAuthOpen(true)}
+            >
+                Giriş Yap
+            </Button>
+
+            {isDesktop ? (
+                <Dialog open={authOpen} onOpenChange={setAuthOpen}>
+                    <DialogContent className="sm:max-w-sm">
+                        <DialogHeader className="text-center">
+                            <DialogTitle className="text-lg">
+                                Giriş Yapın
+                                <span className="ml-2 inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400 align-middle">
+                                    Devre Dışı
+                                </span>
+                            </DialogTitle>
+                            <DialogDescription className="text-sm text-muted-foreground">
+                                Giriş sistemi şu anda geçici olarak devre dışıdır.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <AuthDialogContent onSignIn={() => { }} disabled />
+                    </DialogContent>
+                </Dialog>
+            ) : (
+                <Drawer open={authOpen} onOpenChange={setAuthOpen}>
+                    <DrawerContent>
+                        <div className="mx-auto w-full max-w-sm">
+                            <DrawerHeader className="text-center">
+                                <DrawerTitle className="text-lg">
+                                    Giriş Yapın
+                                    <span className="ml-2 inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400 align-middle">
+                                        Devre Dışı
+                                    </span>
+                                </DrawerTitle>
+                                <DrawerDescription className="text-sm text-muted-foreground">
+                                    Giriş sistemi şu anda geçici olarak devre dışıdır.
+                                </DrawerDescription>
+                            </DrawerHeader>
+                            <div className="px-4 pb-2">
+                                <AuthDialogContent onSignIn={() => { }} disabled />
+                            </div>
+                            <DrawerFooter className="pt-2">
+                                <DrawerClose asChild>
+                                    <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
+                                        Vazgeç
+                                    </Button>
+                                </DrawerClose>
+                            </DrawerFooter>
+                        </div>
+                    </DrawerContent>
+                </Drawer>
+            )}
+        </>
+    )
+}
+
+function AuthButtonEnabled() {
     const { data: session, status } = useSession()
     const [authOpen, setAuthOpen] = useState(false)
     const isDesktop = useMediaQuery("(min-width: 768px)")

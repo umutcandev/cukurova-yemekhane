@@ -1,22 +1,33 @@
-import { auth } from "@/lib/auth"
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+
+// AUTH_ENABLED kontrolü — build-time'da sabitlenir
+const AUTH_ENABLED = process.env.NEXT_PUBLIC_AUTH_ENABLED !== "false"
 
 // Protected routes that require authentication
 const protectedRoutes = ["/favorilerim", "/kalori-takibi"]
 
-export default auth((req) => {
-    const { pathname } = req.nextUrl
+export default async function middleware(req: NextRequest) {
+    // Auth kapalıysa middleware hiçbir şey yapmaz — edge request minimuma iner
+    if (!AUTH_ENABLED) {
+        return NextResponse.next()
+    }
 
+    // Auth açıkken dinamik import ile auth fonksiyonunu yükle
+    const { auth } = await import("@/lib/auth")
+    const session = await auth()
+
+    const { pathname } = req.nextUrl
     const isProtected = protectedRoutes.some((route) => pathname.startsWith(route))
 
-    if (isProtected && !req.auth) {
+    if (isProtected && !session) {
         const url = req.nextUrl.clone()
         url.pathname = "/"
         return NextResponse.redirect(url)
     }
 
     return NextResponse.next()
-})
+}
 
 export const config = {
     /*
