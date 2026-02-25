@@ -16,7 +16,9 @@ const nextConfig = {
 
 const withPWA = (await import("@ducanh2912/next-pwa")).default({
   dest: "public",
-  disable: false, // process.env.NODE_ENV === "development",
+  // Servis worker yalnızca production'da aktif.
+  // Development'ta açık bırakmak gereksiz Edge Request ve cache sorunlarına yol açar.
+  disable: process.env.NODE_ENV === "development",
   register: true,
   skipWaiting: true,
 })
