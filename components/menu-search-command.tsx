@@ -221,8 +221,8 @@ export function MenuSearchCommand() {
                                     <button
                                         onClick={toggleDateSort}
                                         className={`p-1 rounded-sm transition-colors cursor-pointer ${sortMode === "date-desc" || sortMode === "date-asc"
-                                                ? "bg-accent text-accent-foreground"
-                                                : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                                            ? "bg-accent text-accent-foreground"
+                                            : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                                             }`}
                                         title={sortMode === "date-desc" ? "Eskiden yeniye sırala" : "Yeniden eskiye sırala"}
                                     >
@@ -287,11 +287,11 @@ export function MenuSearchCommand() {
                         <span className="flex items-center gap-1">
                             <Kbd>↑</Kbd>
                             <Kbd>↓</Kbd>
-                            <span className="ml-0.5">Navigate</span>
+                            <span className="ml-0.5">Gez</span>
                         </span>
                         <span className="flex items-center gap-1">
                             <Kbd>↵</Kbd>
-                            <span className="ml-0.5">Select</span>
+                            <span className="ml-0.5">Seç</span>
                         </span>
                     </div>
                     <span className="flex items-center gap-1">
