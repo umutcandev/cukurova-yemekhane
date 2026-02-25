@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
 import { sql } from '@/lib/db';
 import { checkRateLimit, isValidDateFormat } from '@/lib/rate-limiter';
 
 // GET /api/reactions?date=2025-12-30
 export async function GET(request: NextRequest) {
     try {
+        const session = await auth();
+        if (!session) {
+            return NextResponse.json(
+                { error: 'Authentication required' },
+                { status: 401 }
+            );
+        }
+
         const { searchParams } = new URL(request.url);
         const date = searchParams.get('date');
 
@@ -16,7 +25,9 @@ export async function GET(request: NextRequest) {
         }
 
         const result = await sql`
-            SELECT like_count, dislike_count 
+            SELECT 
+                like_count + COALESCE(legacy_like_count, 0) as total_likes,
+                dislike_count + COALESCE(legacy_dislike_count, 0) as total_dislikes
             FROM menu_reactions 
             WHERE menu_date = ${date}
         `;
@@ -26,8 +37,8 @@ export async function GET(request: NextRequest) {
         }
 
         return NextResponse.json({
-            likeCount: result[0].like_count,
-            dislikeCount: result[0].dislike_count
+            likeCount: result[0].total_likes,
+            dislikeCount: result[0].total_dislikes
         });
     } catch (error) {
         console.error('Database error:', error);
@@ -42,6 +53,14 @@ export async function GET(request: NextRequest) {
 // Body: { menuDate: "2025-12-30", action: "like" | "dislike" | "removeLike" | "removeDislike" }
 export async function POST(request: NextRequest) {
     try {
+        const session = await auth();
+        if (!session) {
+            return NextResponse.json(
+                { error: 'Authentication required' },
+                { status: 401 }
+            );
+        }
+
         // Get IP for rate limiting
         const forwarded = request.headers.get('x-forwarded-for');
         const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
@@ -94,7 +113,9 @@ export async function POST(request: NextRequest) {
                     UPDATE menu_reactions 
                     SET like_count = like_count + 1, updated_at = CURRENT_TIMESTAMP
                     WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
+                    RETURNING 
+                        like_count + COALESCE(legacy_like_count, 0) as like_count,
+                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
                 `;
                 break;
             case 'dislike':
@@ -102,7 +123,9 @@ export async function POST(request: NextRequest) {
                     UPDATE menu_reactions 
                     SET dislike_count = dislike_count + 1, updated_at = CURRENT_TIMESTAMP
                     WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
+                    RETURNING 
+                        like_count + COALESCE(legacy_like_count, 0) as like_count,
+                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
                 `;
                 break;
             case 'removeLike':
@@ -110,7 +133,9 @@ export async function POST(request: NextRequest) {
                     UPDATE menu_reactions 
                     SET like_count = GREATEST(like_count - 1, 0), updated_at = CURRENT_TIMESTAMP
                     WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
+                    RETURNING 
+                        like_count + COALESCE(legacy_like_count, 0) as like_count,
+                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
                 `;
                 break;
             case 'removeDislike':
@@ -118,7 +143,9 @@ export async function POST(request: NextRequest) {
                     UPDATE menu_reactions 
                     SET dislike_count = GREATEST(dislike_count - 1, 0), updated_at = CURRENT_TIMESTAMP
                     WHERE menu_date = ${menuDate}
-                    RETURNING like_count, dislike_count
+                    RETURNING 
+                        like_count + COALESCE(legacy_like_count, 0) as like_count,
+                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
                 `;
                 break;
         }

@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from "@/components/theme-provider"
+import { MenuDataProvider } from "@/components/menu-data-provider"
 
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
@@ -64,8 +65,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-
-            {children}
+            <MenuDataProvider>
+              {children}
+            </MenuDataProvider>
             <Toaster />
           </SessionProvider>
           <Analytics />
