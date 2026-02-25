@@ -1,0 +1,52 @@
+name: CI — Lint & Build Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  lint-and-build:
+    name: 🔍 Lint & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: 📦 pnpm Kur
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: 🟢 Node.js Kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: 📚 Bağımlılıkları Yükle
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔎 ESLint Kontrolü
+        run: pnpm lint
+
+      - name: 🏗️ TypeScript & Build Kontrolü
+        # Gerçek DB/Auth gerektiren ortam değişkenleri olmadan da
+        # Next.js build syntax hatalarını yakalar.
+        # SKIP_ENV_VALIDATION sayesinde runtime env check atlanır.
+        env:
+          SKIP_ENV_VALIDATION: true
+          # Build için placeholder değerler (gerçek bağlantı kurmaz, sadece syntax/type kontrolü)
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ci-placeholder-secret
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+          AUTH_GOOGLE_ID: placeholder
+          AUTH_GOOGLE_SECRET: placeholder
+        run: pnpm build

@@ -1,0 +1,33 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize  # PR'a yeni commit gelince tekrar çalışır
+
+permissions:
+  contents: read
+  pull-requests: write  # PR'a yorum yazabilmek için
+
+jobs:
+  review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+    # Sadece fork olmayan PR'larda çalış (güvenlik için)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - name: Repoyu Çek
+        uses: actions/checkout@v4
+
+      - name: Gemini ile Kod İncele
+        uses: google-github-actions/gemini-code-review@main
+        with:
+          # GitHub → Settings → Secrets → GEMINI_API_KEY ekle
+          # Ücretsiz API key: https://aistudio.google.com/app/apikey
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Review dili Türkçe yapabilirsin:
+          # review_comment_prefix: "**AI Code Review:**"
+          # pull_request_comment_language: "Turkish"

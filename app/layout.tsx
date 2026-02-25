@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from "@/components/theme-provider"
-import { PwaInstallBanner } from "@/components/pwa-install-banner"
+
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
@@ -64,7 +64,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-            <PwaInstallBanner />
+
             {children}
             <Toaster />
           </SessionProvider>

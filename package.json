@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build --webpack",
     "dev": "next dev --webpack",
+    "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "start": "next start",
     "scrape": "tsx scripts/scrape-menu.ts"
