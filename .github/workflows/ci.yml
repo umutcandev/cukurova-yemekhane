@@ -1,4 +1,4 @@
-name: CI — Lint & Build Check
+name: CI - TypeScript & Build Check
 
 on:
   pull_request:
@@ -12,26 +12,26 @@ on:
 
 jobs:
   lint-and-build:
-    name: 🔍 Lint & Build
+    name: TypeScript & Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
-      - name: 📥 Repoyu Çek
+      - name: Repoyu Çek
         uses: actions/checkout@v4
 
-      - name: 📦 pnpm Kur
+      - name: pnpm Kur
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      - name: 🟢 Node.js Kur
+      - name: Node.js Kur
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: 📚 Bağımlılıkları Yükle
+      - name: Bagımlılıkları Yükle
         run: pnpm install --frozen-lockfile
 
       - name: TypeScript Kontrolü
