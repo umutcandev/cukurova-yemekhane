@@ -21,6 +21,8 @@ export const menuReactions = pgTable("menu_reactions", {
     menuDate: text("menu_date").unique().notNull(),
     likeCount: integer("like_count").default(0).notNull(),
     dislikeCount: integer("dislike_count").default(0).notNull(),
+    legacyLikeCount: integer("legacy_like_count").default(0).notNull(),
+    legacyDislikeCount: integer("legacy_dislike_count").default(0).notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
     updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
 });
@@ -138,5 +140,26 @@ export const dailyLogs = pgTable(
     },
     (table) => [
         uniqueIndex("daily_logs_user_date_idx").on(table.userId, table.date),
+    ]
+);
+
+// ==========================================
+// Reaction Tables
+// ==========================================
+
+export const userReactions = pgTable(
+    "user_reactions",
+    {
+        id: serial("id").primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        menuDate: text("menu_date").notNull(),
+        action: text("action").$type<"like" | "dislike">().notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        uniqueIndex("user_reactions_user_date_idx").on(table.userId, table.menuDate),
     ]
 );

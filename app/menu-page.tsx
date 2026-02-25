@@ -5,6 +5,7 @@ import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { MenuCard } from "@/components/menu-card"
 import { Header } from "@/components/header"
+import { MenuDataProvider } from "@/components/menu-data-provider"
 import { getTurkeyDate } from "@/lib/date-utils"
 
 import type { DateRange } from "react-day-picker"
@@ -117,26 +118,28 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
             <div className="container mx-auto px-4 py-6 md:py-8">
 
+                {/* MenuDataProvider — favorites, calorie-goal, daily-log API çağrıları burada 1 kez yapılır */}
+                <MenuDataProvider>
+                    {/* Mobile Menu View - Shows selected date(s) from mobile navigation */}
+                    <section className="max-w-md mx-auto">
 
-                {/* Mobile Menu View - Shows selected date(s) from mobile navigation */}
-                <section className="max-w-md mx-auto">
 
 
-
-                    {selectedDateRange?.from && selectedDateMenus.length > 0 ? (
-                        // Show range of menus if date range is selected
-                        <div className="grid gap-4">
-                            {selectedDateMenus.map((day) => (
-                                <MenuCard key={day.ymk} day={day} onMealClick={handleMealClick} />
-                            ))}
-                        </div>
-                    ) : mobileCurrentMenu ? (
-                        // Show single menu from arrow navigation
-                        <div className="max-w-md mx-auto">
-                            <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} />
-                        </div>
-                    ) : null}
-                </section>
+                        {selectedDateRange?.from && selectedDateMenus.length > 0 ? (
+                            // Show range of menus if date range is selected
+                            <div className="grid gap-4">
+                                {selectedDateMenus.map((day) => (
+                                    <MenuCard key={day.ymk} day={day} onMealClick={handleMealClick} />
+                                ))}
+                            </div>
+                        ) : mobileCurrentMenu ? (
+                            // Show single menu from arrow navigation
+                            <div className="max-w-md mx-auto">
+                                <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} />
+                            </div>
+                        ) : null}
+                    </section>
+                </MenuDataProvider>
 
                 {/* Ad Banner */}
                 <div className="max-w-md mx-auto mt-4">
