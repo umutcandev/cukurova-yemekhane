@@ -231,6 +231,11 @@ export function MenuDataProvider({ children }: { children: ReactNode }) {
                     body: JSON.stringify({ date, mealName, calories, mealId, action: "add" }),
                 })
 
+                if (res.status === 409) {
+                    // Meal already exists in DB — keep optimistic state, it's just a sync issue
+                    return true
+                }
+
                 if (!res.ok) {
                     // Rollback
                     setDailyLogs((prev) => ({ ...prev, [date]: current }))

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ChevronRight, Bookmark, CirclePlus, CircleCheck } from "lucide-react"
@@ -136,6 +136,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
         session,
         isFavorited,
         toggleFavorite,
+        getDailyLog,
         isConsumed: isConsumedCtx,
         addMeal: addMealCtx,
         removeMeal: removeMealCtx,
@@ -143,6 +144,11 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
         needsGoal,
         setCalorieGoal,
     } = useMenuData()
+
+    // Fetch daily log for this date so consumed meals show as filled
+    useEffect(() => {
+        getDailyLog(day.date)
+    }, [day.date, getDailyLog])
 
     // Wrap context functions with day.date for convenience
     const isConsumed = (mealName: string) => isConsumedCtx(day.date, mealName)
@@ -253,7 +259,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                     </p>
                 </div>
                 <div className="shrink-0">
-                    <LikeDislikeButtons menuDate={day.date} />
+                    <LikeDislikeButtons menuDate={day.date} session={session} />
                 </div>
             </div>
 

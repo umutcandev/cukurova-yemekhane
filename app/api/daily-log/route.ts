@@ -77,9 +77,16 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (!mealName || typeof calories !== "number" || !mealId) {
+        if (!mealName || typeof calories !== "number") {
             return NextResponse.json(
-                { error: "mealName, calories and mealId are required" },
+                { error: "mealName and calories are required" },
+                { status: 400 }
+            );
+        }
+
+        if (action === "add" && !mealId) {
+            return NextResponse.json(
+                { error: "mealId is required for adding meals" },
                 { status: 400 }
             );
         }
