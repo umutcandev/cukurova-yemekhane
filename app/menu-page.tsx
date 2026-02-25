@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { MenuCard } from "@/components/menu-card"
@@ -40,6 +41,19 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
     }
 
     const [mobileSelectedDateIndex, setMobileSelectedDateIndex] = useState<number>(findInitialDateIndex())
+
+    // URL'den ?date= parametresini oku → arama sonuçlarından navigasyon
+    const searchParams = useSearchParams()
+    useEffect(() => {
+        const dateParam = searchParams.get("date")
+        if (dateParam) {
+            const targetIndex = menuData.days.findIndex((day) => day.date === dateParam)
+            if (targetIndex !== -1) {
+                setMobileSelectedDateIndex(targetIndex)
+                setSelectedDateRange(undefined)
+            }
+        }
+    }, [searchParams, menuData.days])
 
     // Use initialDate here as well to avoid mismatch
     const today = initialDate

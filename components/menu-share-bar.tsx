@@ -509,7 +509,7 @@ export function MenuShareBar({ day }: MenuShareBarProps) {
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     title: "Çukurova Yemekhane Menüsü",
-                    text: `${formatDateForShare(day.date)} menüsüne göz at!`,
+                    text: `${formatDateForShare(day.date)} menüsüne göz at! Menüyü daha detaylı incelemek için cukurova.app ziyaret etmeyi unutma.`,
                     files: [file],
                 })
             } else {
