@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import { loadMenuData } from "@/lib/menu-loader"
 import { getCurrentMonth } from "@/lib/date-utils"
 import MenuPage from "./menu-page"
@@ -10,7 +11,11 @@ export const revalidate = 3600 // 1 saat
 export default async function Home() {
   try {
     const menuData = await loadMenuData(getCurrentMonth())
-    return <MenuPage menuData={menuData} />
+    return (
+      <Suspense>
+        <MenuPage menuData={menuData} />
+      </Suspense>
+    )
   } catch (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
