@@ -11,8 +11,8 @@
  *   DATABASE_URL, SMTP_USER, SMTP_PASS
  */
 
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
 import { eq, and, isNotNull } from "drizzle-orm";
 import * as schema from "../lib/db/schema.js";
 import nodemailer from "nodemailer";
@@ -46,8 +46,8 @@ if (!SMTP_USER || !SMTP_PASS) {
 // DB Setup
 // ──────────────────────────────────────────
 
-const sql = neon(DATABASE_URL);
-const db = drizzle(sql, { schema });
+const pool = new pg.Pool({ connectionString: DATABASE_URL });
+const db = drizzle(pool, { schema });
 
 // ──────────────────────────────────────────
 // SMTP Setup
@@ -307,7 +307,11 @@ async function main() {
     console.log(`\n📊 Sonuç: ${sentCount} e-posta gönderildi, ${skipCount} atlandı.`);
 }
 
-main().catch((err) => {
-    console.error("❌ Script hatası:", err);
-    process.exit(1);
-});
+main()
+    .catch((err) => {
+        console.error("❌ Script hatası:", err);
+        process.exit(1);
+    })
+    .finally(async () => {
+        await pool.end();
+    });

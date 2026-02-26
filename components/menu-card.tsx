@@ -259,7 +259,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                     </p>
                 </div>
                 <div className="shrink-0">
-                    <LikeDislikeButtons menuDate={day.date} session={session} />
+                    <LikeDislikeButtons menuDate={day.date} />
                 </div>
             </div>
 
