@@ -29,6 +29,8 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next()
 }
 
+export const runtime = "nodejs"
+
 export const config = {
     /*
      * Middleware sadece korunan sayfalarda çalışır.
@@ -43,3 +45,4 @@ export const config = {
         "/kalori-takibi/:path+",
     ],
 }
+

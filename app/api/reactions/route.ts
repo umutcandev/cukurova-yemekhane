@@ -1,26 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
-import { sql } from '@/lib/db';
+import { db } from '@/lib/db/index';
+import { menuReactions } from '@/lib/db/schema';
+import { eq, sql } from 'drizzle-orm';
 import { checkRateLimit, isValidDateFormat } from '@/lib/rate-limiter';
-import { AUTH_ENABLED } from '@/lib/feature-flags';
-
-const AUTH_DISABLED_RESPONSE = NextResponse.json(
-    { error: 'Authentication service is temporarily disabled' },
-    { status: 503 }
-);
 
 // GET /api/reactions?date=2025-12-30
 export async function GET(request: NextRequest) {
-    if (!AUTH_ENABLED) return AUTH_DISABLED_RESPONSE;
     try {
-        const session = await auth();
-        if (!session) {
-            return NextResponse.json(
-                { error: 'Authentication required' },
-                { status: 401 }
-            );
-        }
-
         const { searchParams } = new URL(request.url);
         const date = searchParams.get('date');
 
@@ -31,21 +17,21 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const result = await sql`
-            SELECT 
-                like_count + COALESCE(legacy_like_count, 0) as total_likes,
-                dislike_count + COALESCE(legacy_dislike_count, 0) as total_dislikes
-            FROM menu_reactions 
-            WHERE menu_date = ${date}
-        `;
+        const result = await db
+            .select({
+                totalLikes: sql<number>`${menuReactions.likeCount} + COALESCE(${menuReactions.legacyLikeCount}, 0)`,
+                totalDislikes: sql<number>`${menuReactions.dislikeCount} + COALESCE(${menuReactions.legacyDislikeCount}, 0)`,
+            })
+            .from(menuReactions)
+            .where(eq(menuReactions.menuDate, date));
 
         if (result.length === 0) {
             return NextResponse.json({ likeCount: 0, dislikeCount: 0 });
         }
 
         return NextResponse.json({
-            likeCount: result[0].total_likes,
-            dislikeCount: result[0].total_dislikes
+            likeCount: result[0].totalLikes,
+            dislikeCount: result[0].totalDislikes
         });
     } catch (error) {
         console.error('Database error:', error);
@@ -59,16 +45,7 @@ export async function GET(request: NextRequest) {
 // POST /api/reactions
 // Body: { menuDate: "2025-12-30", action: "like" | "dislike" | "removeLike" | "removeDislike" }
 export async function POST(request: NextRequest) {
-    if (!AUTH_ENABLED) return AUTH_DISABLED_RESPONSE;
     try {
-        const session = await auth();
-        if (!session) {
-            return NextResponse.json(
-                { error: 'Authentication required' },
-                { status: 401 }
-            );
-        }
-
         // Get IP for rate limiting
         const forwarded = request.headers.get('x-forwarded-for');
         const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
@@ -107,58 +84,50 @@ export async function POST(request: NextRequest) {
         }
 
         // First, ensure the record exists (upsert)
-        await sql`
-            INSERT INTO menu_reactions (menu_date, like_count, dislike_count)
-            VALUES (${menuDate}, 0, 0)
-            ON CONFLICT (menu_date) DO NOTHING
-        `;
+        await db
+            .insert(menuReactions)
+            .values({ menuDate, likeCount: 0, dislikeCount: 0 })
+            .onConflictDoNothing({ target: menuReactions.menuDate });
 
         // Now update based on action
-        let updateQuery;
+        let updateSet: Record<string, unknown>;
         switch (action) {
             case 'like':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET like_count = like_count + 1, updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING 
-                        like_count + COALESCE(legacy_like_count, 0) as like_count,
-                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
-                `;
+                updateSet = {
+                    likeCount: sql`${menuReactions.likeCount} + 1`,
+                    updatedAt: sql`CURRENT_TIMESTAMP`,
+                };
                 break;
             case 'dislike':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET dislike_count = dislike_count + 1, updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING 
-                        like_count + COALESCE(legacy_like_count, 0) as like_count,
-                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
-                `;
+                updateSet = {
+                    dislikeCount: sql`${menuReactions.dislikeCount} + 1`,
+                    updatedAt: sql`CURRENT_TIMESTAMP`,
+                };
                 break;
             case 'removeLike':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET like_count = GREATEST(like_count - 1, 0), updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING 
-                        like_count + COALESCE(legacy_like_count, 0) as like_count,
-                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
-                `;
+                updateSet = {
+                    likeCount: sql`GREATEST(${menuReactions.likeCount} - 1, 0)`,
+                    updatedAt: sql`CURRENT_TIMESTAMP`,
+                };
                 break;
             case 'removeDislike':
-                updateQuery = sql`
-                    UPDATE menu_reactions 
-                    SET dislike_count = GREATEST(dislike_count - 1, 0), updated_at = CURRENT_TIMESTAMP
-                    WHERE menu_date = ${menuDate}
-                    RETURNING 
-                        like_count + COALESCE(legacy_like_count, 0) as like_count,
-                        dislike_count + COALESCE(legacy_dislike_count, 0) as dislike_count
-                `;
+                updateSet = {
+                    dislikeCount: sql`GREATEST(${menuReactions.dislikeCount} - 1, 0)`,
+                    updatedAt: sql`CURRENT_TIMESTAMP`,
+                };
                 break;
+            default:
+                updateSet = {};
         }
 
-        const result = await updateQuery;
+        const result = await db
+            .update(menuReactions)
+            .set(updateSet)
+            .where(eq(menuReactions.menuDate, menuDate))
+            .returning({
+                likeCount: sql<number>`${menuReactions.likeCount} + COALESCE(${menuReactions.legacyLikeCount}, 0)`,
+                dislikeCount: sql<number>`${menuReactions.dislikeCount} + COALESCE(${menuReactions.legacyDislikeCount}, 0)`,
+            });
 
         if (!result || result.length === 0) {
             return NextResponse.json(
@@ -168,8 +137,8 @@ export async function POST(request: NextRequest) {
         }
 
         return NextResponse.json({
-            likeCount: result[0].like_count,
-            dislikeCount: result[0].dislike_count,
+            likeCount: result[0].likeCount,
+            dislikeCount: result[0].dislikeCount,
             action
         }, {
             headers: {

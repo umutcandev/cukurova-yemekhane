@@ -190,7 +190,7 @@ export function MenuSearchCommand() {
                     value={query}
                     onValueChange={setQuery}
                 />
-                <CommandList className="max-h-[400px]">
+                <CommandList className="h-[50vh] max-h-[50vh] sm:h-[400px] sm:max-h-[400px]">
                     {loading && (
                         <div className="py-6 text-center text-sm text-muted-foreground">
                             Yükleniyor...

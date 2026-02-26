@@ -4,8 +4,6 @@ import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
-import { AuthDrawer } from "@/components/auth-drawer"
-import type { Session } from "next-auth"
 
 // Custom Like icon (Geist)
 function LikeIcon({ className }: { className?: string }) {
@@ -47,37 +45,31 @@ function AnimatedCounter({ value }: { value: number }) {
 
 interface LikeDislikeButtonsProps {
     menuDate: string // "2025-12-30" format
-    session: Session | null
 }
 
 type UserAction = "like" | "dislike" | null
 
-export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProps) {
+export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
     const [likeCount, setLikeCount] = useState<number | null>(null)
     const [dislikeCount, setDislikeCount] = useState<number | null>(null)
     const [userAction, setUserAction] = useState<UserAction>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [lastClickTime, setLastClickTime] = useState(0)
-    const [showAuthDrawer, setShowAuthDrawer] = useState(false)
 
     const DEBOUNCE_MS = 300
 
-    // Stable storage key scoped by user ID to prevent cross-account leakage
-    const userId = session?.user?.id
-    const storageKey = `reaction_${userId}_${menuDate}`
+    // Storage key scoped by date (anonymous, no user ID needed)
+    const storageKey = `reaction_${menuDate}`
 
     // Load initial counts and user action from localStorage
     useEffect(() => {
-        // Don't fetch if not authenticated
-        if (!session || !userId) return
-
         // Reset state immediately when menuDate changes to prevent stale state
         setUserAction(null)
         setLikeCount(null)
         setDislikeCount(null)
         setIsLoading(false)
 
-        // Load user action from localStorage for this specific date & user
+        // Load user action from localStorage for this specific date
         const storedAction = localStorage.getItem(storageKey)
         if (storedAction === "like" || storedAction === "dislike") {
             setUserAction(storedAction)
@@ -100,7 +92,7 @@ export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProp
         }
 
         fetchCounts()
-    }, [menuDate, session, userId, storageKey])
+    }, [menuDate, storageKey])
 
     const handleReaction = useCallback(async (action: "like" | "dislike") => {
         // Debounce protection
@@ -204,45 +196,6 @@ export function LikeDislikeButtons({ menuDate, session }: LikeDislikeButtonsProp
             setIsLoading(false)
         }
     }, [menuDate, userAction, likeCount, dislikeCount, isLoading, lastClickTime, storageKey])
-
-    // Unauthenticated: show buttons without counts, open AuthDrawer on click
-    if (!session) {
-        return (
-            <>
-                <div className="flex items-center gap-1">
-                    <motion.button
-                        onClick={() => setShowAuthDrawer(true)}
-                        whileTap={{ scale: 0.95 }}
-                        className={cn(
-                            "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
-                            "border border-border/40 hover:border-border",
-                            "bg-muted/30 text-muted-foreground hover:bg-muted/50"
-                        )}
-                        aria-label="Beğen"
-                    >
-                        <LikeIcon className="h-3.5 w-3.5" />
-                    </motion.button>
-                    <motion.button
-                        onClick={() => setShowAuthDrawer(true)}
-                        whileTap={{ scale: 0.95 }}
-                        className={cn(
-                            "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
-                            "border border-border/40 hover:border-border",
-                            "bg-muted/30 text-muted-foreground hover:bg-muted/50"
-                        )}
-                        aria-label="Beğenme"
-                    >
-                        <DislikeIcon className="h-3.5 w-3.5" />
-                    </motion.button>
-                </div>
-                <AuthDrawer
-                    open={showAuthDrawer}
-                    onOpenChange={setShowAuthDrawer}
-                    message="Menüyü beğenip beğenmediğinizi belirtin! Giriş yaparak bu özelliği kullanabilirsiniz."
-                />
-            </>
-        )
-    }
 
     return (
         <div className="flex items-center gap-1">
