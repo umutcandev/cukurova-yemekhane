@@ -168,17 +168,18 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
             setShowAuthDrawer(true)
             return
         }
-        const favorited = isFavorited(mealName)
-        const success = await toggleFavorite(mealName, mealId)
-        if (success) {
-            toast.success(
-                favorited
-                    ? `${mealName} favorilerden çıkarıldı`
-                    : `${mealName} favorilere eklendi`,
-                { duration: 2000 }
-            )
-        } else {
+        const result = await toggleFavorite(mealName, mealId)
+        if (!result) {
             toast.error("Bir hata oluştu", { duration: 2000 })
+        } else if (result.action === "removed") {
+            toast.success(`${mealName} favorilerden çıkarıldı`, { duration: 2000 })
+        } else {
+            toast.success(
+                result.emailOptedIn
+                    ? `${mealName} favorilere eklendi. Menüde olduğunda e-posta ile haber vereceğiz.`
+                    : `${mealName} favorilere eklendi.`,
+                { duration: result.emailOptedIn ? 4000 : 2000 }
+            )
         }
     }
 
