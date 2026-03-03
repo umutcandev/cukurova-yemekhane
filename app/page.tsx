@@ -3,9 +3,9 @@ import { loadMenuData } from "@/lib/menu-loader"
 import { getCurrentMonth } from "@/lib/date-utils"
 import MenuPage from "./menu-page"
 
-// Menü verisi her seferinde sunucudan çekilir; eski cache kullanıcılara yanlış menü gösteriyordu.
-// Client tarafında gün değişimi tespiti (use-day-change hook) ile de otomatik yenileme yapılır.
-export const revalidate = 60 // 1 dakika
+// Her sayfa ziyaretinde menü verisi sunucudan taze çekilir; ISR/önbellek kullanılmaz.
+// Açık sekmelerdeki gün değişimi ise client tarafında use-day-change hook'u ile algılanır.
+export const dynamic = "force-dynamic"
 
 export default async function Home() {
   try {
