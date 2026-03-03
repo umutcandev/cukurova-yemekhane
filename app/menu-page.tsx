@@ -8,6 +8,7 @@ import { MenuCard } from "@/components/menu-card"
 import { Header } from "@/components/header"
 import { MenuDataProvider } from "@/components/menu-data-provider"
 import { getTurkeyDate } from "@/lib/date-utils"
+import { useDayChange } from "@/hooks/use-day-change"
 
 import type { DateRange } from "react-day-picker"
 import type { MenuData } from "@/lib/types"
@@ -16,6 +17,9 @@ import type { MenuData } from "@/lib/types"
 export default function MenuPage({ menuData }: { menuData: MenuData }) {
     // Tarih her zaman client'ta hesaplanır — cache'li sayfada bile doğru değer döner.
     const initialDate = getTurkeyDate()
+
+    // Gün değişimini izle; yeni güne geçildiğinde sayfayı otomatik yenile.
+    useDayChange()
 
     const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined)
     const [selectedMeal, setSelectedMeal] = useState<{ id: string; name: string; calories: number } | null>(null)

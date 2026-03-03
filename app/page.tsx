@@ -3,10 +3,9 @@ import { loadMenuData } from "@/lib/menu-loader"
 import { getCurrentMonth } from "@/lib/date-utils"
 import MenuPage from "./menu-page"
 
-// Menü verisi sabah bir kez yenilenir, gün içinde değişmez.
-// Saatte bir revalidate yeterli — force-dynamic gereksiz Edge invocation yaratıyordu.
-// Güncel tarih (getTurkeyDate) ise client-side'da hesaplandığından her zaman doğrudur.
-export const revalidate = 3600 // 1 saat
+// Menü verisi her seferinde sunucudan çekilir; eski cache kullanıcılara yanlış menü gösteriyordu.
+// Client tarafında gün değişimi tespiti (use-day-change hook) ile de otomatik yenileme yapılır.
+export const revalidate = 60 // 1 dakika
 
 export default async function Home() {
   try {
