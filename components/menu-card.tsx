@@ -175,8 +175,10 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
             toast.success(`${mealName} favorilerden çıkarıldı`, { duration: 2000 })
         } else {
             toast.success(
-                `${mealName} favorilere eklendi. Menüde olduğunda e-posta ile haber vereceğiz.`,
-                { duration: 4000 }
+                result.emailOptedIn
+                    ? `${mealName} favorilere eklendi. Menüde olduğunda e-posta ile haber vereceğiz.`
+                    : `${mealName} favorilere eklendi.`,
+                { duration: result.emailOptedIn ? 4000 : 2000 }
             )
         }
     }
