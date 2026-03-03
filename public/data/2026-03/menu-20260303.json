@@ -1,6 +1,6 @@
 {
   "month": "2026-03",
-  "lastUpdated": "2026-03-03T05:11:39.258Z",
+  "lastUpdated": "2026-03-03T09:59:56.153Z",
   "scrapeDate": "2026-03-03",
   "totalDays": 25,
   "days": [
@@ -689,9 +689,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -701,7 +701,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 832
+      "totalCalories": 943
     },
     {
       "ymk": 23,
