@@ -1,0 +1,48 @@
+name: Favori Bildirimleri Gönder
+
+on:
+  workflow_run:
+    workflows: ["Menüyü Scrape Et"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  send-notifications:
+    runs-on: ubuntu-latest
+    # Sadece scrape workflow'u başarılıysa ve cron ile tetiklendiyse çalış
+    # workflow_dispatch ile tetiklenen scrape'lerde mail GÖNDERMEZ
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'schedule'
+
+    steps:
+      - name: Deploy'un Tamamlanmasını Bekle
+        run: |
+          echo "Coolify deploy'unun tamamlanması için 10 dakika bekleniyor..."
+          sleep 600
+
+      - name: Depoyu Çek (Checkout)
+        uses: actions/checkout@v4
+
+      - name: pnpm Kur
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Node.js Kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Bağımlılıkları Yükle
+        run: pnpm install --frozen-lockfile
+
+      - name: Favori Bildirimleri Gönder
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        run: pnpm tsx scripts/send-favorite-notifications.ts
