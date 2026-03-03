@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db/index";
-import { favorites } from "@/lib/db/schema";
+import { favorites, emailPreferences } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { AUTH_ENABLED } from "@/lib/feature-flags";
 
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
             );
 
         if (existing.length > 0) {
-            // Remove favorite
+            // Remove favorite — never touch email preferences on remove
             await db
                 .delete(favorites)
                 .where(
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
                         eq(favorites.mealName, mealName)
                     )
                 );
-            return NextResponse.json({ action: "removed", mealName });
+            return NextResponse.json({ action: "removed", mealName, emailOptedIn: false });
         } else {
             // Add favorite
             await db.insert(favorites).values({
@@ -86,7 +86,25 @@ export async function POST(request: NextRequest) {
                 mealName,
                 mealId: mealId || null,
             });
-            return NextResponse.json({ action: "added", mealName });
+
+            // Auto opt-in: only insert if no email preference row exists yet.
+            // If the user previously turned off notifications, we must NOT overwrite it.
+            const existingPref = await db
+                .select({ id: emailPreferences.id })
+                .from(emailPreferences)
+                .where(eq(emailPreferences.userId, session.user.id));
+
+            let emailOptedIn = false;
+            if (existingPref.length === 0) {
+                // First ever favorite — opt them in automatically
+                await db.insert(emailPreferences).values({
+                    userId: session.user.id,
+                    notifyFavorites: true,
+                });
+                emailOptedIn = true;
+            }
+
+            return NextResponse.json({ action: "added", mealName, emailOptedIn });
         }
     } catch (error) {
         console.error("Favorites POST error:", error);

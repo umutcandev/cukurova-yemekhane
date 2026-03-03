@@ -26,7 +26,7 @@ interface MenuDataContextType {
     // Favorites (shared across all MenuCards)
     favorites: string[]
     isFavorited: (mealName: string) => boolean
-    toggleFavorite: (mealName: string, mealId?: string) => Promise<boolean>
+    toggleFavorite: (mealName: string, mealId?: string) => Promise<{ success: boolean; action: "added" | "removed"; emailOptedIn: boolean } | null>
 
     // Calorie Goal (shared across all MenuCards)
     calorieGoal: number | null
@@ -66,7 +66,7 @@ function MenuDataProviderDisabled({ children }: { children: ReactNode }) {
                 isAuthenticated: false,
                 favorites: [],
                 isFavorited: () => false,
-                toggleFavorite: async () => false,
+                toggleFavorite: async () => null,
                 calorieGoal: null,
                 calorieGoalLoading: false,
                 needsGoal: false,
@@ -118,7 +118,7 @@ function MenuDataProviderEnabled({ children }: { children: ReactNode }) {
 
     const toggleFavorite = useCallback(
         async (mealName: string, mealId?: string) => {
-            if (!isAuthenticated) return false
+            if (!isAuthenticated) return null
 
             const wasFavorited = favorites.includes(mealName)
             setFavorites((prev) =>
@@ -140,16 +140,22 @@ function MenuDataProviderEnabled({ children }: { children: ReactNode }) {
                             ? [...prev, mealName]
                             : prev.filter((f) => f !== mealName)
                     )
-                    return false
+                    return null
                 }
-                return true
+
+                const data = await res.json()
+                return {
+                    success: true,
+                    action: data.action as "added" | "removed",
+                    emailOptedIn: data.emailOptedIn ?? false,
+                }
             } catch {
                 setFavorites((prev) =>
                     wasFavorited
                         ? [...prev, mealName]
                         : prev.filter((f) => f !== mealName)
                 )
-                return false
+                return null
             }
         },
         [isAuthenticated, favorites]

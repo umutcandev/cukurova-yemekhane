@@ -29,7 +29,7 @@ export function useFavorites() {
 
     const toggleFavorite = useCallback(
         async (mealName: string, mealId?: string) => {
-            if (!session?.user) return false
+            if (!session?.user) return null
 
             // Optimistic update
             const wasFavorited = favorites.includes(mealName)
@@ -53,10 +53,15 @@ export function useFavorites() {
                             ? [...prev, mealName]
                             : prev.filter((f) => f !== mealName)
                     )
-                    return false
+                    return null
                 }
 
-                return true
+                const data = await res.json()
+                return {
+                    success: true,
+                    action: data.action as "added" | "removed",
+                    emailOptedIn: data.emailOptedIn ?? false,
+                }
             } catch {
                 // Rollback on error
                 setFavorites((prev) =>
@@ -64,11 +69,12 @@ export function useFavorites() {
                         ? [...prev, mealName]
                         : prev.filter((f) => f !== mealName)
                 )
-                return false
+                return null
             }
         },
         [session?.user, favorites]
     )
+
 
     const isFavorited = useCallback(
         (mealName: string) => favorites.includes(mealName),
