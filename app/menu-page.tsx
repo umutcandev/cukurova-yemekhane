@@ -161,12 +161,11 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
                 {/* Ad Banner */}
                 <div className="max-w-md mx-auto mt-4">
-                    <a
-                        href="mailto:hi@umutcan.xyz?subject=cukurova.app%20reklam&amp;body=Selamlar%2C%20cukurova.app%20i%C3%A7in%20reklam%20yay%C4%B1nlamak%20istiyorum."
-                        className="block border border-dashed border-border rounded-lg px-4 py-3 text-center text-xs text-muted-foreground/80 bg-muted/20 cursor-pointer"
+                    <p
+                        className="block border border-dashed border-border rounded-lg px-4 py-3 text-center text-xs text-muted-foreground/80 bg-muted/20"
                     >
-                        Bu alana reklam vermek için dokunun.
-                    </a>
+                        Bu proje <a href="https://github.com/umutcandev" title="Umutcan GitHub" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>@umutcandev</a> tarafından <a href="https://github.com/umutcandev/cukurova-yemekhane" title="Çukurova Yemekhane GitHub" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>açık kaynak</a> geliştirilmektedir, yine de resmi yemekhane sitesini ziyaret etmek istiyorsanız <a href="https://yemekhane.cu.edu.tr" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>tıklayınız.</a>
+                    </p>
                 </div>
 
             </div>

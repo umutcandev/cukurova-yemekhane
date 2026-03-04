@@ -34,8 +34,7 @@ export const runtime = "nodejs"
 export const config = {
     /*
      * Middleware sadece korunan sayfalarda çalışır.
-     * Statik dosyalar, next internal route'lar, PWA servis worker,
-     * workbox cache dosyaları ve API route'ları hariç tutulur.
+     * Statik dosyalar, next internal route'lar ve API route'ları hariç tutulur.
      * Bu sayede gereksiz Edge Runtime invocation'ları önlenir.
      */
     matcher: [

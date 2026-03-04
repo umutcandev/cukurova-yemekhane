@@ -3,17 +3,17 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Download } from "lucide-react"
+
 import { ThemeToggle } from "@/components/theme-toggle"
 import { InfoDialog } from "@/components/info-dialog"
 import { AuthButton } from "@/components/auth-button"
 import { MobileMenu } from "@/components/mobile-menu"
 import { MenuSearchCommand } from "@/components/menu-search-command"
 import { Button } from "@/components/ui/button"
-import { usePwaInstall } from "@/hooks/use-pwa-install"
+
 
 export function Header() {
-    const { isInstallable, install } = usePwaInstall()
+
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     return (
@@ -34,17 +34,7 @@ export function Header() {
                         {/* Desktop actions */}
                         <div className="hidden md:flex items-center gap-2">
                             <MenuSearchCommand />
-                            {isInstallable && (
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="h-8 w-8 border border-border/40"
-                                    onClick={install}
-                                    title="Uygulamayı Yükle"
-                                >
-                                    <Download className="h-4 w-4" />
-                                </Button>
-                            )}
+
                             <Button variant="ghost" size="sm" className="h-8 w-8 border border-border/40" asChild>
                                 <Link href="https://github.com/umutcandev/cukurova-yemekhane" target="_blank" rel="noopener noreferrer">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">

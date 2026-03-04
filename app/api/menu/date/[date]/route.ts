@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { findMenuForDate } from '@/lib/menu-loader';
 
-export const revalidate = 3600; // 1 saat cache — menü verisi sık değişmez
+export const revalidate = 0; // Her istekte taze veri — cache devre dışı
 
 export async function GET(
     _req: Request,
