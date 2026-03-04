@@ -164,7 +164,7 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                     <p
                         className="block border border-dashed border-border rounded-lg px-4 py-3 text-center text-xs text-muted-foreground/80 bg-muted/20"
                     >
-                        Bu proje <a href="https://github.com/umutcandev" title="Umutcan Github" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>@umutcandev</a> tarafından <a href="https://github.com/umutcandev/cukurova-yemekhane" title="Çukurova Yemekhane Github" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>açık kaynak</a> geliştirilmektedir, yinede resmi yemekhane sitesini ziyaret etmek istiyorsanız <a href="https://yemekhane.cu.edu.tr" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>tıklayınız.</a>
+                        Bu proje <a href="https://github.com/umutcandev" title="Umutcan GitHub" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>@umutcandev</a> tarafından <a href="https://github.com/umutcandev/cukurova-yemekhane" title="Çukurova Yemekhane GitHub" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>açık kaynak</a> geliştirilmektedir, yine de resmi yemekhane sitesini ziyaret etmek istiyorsanız <a href="https://yemekhane.cu.edu.tr" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>tıklayınız.</a>
                     </p>
                 </div>
 

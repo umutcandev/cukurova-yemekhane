@@ -36,7 +36,6 @@ Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekili
 | Yemek Detayı | Tıklama ile malzeme listesi ve görsel (scrape) |
 | Menü Paylaşımı | `html-to-image` ile görsel oluşturma ve paylaşım |
 | AI Prompt | ChatGPT, Claude, Grok, Perplexity için hazır prompt |
-
 | Tema | Karanlık / aydınlık, sistem tercihi uyumlu |
 | Takvim | Mobilde bottom sheet, masaüstünde dialog |
 | Responsive | Masaüstü ve mobil için ayrı görünümler |
