@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
-import { Home, Bookmark, Flame, Monitor, Sun, Moon, Download, Loader2 } from "lucide-react"
+import { Home, Bookmark, Flame, Monitor, Sun, Moon, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import { usePwaInstall } from "@/hooks/use-pwa-install"
+
 
 function GoogleIcon({ className }: { className?: string }) {
     return (
@@ -82,7 +82,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 }
 
 function MobileMenuDisabled({ isOpen, onClose }: MobileMenuProps) {
-    const { isInstallable, install } = usePwaInstall()
+
     const [authDrawerOpen, setAuthDrawerOpen] = useState(false)
 
     return (
@@ -166,18 +166,7 @@ function MobileMenuDisabled({ isOpen, onClose }: MobileMenuProps) {
                                         <Flame className="h-4 w-4" />
                                     </button>
 
-                                    {isInstallable && (
-                                        <button
-                                            onClick={() => {
-                                                install()
-                                                onClose()
-                                            }}
-                                            className="flex items-center justify-between h-12 px-1 text-base text-muted-foreground hover:text-foreground transition-colors w-full text-left"
-                                        >
-                                            <span>Uygulamayı Yükle</span>
-                                            <Download className="h-4 w-4" />
-                                        </button>
-                                    )}
+
                                 </nav>
 
                                 {/* Theme Toggle */}
@@ -202,7 +191,7 @@ function MobileMenuDisabled({ isOpen, onClose }: MobileMenuProps) {
 
 function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
     const { data: session, status } = useSession()
-    const { isInstallable, install } = usePwaInstall()
+
     const [isSigningIn, setIsSigningIn] = useState(false)
     const [authDrawerOpen, setAuthDrawerOpen] = useState(false)
 
@@ -361,18 +350,7 @@ function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
                                         </>
                                     )}
 
-                                    {isInstallable && (
-                                        <button
-                                            onClick={() => {
-                                                install()
-                                                onClose()
-                                            }}
-                                            className="flex items-center justify-between h-12 px-1 text-base text-muted-foreground hover:text-foreground transition-colors w-full text-left"
-                                        >
-                                            <span>Uygulamayı Yükle</span>
-                                            <Download className="h-4 w-4" />
-                                        </button>
-                                    )}
+
                                 </nav>
 
                                 {/* Theme Toggle */}

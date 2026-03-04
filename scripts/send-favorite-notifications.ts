@@ -146,6 +146,16 @@ function toTitleCase(str: string): string {
 }
 
 /**
+ * E-posta adresini maskeler: u***@gmail.com
+ */
+function maskEmail(email: string): string {
+    const [local, domain] = email.split("@");
+    if (!local || !domain) return "***";
+    const masked = local.charAt(0) + "***";
+    return `${masked}@${domain}`;
+}
+
+/**
  * HTML e-posta şablonu
  */
 function buildEmailHtml(
@@ -239,7 +249,7 @@ async function main() {
                 .where(eq(schema.users.id, sub.userId));
 
             if (userResult.length === 0 || !userResult[0].email) {
-                console.log(`   ⚠️ Kullanıcı bulunamadı veya e-posta yok: ${sub.userId}`);
+                console.log(`   ⚠️ Kullanıcı bulunamadı veya e-posta yok: ${sub.userId.substring(0, 6)}***`);
                 skipCount++;
                 continue;
             }
@@ -294,13 +304,13 @@ async function main() {
                 html,
             });
 
-            console.log(`   ✅ ${user.email} — ${matchedMeals.map((m) => m.name).join(", ")}`);
+            console.log(`   ✅ ${maskEmail(user.email!)} — ${matchedMeals.map((m) => m.name).join(", ")}`);
             sentCount++;
 
             // Rate limiting: 200ms bekle
             await new Promise((r) => setTimeout(r, 200));
         } catch (err) {
-            console.error(`   ❌ Hata (${sub.userId}):`, err);
+            console.error(`   ❌ Hata (${sub.userId.substring(0, 6)}***):`, err);
         }
     }
 

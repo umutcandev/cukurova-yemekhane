@@ -4,7 +4,7 @@ import path from 'path';
 import type { MenuData } from '@/lib/types';
 import { parseScrapeDate } from '@/lib/date-utils';
 
-export const revalidate = 3600; // 1 saat cache
+export const revalidate = 0; // Her istekte taze veri — cache devre dışı
 
 interface MealSearchResult {
     name: string;
