@@ -51,7 +51,6 @@ const withPWA = (await import("@ducanh2912/next-pwa")).default({
         handler: 'NetworkFirst',
         options: {
           cacheName: 'pages-cache',
-          networkTimeoutSeconds: 10,
           expiration: {
             maxEntries: 10,
             maxAgeSeconds: 24 * 60 * 60, // 24 saat (yalnızca çevrimdışı fallback)
