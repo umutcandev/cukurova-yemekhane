@@ -97,6 +97,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     const [reportComment, setReportComment] = useState<Comment | null>(null)
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
     const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null)
+    const [openMenuId, setOpenMenuId] = useState<number | null>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
     const [expandedComments, setExpandedComments] = useState<Set<number>>(new Set())
     const sendingRef = useRef(false)
@@ -315,7 +316,14 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
 
     // Yorum listesi - scroll edilebilir alan
     const commentsList = (
-        <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto">
+        <div
+            ref={scrollRef}
+            className="flex-1 min-h-0 overflow-y-auto"
+            style={isMobile && !loading && comments.length > 0 ? {
+                maskImage: "linear-gradient(to bottom, transparent 0%, black 32px, black 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 32px, black 100%)",
+            } : undefined}
+        >
             <div className="px-4 py-2">
                 {loading ? (
                     <div className="flex items-center justify-center py-12">
@@ -327,7 +335,8 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                     </div>
                 ) : (
                     <div>
-                        {/* Daha eski yorum yükleme butonu */}
+                        {/* Fade mask alanı kadar üst boşluk — ilk yorum maskelenmez */}
+                        {isMobile && <div className="h-2" />}
                         {hasMore && (
                             <div className="flex justify-center pb-2 pt-1">
                                 <button
@@ -376,33 +385,69 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                                             </div>
 
                                             {(canDelete(comment) || canReport(comment)) && (
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <button className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground/50 hover:text-muted-foreground shrink-0">
+                                                isMobile ? (
+                                                    <div className="relative shrink-0">
+                                                        <button
+                                                            className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground/50 hover:text-muted-foreground"
+                                                            onClick={() => setOpenMenuId(openMenuId === comment.id ? null : comment.id)}
+                                                        >
                                                             <MoreHorizontal className="h-4 w-4" />
                                                         </button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end" className="w-36">
-                                                        {canReport(comment) && (
-                                                            <DropdownMenuItem
-                                                                onClick={() => setReportComment(comment)}
-                                                                className="text-xs"
-                                                            >
-                                                                <Flag className="h-3.5 w-3.5 mr-2" />
-                                                                Raporla
-                                                            </DropdownMenuItem>
+                                                        {openMenuId === comment.id && (
+                                                            <>
+                                                                <div className="fixed inset-0 z-40" onClick={() => setOpenMenuId(null)} />
+                                                                <div className="absolute right-0 top-full mt-1 z-50 bg-popover border border-border rounded-md shadow-md py-1 min-w-[120px]">
+                                                                    {canReport(comment) && (
+                                                                        <button
+                                                                            onClick={() => { setReportComment(comment); setOpenMenuId(null) }}
+                                                                            className="flex items-center gap-2 w-full px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left"
+                                                                        >
+                                                                            <Flag className="h-3.5 w-3.5" />
+                                                                            Raporla
+                                                                        </button>
+                                                                    )}
+                                                                    {canDelete(comment) && (
+                                                                        <button
+                                                                            onClick={() => { setDeleteConfirmId(comment.id); setOpenMenuId(null) }}
+                                                                            className="flex items-center gap-2 w-full px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left text-destructive"
+                                                                        >
+                                                                            <Trash2 className="h-3.5 w-3.5" />
+                                                                            Sil
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </>
                                                         )}
-                                                        {canDelete(comment) && (
-                                                            <DropdownMenuItem
-                                                                onClick={() => setDeleteConfirmId(comment.id)}
-                                                                className="text-xs text-destructive focus:text-destructive"
-                                                            >
-                                                                <Trash2 className="h-3.5 w-3.5 mr-2" />
-                                                                Sil
-                                                            </DropdownMenuItem>
-                                                        )}
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
+                                                    </div>
+                                                ) : (
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger asChild>
+                                                            <button className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground/50 hover:text-muted-foreground shrink-0">
+                                                                <MoreHorizontal className="h-4 w-4" />
+                                                            </button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent align="end" className="w-36">
+                                                            {canReport(comment) && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() => setReportComment(comment)}
+                                                                    className="text-xs"
+                                                                >
+                                                                    <Flag className="h-3.5 w-3.5 mr-2" />
+                                                                    Raporla
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {canDelete(comment) && (
+                                                                <DropdownMenuItem
+                                                                    onClick={() => setDeleteConfirmId(comment.id)}
+                                                                    className="text-xs text-destructive focus:text-destructive"
+                                                                >
+                                                                    <Trash2 className="h-3.5 w-3.5 mr-2" />
+                                                                    Sil
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                )
                                             )}
                                         </div>
 
@@ -502,7 +547,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                 <Drawer open={open} onOpenChange={onOpenChange}>
                     <DrawerContent
                         className="overflow-hidden"
-                        style={{ display: "flex", flexDirection: "column", maxHeight: "85vh" }}
+                        style={{ display: "flex", flexDirection: "column", maxHeight: "75vh" }}
                     >
                         <DrawerHeader className="px-4 pb-2 shrink-0">
                             <DrawerTitle className="text-lg">Yorumlar</DrawerTitle>
