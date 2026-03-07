@@ -18,7 +18,7 @@ Canlı: [https://cukurova.app](https://cukurova.app)
 
 
 
-Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekilir, yapılandırılmış JSON formatında saklanır ve Next.js 16 altyapısı ile kullanıcıya sunulur.
+Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekilir, yapılandırılmış JSON formatında saklanır ve Next.js altyapısı ile kullanıcıya sunulur.
 
 ---
 
@@ -28,7 +28,7 @@ Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekili
 |---------|----------|
 | Günlük Menü | Gün gün kartlarda menü listeleme, kalori bilgisi |
 | Menü Arama | Geçmiş menülerde yemek adıyla arama |
-| Like / Dislike | Anonim beğeni sistemi, IP tabanlı rate limiting |
+| Like / Dislike | Kullanıcı başına bir reaksiyon, kimlik doğrulamalı sistem |
 | Google Giriş | NextAuth.js v5 + Google OAuth (JWT) |
 | Favoriler | Yemek favorileme, `/favorilerim` sayfası |
 | E-posta Bildirimi | Favori yemek menüde olduğunda Google SMTP ile bildirim |
@@ -36,6 +36,8 @@ Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekili
 | Yemek Detayı | Tıklama ile malzeme listesi ve görsel (scrape) |
 | Menü Paylaşımı | `html-to-image` ile görsel oluşturma ve paylaşım |
 | AI Prompt | ChatGPT, Claude, Grok, Perplexity için hazır prompt |
+| Yorum Sistemi | Tarihe göre yorum yapma, sayfalama, gerçek zamanlı polling, küfür filtresi |
+| Yorum Moderasyonu | Yorum silme (yazar veya moderatör), yorum raporlama + e-posta bildirimi |
 | Tema | Karanlık / aydınlık, sistem tercihi uyumlu |
 | Takvim | Mobilde bottom sheet, masaüstünde dialog |
 | Responsive | Masaüstü ve mobil için ayrı görünümler |
@@ -59,7 +61,7 @@ Veriler üniversitenin resmi web sitesinden **web scraping** yöntemiyle çekili
 
 | Kategori | Teknoloji |
 |----------|-----------|
-| Framework | Next.js 16 (App Router), React 19, TypeScript |
+| Framework | Next.js (App Router), React 19, TypeScript |
 | Stil | Tailwind CSS 4, shadcn/ui, Radix UI, Lucide React |
 | Veritabanı | PostgreSQL, Drizzle ORM |
 | Auth | NextAuth.js v5, Google OAuth |
@@ -92,6 +94,9 @@ pnpm dev                      # http://localhost:3000
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth |
 | `SMTP_USER` / `SMTP_PASS` | Google SMTP (bildirimler) |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics ID |
+| `NEXT_PUBLIC_AUTH_ENABLED` | Auth sistemini etkinleştirir/devre dışı bırakır (varsayılan: `true`) |
+| `MODERATOR_EMAIL` | Raporlanan yorumların bildirileceği e-posta adresi |
+| `MODERATOR_USER_ID` | Yorum silme yetkisine sahip moderatör kullanıcı ID'si |
 
 ---
 
@@ -100,7 +105,7 @@ pnpm dev                      # http://localhost:3000
 | Rota | Metot | Açıklama | Auth |
 |------|-------|----------|------|
 | `/api/auth/[...nextauth]` | GET/POST | OAuth handler | - |
-| `/api/reactions` | GET/POST | Like/dislike (rate limited) | Hayır |
+| `/api/reactions` | GET/POST | Like/dislike (kullanıcı başına) | Evet |
 | `/api/favorites` | GET/POST | Favori yemek toggle | Evet |
 | `/api/email-preferences` | GET/POST | E-posta bildirim tercihi | Evet |
 | `/api/daily-log` | GET/POST | Günlük kalori kaydı | Evet |
@@ -109,6 +114,10 @@ pnpm dev                      # http://localhost:3000
 | `/api/meal/:id` | GET | Yemek detayı (scrape) | Hayır |
 | `/api/menu/date/:date` | GET | Tarihe göre menü | Hayır |
 | `/api/menu/search` | GET | Menü arama | Hayır |
+| `/api/comments` | GET | Yorumları listele (`menuDate`, `limit`, `before`, `after`, `count` parametreleri) | Hayır |
+| `/api/comments` | POST | Yorum ekle (max 200 karakter, küfür filtreli, XSS korumalı) | Evet |
+| `/api/comments/[id]` | DELETE | Yorum sil (yazar veya moderatör) | Evet |
+| `/api/comments/[id]/report` | POST | Yorum raporla | Evet |
 
 ---
 
@@ -125,6 +134,9 @@ Schema: `lib/db/schema.ts` — PostgreSQL + Drizzle ORM
 | `favorites` | Favori yemekler (`user_id` + `meal_name` unique) |
 | `email_preferences` | E-posta bildirim tercihleri (`user_id` unique) |
 | `daily_logs` | Günlük kalori kayıtları (`user_id` + `date` unique) |
+| `user_reactions` | Kullanıcı başına like/dislike kaydı (`user_id` + `menu_date` unique) |
+| `comments` | Tarihe göre kullanıcı yorumları (`menu_date` indexed) |
+| `comment_reports` | Yorum şikayetleri (`comment_id` + `reporter_id` unique) |
 
 ---
 
@@ -153,7 +165,7 @@ Gerekli Secrets: `DATABASE_URL`, `SMTP_USER`, `SMTP_PASS`
 
 ## Korumalı Rotalar
 
-`middleware.ts` oturum açmamış kullanıcıları `/favorilerim` ve `/kalori-takibi` rotalarından ana sayfaya yönlendirir.
+`middleware.ts` oturum açmamış kullanıcıları `/favorilerim` ve `/kalori-takibi` rotalarından ana sayfaya yönlendirir. `NEXT_PUBLIC_AUTH_ENABLED=false` yapıldığında middleware devre dışı kalır.
 
 ---
 

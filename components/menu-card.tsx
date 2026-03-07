@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ChevronRight, Bookmark, CirclePlus, CircleCheck } from "lucide-react"
+import { ChevronRight, Bookmark, CirclePlus, CircleCheck, MessageSquare } from "lucide-react"
 import { motion } from "framer-motion"
 import {
     Table,
@@ -12,7 +12,7 @@ import {
     TableCell,
 } from "@/components/ui/table"
 import { LikeDislikeButtons } from "@/components/like-dislike-buttons"
-import { MenuShareBar } from "@/components/menu-share-bar"
+import { MenuShareButton } from "@/components/menu-share-bar"
 import { AuthDrawer } from "@/components/auth-drawer"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,6 +26,7 @@ import { useMenuData } from "@/components/menu-data-provider"
 import { CalorieGoalModal } from "@/components/calorie-goal-modal"
 import { toast } from "sonner"
 import { cn, toTitleCase } from "@/lib/utils"
+import { CommentsPanel } from "@/components/comments-panel"
 
 // AI Icons
 function ChatGptIcon({ className }: { className?: string }) {
@@ -69,6 +70,17 @@ function PerplexityIcon({ className }: { className?: string }) {
     return (
         <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
             <path d="M19.785 0v7.272H22.5V17.62h-2.935V24l-7.037-6.194v6.145h-1.091v-6.152L4.392 24v-6.465H1.5V7.188h2.884V0l7.053 6.494V.19h1.09v6.49L19.786 0zm-7.257 9.044v7.319l5.946 5.234V14.44l-5.946-5.397zm-1.099-.08l-5.946 5.398v7.235l5.946-5.234V8.965zm8.136 7.58h1.844V8.349H13.46l6.105 5.54v2.655zm-8.982-8.28H2.59v8.195h1.8v-2.576l6.192-5.62zM5.475 2.476v4.71h5.115l-5.115-4.71zm13.219 0l-5.115 4.71h5.115v-4.71z" />
+        </svg>
+    )
+}
+
+function KcalIcon({ className }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 500 500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
+            <path d="M49.4038 233.672V4.7713H89.3809V105.359L164.821 4.7713H212.536L134.839 105.036L214.47 233.672H169.335L110.659 136.309L89.3809 164.035V233.672H49.4038Z" />
+            <path d="M349.966 234.037C329.258 234.037 311.068 229.28 295.397 219.765C279.726 209.971 267.553 196.398 258.878 179.048C250.202 161.418 245.865 140.85 245.865 117.343C245.865 93.8362 250.202 73.4078 258.878 56.0575C267.553 38.4275 279.726 24.8551 295.397 15.3405C311.068 5.54604 329.258 0.648799 349.966 0.648799C375.432 0.648799 396.7 7.78477 413.77 22.0567C431.12 36.0488 441.894 55.6378 446.092 80.8236L402.856 83.7619C399.498 69.7698 393.202 58.9959 383.967 51.4402C374.732 43.6046 363.538 39.6868 350.386 39.6868C331.357 39.6868 316.525 46.6828 305.891 60.6749C295.257 74.3872 289.94 93.2766 289.94 117.343C289.94 141.409 295.257 160.439 305.891 174.431C316.525 188.143 331.357 194.999 350.386 194.999C363.818 194.999 375.292 191.081 384.806 183.246C394.601 175.13 401.037 163.237 404.116 147.566L447.351 150.085C443.154 175.55 432.24 195.979 414.61 211.37C396.98 226.481 375.432 234.037 349.966 234.037Z" />
+            <path d="M118.706 500.726C104.714 500.726 92.121 498.207 80.9273 493.17C69.7336 488.133 60.7787 480.997 54.0625 471.762C47.6261 462.527 44.4079 451.753 44.4079 439.44C44.4079 420.411 50.1447 405.719 61.6182 395.365C73.3716 384.731 91.0016 377.035 114.508 372.278L186.708 357.167C186.708 322.466 171.596 305.116 141.373 305.116C127.381 305.116 116.467 308.334 108.632 314.771C100.796 321.207 95.4791 330.162 92.6807 341.635L48.1858 338.697C52.3834 317.429 62.5977 300.219 78.8285 287.066C95.0594 273.914 115.908 267.337 141.373 267.337C169.917 267.337 191.605 275.453 206.437 291.684C221.548 307.914 229.104 330.302 229.104 358.846V446.996C229.104 452.033 230.083 455.671 232.042 457.91C234.281 459.869 237.639 460.848 242.116 460.848H254.709V495.689C253.03 495.968 250.232 496.248 246.314 496.528C242.676 496.808 239.038 496.948 235.4 496.948C209.655 496.948 194.403 485.894 189.646 463.787C184.049 474.7 174.814 483.655 161.942 490.651C149.349 497.368 134.937 500.726 118.706 500.726ZM125.002 465.885C145.431 465.885 160.822 460.708 171.176 450.354C181.531 439.72 186.708 425.588 186.708 407.958V390.748L124.583 403.341C111.15 406.139 101.776 410.197 96.4586 415.514C91.1416 420.551 88.4831 427.407 88.4831 436.082C88.4831 445.597 91.7012 453.013 98.1376 458.33C104.574 463.367 113.529 465.885 125.002 465.885Z" />
+            <path d="M293.502 494.803V460.919H355.623V325.383C355.623 312.415 349.139 305.931 336.171 305.931H299.777V272.047H343.701C380.095 272.047 398.292 290.14 398.292 326.325V460.919H451.627V494.803H293.502Z" />
         </svg>
     )
 }
@@ -158,8 +170,17 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const [authDrawerMessage, setAuthDrawerMessage] = useState("")
     const [showCalorieGoalModal, setShowCalorieGoalModal] = useState(false)
     const [pendingMeal, setPendingMeal] = useState<{ name: string; calories: number; id: string } | null>(null)
+    const [showComments, setShowComments] = useState(false)
+    const [commentCount, setCommentCount] = useState<number | null>(null)
     const prompt = generateAiPrompt(day)
     const links = getAiLinks(prompt)
+
+    useEffect(() => {
+        fetch(`/api/comments?menuDate=${day.date}&count=true`)
+            .then((r) => r.json())
+            .then((d) => setCommentCount(d.count ?? 0))
+            .catch(() => setCommentCount(0))
+    }, [day.date])
 
     const handleFavoriteClick = async (e: React.MouseEvent, mealName: string, mealId?: string) => {
         e.stopPropagation()
@@ -329,119 +350,170 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
 
             {/* Footer */}
             <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button suppressHydrationWarning size="sm" className="h-7 text-xs bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 border-0 transition-colors gap-1.5 px-2.5">
-                            <MagicIcon className="w-3.5 h-3.5" />
-                            <span className="font-medium">Yapay Zekâya Sor</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-44">
-                        <DropdownMenuLabel className="text-xs">Model Seçin</DropdownMenuLabel>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.chatgpt}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <ChatGptIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">ChatGPT</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
-                                >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.claude}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <ClaudeBrandIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">Claude</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
-                                >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.grok}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <GrokIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">Grok</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
-                                >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.perplexity}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <PerplexityIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">Perplexity</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
-                                >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <div className="px-2 py-1.5 border-t border-border/40 mt-1">
-                            <p className="text-[10px] text-muted-foreground/60 leading-tight font-medium">
-                                Menü Asistanı (AI) hata yapabilir.
-                            </p>
-                        </div>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    Toplam Kalori:
-                    <span className={`inline-block w-2 h-2 rounded-full ${day.totalCalories < 800 ? 'bg-green-500' : day.totalCalories < 1100 ? 'bg-amber-500' : 'bg-red-500'}`} />
-                    <span className="font-mono text-foreground/80">{day.totalCalories} kcal</span>
-                </span>
-            </div>
+                {/* Sol: Yorumlar, Kalori, AI */}
+                <div className="flex items-center gap-1.5">
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 text-xs gap-1.5 px-2.5 border-border/40"
+                        onClick={() => setShowComments(true)}
+                    >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span className="font-medium">Yorumlar</span>
+                        {commentCount === null ? (
+                            <span className="h-4 w-6 rounded bg-muted-foreground/20 animate-pulse" />
+                        ) : commentCount > 0 ? (
+                            <span className="inline-flex items-center justify-center rounded px-1 py-0 text-[10px] font-semibold tabular-nums bg-muted text-muted-foreground/70 leading-4 min-w-[20px]">
+                                {commentCount}
+                            </span>
+                        ) : null}
+                    </Button>
 
-            {/* Menu Share Bar */}
-            <MenuShareBar day={day} />
+                    {/* AI Dropdown */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                suppressHydrationWarning
+                                size="sm"
+                                variant="outline"
+                                className="h-7 w-7 p-0 border-border/40 transition-colors"
+                                title="Menüyü yapay zekaya yorumlat"
+                            >
+                                <MagicIcon className="w-3.5 h-3.5" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-48">
+                            <DropdownMenuLabel className="text-xs font-semibold">Model Seçin</DropdownMenuLabel>
+                            <p className="px-2 pb-1.5 text-[12px] text-muted-foreground/60 leading-tight">
+                                Menüyü yapay zekaya yorumlatarak fikir edinin.
+                            </p>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.chatgpt}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
+                                >
+                                    <ChatGptIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">ChatGPT</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.claude}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
+                                >
+                                    <ClaudeBrandIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">Claude</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.grok}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
+                                >
+                                    <GrokIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">Grok</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.perplexity}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
+                                >
+                                    <PerplexityIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">Perplexity</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    {/* Kalori Dropdown */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                suppressHydrationWarning
+                                size="sm"
+                                variant="outline"
+                                className="h-7 w-7 p-0 border-border/40 transition-colors"
+                                title="Toplam Kalori"
+                            >
+                                <KcalIcon
+                                    className={`w-4 h-4 ${day.totalCalories < 800
+                                        ? 'text-green-500'
+                                        : day.totalCalories < 1100
+                                            ? 'text-amber-500'
+                                            : 'text-red-500'
+                                        }`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-56">
+                            <DropdownMenuLabel className="text-xs font-semibold">Toplam Kalori</DropdownMenuLabel>
+                            <p className="px-2 pb-1.5 text-[12px] text-muted-foreground/60 leading-tight">
+                                Bu menünün toplam kalorisi,
+                                {" "}
+                                <span
+                                    className={`inline-block w-2 h-2 rounded-full align-middle ${day.totalCalories < 800
+                                        ? 'bg-green-500'
+                                        : day.totalCalories < 1100
+                                            ? 'bg-amber-500'
+                                            : 'bg-red-500'
+                                        }`}
+                                />
+                                {" "}
+                                <span className="font-mono font-semibold text-foreground/80">{day.totalCalories}</span>
+                                {" kcal şeklindedir."}
+                            </p>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+
+                {/* Sağ: Share */}
+                <MenuShareButton day={day} />
+            </div>
 
             {/* Auth Drawer for unauthenticated users */}
             <AuthDrawer
@@ -459,6 +531,22 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                 }}
                 currentGoal={calorieGoal}
                 onGoalSet={handleCalorieGoalSet}
+            />
+
+            {/* Comments Panel */}
+            <CommentsPanel
+                open={showComments}
+                onOpenChange={(open) => {
+                    setShowComments(open)
+                    if (!open) {
+                        // Panel kapandığında sayacı güncelle
+                        fetch(`/api/comments?menuDate=${day.date}&count=true`)
+                            .then((r) => r.json())
+                            .then((d) => setCommentCount(d.count ?? 0))
+                            .catch(() => { })
+                    }
+                }}
+                menuDate={day.date}
             />
         </Card>
     )

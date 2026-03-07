@@ -1,10 +1,8 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
-import { Avatar, AvatarFallback, AvatarImage, AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar"
+import { useState, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, Download, Copy, Share2, Loader2, Check } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { Download, Copy, Share2, Loader2, Check } from "lucide-react"
 import { toPng } from "html-to-image"
 import {
     Dialog,
@@ -14,7 +12,6 @@ import {
     DialogDescription,
     DialogFooter,
 } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
 
 // Types
 interface Meal {
@@ -345,62 +342,12 @@ function ShareDialog({
     )
 }
 
-export function MenuShareBar({ day }: MenuShareBarProps) {
-    const [imagesLoaded, setImagesLoaded] = useState(false)
+export function MenuShareButton({ day }: MenuShareBarProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isGenerating, setIsGenerating] = useState(false)
     const [generatedImage, setGeneratedImage] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
     const templateRef = useRef<HTMLDivElement>(null)
-
-    // Sahte kullanıcılar - İleride gerçek data ile değiştirilebilir
-    const sampleUsers = [
-        { id: 1, name: "Cem Yılmaz", avatar: "/avatar-share-1.png" },
-        { id: 2, name: "Cem Yılmaz", avatar: "/avatar-share-2.png" },
-        { id: 3, name: "Cem Yılmaz", avatar: "/avatar-share-3.png" },
-    ]
-
-    // Resimleri preload et
-    useEffect(() => {
-        const imageUrls = sampleUsers.map(user => user.avatar)
-        let loadedCount = 0
-        let timeoutId: NodeJS.Timeout
-
-        const preloadImages = imageUrls.map(src => {
-            return new Promise<void>((resolve) => {
-                const img = new Image()
-                img.onload = () => {
-                    loadedCount++
-                    if (loadedCount === imageUrls.length) {
-                        setImagesLoaded(true)
-                    }
-                    resolve()
-                }
-                img.onerror = () => {
-                    loadedCount++
-                    if (loadedCount === imageUrls.length) {
-                        setImagesLoaded(true)
-                    }
-                    resolve()
-                }
-                img.src = src
-            })
-        })
-
-        Promise.all(preloadImages)
-
-        // Fallback: Show share bar after 2 seconds even if images haven't loaded
-        timeoutId = setTimeout(() => {
-            if (!imagesLoaded) {
-                console.warn("Images took too long to load, showing share bar anyway")
-                setImagesLoaded(true)
-            }
-        }, 2000)
-
-        return () => {
-            if (timeoutId) clearTimeout(timeoutId)
-        }
-    }, [])
 
     // Generate image function
     const generateImage = useCallback(async () => {
@@ -529,78 +476,22 @@ export function MenuShareBar({ day }: MenuShareBarProps) {
         }
     }, [generatedImage, day.date, handleDownload])
 
-    // Always show share button on mobile, will fallback to download if share fails
-
     return (
         <>
             {/* Hidden template for image generation */}
             <ShareableMenuTemplate day={day} templateRef={templateRef} />
 
-            <div className="border-t border-border/40 bg-gradient-to-r from-muted/30 via-muted/20 to-muted/30 overflow-hidden">
-                <AnimatePresence>
-                    {imagesLoaded && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -20, height: 0 }}
-                            animate={{ opacity: 1, y: 0, height: "auto" }}
-                            exit={{ opacity: 0, y: -20, height: 0 }}
-                            transition={{
-                                duration: 0.35,
-                                ease: [0.25, 0.46, 0.45, 0.94],
-                                height: { duration: 0.3 }
-                            }}
-                            className="px-3 py-2.5"
-                        >
-                            <div className="flex items-center justify-between gap-3">
-                                {/* Sol Kısım - Avatarlar ve Text */}
-                                <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                                    {/* Avatar Grubu */}
-                                    <AvatarGroup>
-                                        {sampleUsers.map((user) => (
-                                            <Avatar
-                                                key={user.id}
-                                                className="size-7 border-2 border-background hover:scale-110 hover:z-10 transition-transform cursor-pointer"
-                                            >
-                                                <AvatarImage src={user.avatar} alt={user.name} />
-                                                <AvatarFallback className="text-[10px] font-medium bg-gradient-to-br from-primary/20 to-primary/10">
-                                                    {user.name.split(' ').map(n => n[0]).join('')}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        ))}
-
-                                        {/* +7 Statik Badge */}
-                                        <AvatarGroupCount className="size-7 z-10 hover:scale-110 transition-transform cursor-pointer">
-                                            +7
-                                        </AvatarGroupCount>
-                                    </AvatarGroup>
-
-                                    {/* Text - Clickable */}
-                                    <button
-                                        onClick={handleShareClick}
-                                        className="text-xs text-muted-foreground/80 leading-tight flex-1 min-w-0 text-left transition-colors cursor-pointer"
-                                    >
-                                        Sende bu menüyü arkadaşlarınla{" "}
-                                        <span className="font-semibold text-foreground">hemen paylaş!</span>
-                                    </button>
-                                </div>
-
-                                {/* Sağ Kısım - Share Butonu */}
-                                <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={handleShareClick}
-                                    className="h-8 w-8 p-0 rounded-full bg-muted/50 hover:bg-muted border border-border/40 hover:border-border/60 transition-all group relative overflow-hidden"
-                                >
-                                    {/* Hover gradient background */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                                    {/* Icon - No hover animation */}
-                                    <ChevronRight className="h-4 w-4 text-foreground/70 group-hover:text-foreground transition-colors relative z-10" />
-                                </Button>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
+            <Button
+                suppressHydrationWarning
+                size="sm"
+                variant="outline"
+                onClick={handleShareClick}
+                className="h-7 text-xs gap-1.5 px-2.5 border-border/40 transition-colors"
+                title="Paylaş"
+            >
+                <Share2 className="w-3.5 h-3.5" />
+                <span className="font-medium">Paylaş</span>
+            </Button>
 
             {/* Share Dialog */}
             <ShareDialog

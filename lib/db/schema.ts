@@ -9,6 +9,7 @@ import {
     serial,
     uniqueIndex,
     boolean,
+    index,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -161,5 +162,43 @@ export const userReactions = pgTable(
     },
     (table) => [
         uniqueIndex("user_reactions_user_date_idx").on(table.userId, table.menuDate),
+    ]
+);
+
+// ==========================================
+// Comment Tables
+// ==========================================
+
+export const comments = pgTable(
+    "comments",
+    {
+        id: serial("id").primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        menuDate: text("menu_date").notNull(),
+        content: text("content").notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        index("comments_menu_date_id_idx").on(table.menuDate, table.id),
+    ]
+);
+
+export const commentReports = pgTable(
+    "comment_reports",
+    {
+        id: serial("id").primaryKey(),
+        commentId: integer("comment_id")
+            .notNull()
+            .references(() => comments.id, { onDelete: "cascade" }),
+        reporterId: text("reporter_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        reason: text("reason").notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        uniqueIndex("comment_reports_unique_idx").on(table.commentId, table.reporterId),
     ]
 );
