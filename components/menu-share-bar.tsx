@@ -486,10 +486,11 @@ export function MenuShareButton({ day }: MenuShareBarProps) {
                 size="sm"
                 variant="outline"
                 onClick={handleShareClick}
-                className="h-7 w-7 p-0 border-border/40 transition-colors"
+                className="h-7 text-xs gap-1.5 px-2.5 border-border/40 transition-colors"
                 title="Paylaş"
             >
                 <Share2 className="w-3.5 h-3.5" />
+                <span className="font-medium">Paylaş</span>
             </Button>
 
             {/* Share Dialog */}

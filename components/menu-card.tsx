@@ -74,6 +74,17 @@ function PerplexityIcon({ className }: { className?: string }) {
     )
 }
 
+function KcalIcon({ className }: { className?: string }) {
+    return (
+        <svg viewBox="0 0 500 500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className={className}>
+            <path d="M49.4038 233.672V4.7713H89.3809V105.359L164.821 4.7713H212.536L134.839 105.036L214.47 233.672H169.335L110.659 136.309L89.3809 164.035V233.672H49.4038Z" />
+            <path d="M349.966 234.037C329.258 234.037 311.068 229.28 295.397 219.765C279.726 209.971 267.553 196.398 258.878 179.048C250.202 161.418 245.865 140.85 245.865 117.343C245.865 93.8362 250.202 73.4078 258.878 56.0575C267.553 38.4275 279.726 24.8551 295.397 15.3405C311.068 5.54604 329.258 0.648799 349.966 0.648799C375.432 0.648799 396.7 7.78477 413.77 22.0567C431.12 36.0488 441.894 55.6378 446.092 80.8236L402.856 83.7619C399.498 69.7698 393.202 58.9959 383.967 51.4402C374.732 43.6046 363.538 39.6868 350.386 39.6868C331.357 39.6868 316.525 46.6828 305.891 60.6749C295.257 74.3872 289.94 93.2766 289.94 117.343C289.94 141.409 295.257 160.439 305.891 174.431C316.525 188.143 331.357 194.999 350.386 194.999C363.818 194.999 375.292 191.081 384.806 183.246C394.601 175.13 401.037 163.237 404.116 147.566L447.351 150.085C443.154 175.55 432.24 195.979 414.61 211.37C396.98 226.481 375.432 234.037 349.966 234.037Z" />
+            <path d="M118.706 500.726C104.714 500.726 92.121 498.207 80.9273 493.17C69.7336 488.133 60.7787 480.997 54.0625 471.762C47.6261 462.527 44.4079 451.753 44.4079 439.44C44.4079 420.411 50.1447 405.719 61.6182 395.365C73.3716 384.731 91.0016 377.035 114.508 372.278L186.708 357.167C186.708 322.466 171.596 305.116 141.373 305.116C127.381 305.116 116.467 308.334 108.632 314.771C100.796 321.207 95.4791 330.162 92.6807 341.635L48.1858 338.697C52.3834 317.429 62.5977 300.219 78.8285 287.066C95.0594 273.914 115.908 267.337 141.373 267.337C169.917 267.337 191.605 275.453 206.437 291.684C221.548 307.914 229.104 330.302 229.104 358.846V446.996C229.104 452.033 230.083 455.671 232.042 457.91C234.281 459.869 237.639 460.848 242.116 460.848H254.709V495.689C253.03 495.968 250.232 496.248 246.314 496.528C242.676 496.808 239.038 496.948 235.4 496.948C209.655 496.948 194.403 485.894 189.646 463.787C184.049 474.7 174.814 483.655 161.942 490.651C149.349 497.368 134.937 500.726 118.706 500.726ZM125.002 465.885C145.431 465.885 160.822 460.708 171.176 450.354C181.531 439.72 186.708 425.588 186.708 407.958V390.748L124.583 403.341C111.15 406.139 101.776 410.197 96.4586 415.514C91.1416 420.551 88.4831 427.407 88.4831 436.082C88.4831 445.597 91.7012 453.013 98.1376 458.33C104.574 463.367 113.529 465.885 125.002 465.885Z" />
+            <path d="M293.502 494.803V460.919H355.623V325.383C355.623 312.415 349.139 305.931 336.171 305.931H299.777V272.047H343.701C380.095 272.047 398.292 290.14 398.292 326.325V460.919H451.627V494.803H293.502Z" />
+        </svg>
+    )
+}
+
 // Helper Functions
 function formatDayName(dateString: string) {
     const date = new Date(dateString)
@@ -339,6 +350,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
 
             {/* Footer */}
             <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2">
+                {/* Sol: Yorumlar, Kalori, AI */}
                 <div className="flex items-center gap-1.5">
                     <Button
                         size="sm"
@@ -357,14 +369,24 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                         ) : null}
                     </Button>
 
+                    {/* AI Dropdown */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button suppressHydrationWarning size="sm" variant="outline" className="h-7 w-7 p-0 border-border/40 transition-colors">
+                            <Button
+                                suppressHydrationWarning
+                                size="sm"
+                                variant="outline"
+                                className="h-7 w-7 p-0 border-border/40 transition-colors"
+                                title="Menüyü yapay zekaya yorumlat"
+                            >
                                 <MagicIcon className="w-3.5 h-3.5" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start" className="w-44">
-                            <DropdownMenuLabel className="text-xs">Model Seçin</DropdownMenuLabel>
+                        <DropdownMenuContent align="start" className="w-48">
+                            <DropdownMenuLabel className="text-xs font-semibold">Model Seçin</DropdownMenuLabel>
+                            <p className="px-2 pb-1.5 text-[12px] text-muted-foreground/60 leading-tight">
+                                Menüyü yapay zekaya yorumlatarak fikir edinin.
+                            </p>
                             <DropdownMenuItem asChild>
                                 <motion.a
                                     href={links.chatgpt}
@@ -377,9 +399,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                     <span className="text-xs text-foreground/80">ChatGPT</span>
                                     <motion.span
                                         className="ml-auto"
-                                        variants={{
-                                            hover: { opacity: 1, x: 0 }
-                                        }}
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
                                         initial={{ opacity: 0, x: -4 }}
                                         transition={{ duration: 0.15 }}
                                     >
@@ -399,9 +419,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                     <span className="text-xs text-foreground/80">Claude</span>
                                     <motion.span
                                         className="ml-auto"
-                                        variants={{
-                                            hover: { opacity: 1, x: 0 }
-                                        }}
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
                                         initial={{ opacity: 0, x: -4 }}
                                         transition={{ duration: 0.15 }}
                                     >
@@ -421,9 +439,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                     <span className="text-xs text-foreground/80">Grok</span>
                                     <motion.span
                                         className="ml-auto"
-                                        variants={{
-                                            hover: { opacity: 1, x: 0 }
-                                        }}
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
                                         initial={{ opacity: 0, x: -4 }}
                                         transition={{ duration: 0.15 }}
                                     >
@@ -443,9 +459,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                     <span className="text-xs text-foreground/80">Perplexity</span>
                                     <motion.span
                                         className="ml-auto"
-                                        variants={{
-                                            hover: { opacity: 1, x: 0 }
-                                        }}
+                                        variants={{ hover: { opacity: 1, x: 0 } }}
                                         initial={{ opacity: 0, x: -4 }}
                                         transition={{ duration: 0.15 }}
                                     >
@@ -453,22 +467,52 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                     </motion.span>
                                 </motion.a>
                             </DropdownMenuItem>
-                            <div className="px-2 py-1.5 border-t border-border/40 mt-1">
-                                <p className="text-[10px] text-muted-foreground/60 leading-tight font-medium">
-                                    Menü Asistanı (AI) hata yapabilir.
-                                </p>
-                            </div>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
-                    <MenuShareButton day={day} />
+                    {/* Kalori Dropdown */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                suppressHydrationWarning
+                                size="sm"
+                                variant="outline"
+                                className="h-7 w-7 p-0 border-border/40 transition-colors"
+                                title="Toplam Kalori"
+                            >
+                                <KcalIcon
+                                    className={`w-4 h-4 ${day.totalCalories < 800
+                                        ? 'text-green-500'
+                                        : day.totalCalories < 1100
+                                            ? 'text-amber-500'
+                                            : 'text-red-500'
+                                        }`}
+                                />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-56">
+                            <DropdownMenuLabel className="text-xs font-semibold">Toplam Kalori</DropdownMenuLabel>
+                            <p className="px-2 pb-1.5 text-[12px] text-muted-foreground/60 leading-tight">
+                                Bu menünün toplam kalorisi,
+                                {" "}
+                                <span
+                                    className={`inline-block w-2 h-2 rounded-full align-middle ${day.totalCalories < 800
+                                        ? 'bg-green-500'
+                                        : day.totalCalories < 1100
+                                            ? 'bg-amber-500'
+                                            : 'bg-red-500'
+                                        }`}
+                                />
+                                {" "}
+                                <span className="font-mono font-semibold text-foreground/80">{day.totalCalories}</span>
+                                {" kcal şeklindedir."}
+                            </p>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
 
-                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    Kalori:
-                    <span className={`inline-block w-2 h-2 rounded-full ${day.totalCalories < 800 ? 'bg-green-500' : day.totalCalories < 1100 ? 'bg-amber-500' : 'bg-red-500'}`} />
-                    <span className="font-mono text-foreground/80">{day.totalCalories} kcal</span>
-                </span>
+                {/* Sağ: Share */}
+                <MenuShareButton day={day} />
             </div>
 
             {/* Auth Drawer for unauthenticated users */}

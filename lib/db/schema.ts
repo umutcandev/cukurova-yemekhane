@@ -181,7 +181,7 @@ export const comments = pgTable(
         createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     },
     (table) => [
-        index("comments_menu_date_idx").on(table.menuDate),
+        index("comments_menu_date_id_idx").on(table.menuDate, table.id),
     ]
 );
 
