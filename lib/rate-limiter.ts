@@ -3,33 +3,44 @@
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
 const WINDOW_MS = 60 * 1000; // 1 minute window
-const MAX_REQUESTS = 10; // 10 requests per window
+const DEFAULT_MAX_REQUESTS = 10; // Default: 10 requests per window
 
-export function checkRateLimit(ip: string): { allowed: boolean; remaining: number; resetIn: number } {
+interface RateLimitOptions {
+    prefix?: string;
+    maxRequests?: number;
+}
+
+export function checkRateLimit(
+    identifier: string,
+    options?: RateLimitOptions
+): { allowed: boolean; remaining: number; resetIn: number } {
+    const prefix = options?.prefix ?? "default";
+    const maxRequests = options?.maxRequests ?? DEFAULT_MAX_REQUESTS;
+    const key = `${prefix}:${identifier}`;
     const now = Date.now();
-    const record = rateLimitStore.get(ip);
+    const record = rateLimitStore.get(key);
 
-    // Clean up expired entries periodically
-    if (rateLimitStore.size > 1000) {
-        for (const [key, value] of rateLimitStore.entries()) {
+    // Clean up expired entries periodically (lowered threshold for earlier cleanup)
+    if (rateLimitStore.size > 500) {
+        for (const [k, value] of rateLimitStore.entries()) {
             if (now > value.resetTime) {
-                rateLimitStore.delete(key);
+                rateLimitStore.delete(k);
             }
         }
     }
 
     if (!record || now > record.resetTime) {
         // New window
-        rateLimitStore.set(ip, { count: 1, resetTime: now + WINDOW_MS });
-        return { allowed: true, remaining: MAX_REQUESTS - 1, resetIn: WINDOW_MS };
+        rateLimitStore.set(key, { count: 1, resetTime: now + WINDOW_MS });
+        return { allowed: true, remaining: maxRequests - 1, resetIn: WINDOW_MS };
     }
 
-    if (record.count >= MAX_REQUESTS) {
+    if (record.count >= maxRequests) {
         return { allowed: false, remaining: 0, resetIn: record.resetTime - now };
     }
 
     record.count++;
-    return { allowed: true, remaining: MAX_REQUESTS - record.count, resetIn: record.resetTime - now };
+    return { allowed: true, remaining: maxRequests - record.count, resetIn: record.resetTime - now };
 }
 
 // Validate date format (YYYY-MM-DD)
@@ -44,3 +55,14 @@ export function isValidDateFormat(dateStr: string): boolean {
         date.getMonth() === month - 1 &&
         date.getDate() === day;
 }
+
+// Periodic cleanup every 5 minutes to prevent memory leaks
+// This runs independently of the threshold-based cleanup in checkRateLimit
+setInterval(() => {
+    const now = Date.now();
+    for (const [k, value] of rateLimitStore.entries()) {
+        if (now > value.resetTime) {
+            rateLimitStore.delete(k);
+        }
+    }
+}, 5 * 60 * 1000);

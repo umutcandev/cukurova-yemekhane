@@ -23,7 +23,7 @@ export function Header() {
                     <div className="flex items-center justify-between">
                         <div className="relative h-9 w-40 md:w-48">
                             <Image
-                                src="/logo-cu.png"
+                                src="/logo-cu.svg"
                                 alt="ÇÜ Yemekhane"
                                 fill
                                 className="object-contain object-left"

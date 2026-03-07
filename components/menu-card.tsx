@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ChevronRight, Bookmark, CirclePlus, CircleCheck } from "lucide-react"
+import { ChevronRight, Bookmark, CirclePlus, CircleCheck, MessageSquare } from "lucide-react"
 import { motion } from "framer-motion"
 import {
     Table,
@@ -12,7 +12,7 @@ import {
     TableCell,
 } from "@/components/ui/table"
 import { LikeDislikeButtons } from "@/components/like-dislike-buttons"
-import { MenuShareBar } from "@/components/menu-share-bar"
+import { MenuShareButton } from "@/components/menu-share-bar"
 import { AuthDrawer } from "@/components/auth-drawer"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,6 +26,7 @@ import { useMenuData } from "@/components/menu-data-provider"
 import { CalorieGoalModal } from "@/components/calorie-goal-modal"
 import { toast } from "sonner"
 import { cn, toTitleCase } from "@/lib/utils"
+import { CommentsPanel } from "@/components/comments-panel"
 
 // AI Icons
 function ChatGptIcon({ className }: { className?: string }) {
@@ -158,8 +159,17 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const [authDrawerMessage, setAuthDrawerMessage] = useState("")
     const [showCalorieGoalModal, setShowCalorieGoalModal] = useState(false)
     const [pendingMeal, setPendingMeal] = useState<{ name: string; calories: number; id: string } | null>(null)
+    const [showComments, setShowComments] = useState(false)
+    const [commentCount, setCommentCount] = useState<number | null>(null)
     const prompt = generateAiPrompt(day)
     const links = getAiLinks(prompt)
+
+    useEffect(() => {
+        fetch(`/api/comments?menuDate=${day.date}&count=true`)
+            .then((r) => r.json())
+            .then((d) => setCommentCount(d.count ?? 0))
+            .catch(() => setCommentCount(0))
+    }, [day.date])
 
     const handleFavoriteClick = async (e: React.MouseEvent, mealName: string, mealId?: string) => {
         e.stopPropagation()
@@ -329,119 +339,137 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
 
             {/* Footer */}
             <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button suppressHydrationWarning size="sm" className="h-7 text-xs bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 border-0 transition-colors gap-1.5 px-2.5">
-                            <MagicIcon className="w-3.5 h-3.5" />
-                            <span className="font-medium">Yapay Zekâya Sor</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-44">
-                        <DropdownMenuLabel className="text-xs">Model Seçin</DropdownMenuLabel>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.chatgpt}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <ChatGptIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">ChatGPT</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
+                <div className="flex items-center gap-1.5">
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 text-xs gap-1.5 px-2.5 border-border/40"
+                        onClick={() => setShowComments(true)}
+                    >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span className="font-medium">Yorumlar</span>
+                        {commentCount === null ? (
+                            <span className="h-4 w-6 rounded bg-muted-foreground/20 animate-pulse" />
+                        ) : commentCount > 0 ? (
+                            <span className="inline-flex items-center justify-center rounded px-1 py-0 text-[10px] font-semibold tabular-nums bg-muted text-muted-foreground/70 leading-4 min-w-[20px]">
+                                {commentCount}
+                            </span>
+                        ) : null}
+                    </Button>
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button suppressHydrationWarning size="sm" variant="outline" className="h-7 w-7 p-0 border-border/40 transition-colors">
+                                <MagicIcon className="w-3.5 h-3.5" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-44">
+                            <DropdownMenuLabel className="text-xs">Model Seçin</DropdownMenuLabel>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.chatgpt}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
                                 >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.claude}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <ClaudeBrandIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">Claude</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
+                                    <ChatGptIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">ChatGPT</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{
+                                            hover: { opacity: 1, x: 0 }
+                                        }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.claude}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
                                 >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.grok}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <GrokIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">Grok</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
+                                    <ClaudeBrandIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">Claude</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{
+                                            hover: { opacity: 1, x: 0 }
+                                        }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.grok}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
                                 >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <motion.a
-                                href={links.perplexity}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cursor-pointer group"
-                                whileHover="hover"
-                            >
-                                <PerplexityIcon className="h-4 w-4 text-foreground/80" />
-                                <span className="text-xs text-foreground/80">Perplexity</span>
-                                <motion.span
-                                    className="ml-auto"
-                                    variants={{
-                                        hover: { opacity: 1, x: 0 }
-                                    }}
-                                    initial={{ opacity: 0, x: -4 }}
-                                    transition={{ duration: 0.15 }}
+                                    <GrokIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">Grok</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{
+                                            hover: { opacity: 1, x: 0 }
+                                        }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <motion.a
+                                    href={links.perplexity}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="cursor-pointer group"
+                                    whileHover="hover"
                                 >
-                                    <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
-                                </motion.span>
-                            </motion.a>
-                        </DropdownMenuItem>
-                        <div className="px-2 py-1.5 border-t border-border/40 mt-1">
-                            <p className="text-[10px] text-muted-foreground/60 leading-tight font-medium">
-                                Menü Asistanı (AI) hata yapabilir.
-                            </p>
-                        </div>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                                    <PerplexityIcon className="h-4 w-4 text-foreground/80" />
+                                    <span className="text-xs text-foreground/80">Perplexity</span>
+                                    <motion.span
+                                        className="ml-auto"
+                                        variants={{
+                                            hover: { opacity: 1, x: 0 }
+                                        }}
+                                        initial={{ opacity: 0, x: -4 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                    </motion.span>
+                                </motion.a>
+                            </DropdownMenuItem>
+                            <div className="px-2 py-1.5 border-t border-border/40 mt-1">
+                                <p className="text-[10px] text-muted-foreground/60 leading-tight font-medium">
+                                    Menü Asistanı (AI) hata yapabilir.
+                                </p>
+                            </div>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    <MenuShareButton day={day} />
+                </div>
+
                 <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    Toplam Kalori:
+                    Kalori:
                     <span className={`inline-block w-2 h-2 rounded-full ${day.totalCalories < 800 ? 'bg-green-500' : day.totalCalories < 1100 ? 'bg-amber-500' : 'bg-red-500'}`} />
                     <span className="font-mono text-foreground/80">{day.totalCalories} kcal</span>
                 </span>
             </div>
-
-            {/* Menu Share Bar */}
-            <MenuShareBar day={day} />
 
             {/* Auth Drawer for unauthenticated users */}
             <AuthDrawer
@@ -459,6 +487,22 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                 }}
                 currentGoal={calorieGoal}
                 onGoalSet={handleCalorieGoalSet}
+            />
+
+            {/* Comments Panel */}
+            <CommentsPanel
+                open={showComments}
+                onOpenChange={(open) => {
+                    setShowComments(open)
+                    if (!open) {
+                        // Panel kapandığında sayacı güncelle
+                        fetch(`/api/comments?menuDate=${day.date}&count=true`)
+                            .then((r) => r.json())
+                            .then((d) => setCommentCount(d.count ?? 0))
+                            .catch(() => { })
+                    }
+                }}
+                menuDate={day.date}
             />
         </Card>
     )

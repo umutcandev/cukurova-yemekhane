@@ -29,12 +29,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
+                token.isModerator = user.id === process.env.MODERATOR_USER_ID;
             }
             return token;
         },
         async session({ session, token }) {
             if (session.user && token.id) {
                 session.user.id = token.id as string;
+                session.user.isModerator = token.isModerator as boolean;
             }
             return session;
         },
