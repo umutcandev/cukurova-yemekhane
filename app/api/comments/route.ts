@@ -218,6 +218,14 @@ export async function POST(request: NextRequest) {
         // XSS defense-in-depth: iteratively strip all HTML tags (handles nested/malformed tags)
         const sanitizedContent = sanitizeHtml(trimmedContent);
 
+        // Reject if sanitization removed all content (e.g. pure HTML/XSS payloads)
+        if (sanitizedContent.trim().length === 0) {
+            return NextResponse.json(
+                { error: "Yorum metni geçersiz içerik barındırmaktadır." },
+                { status: 400 }
+            );
+        }
+
         // Profanity check
         if (containsBadWord(sanitizedContent)) {
             return NextResponse.json(
