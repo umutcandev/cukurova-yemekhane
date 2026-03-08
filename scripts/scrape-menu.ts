@@ -7,40 +7,35 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function main() {
-  // Scraping yapıldıktan sonra finally bloğunda ay klasörünü temizlemek için
-  // month bilgisini dışarıda tutuyoruz
-  let savedMonth: string | null = null;
-
   try {
     console.log('🚀 Scraping başlatılıyor...\n');
 
+    // Scraping işlemini çalıştır
     const menuData = await scrapeFullMonth();
-    savedMonth = menuData.month;
 
-    // Ay klasörünü belirle: public/data/2026-02/
+    // public/data klasörünü oluştur (yoksa)
     const dataDir = path.join(__dirname, '..', 'public', 'data');
-    const monthDir = path.join(dataDir, menuData.month);
-
-    // Klasörü oluştur (yoksa)
-    if (!fs.existsSync(monthDir)) {
-      fs.mkdirSync(monthDir, { recursive: true });
-      console.log(`📁 Klasör oluşturuldu: public/data/${menuData.month}/`);
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+      console.log('📁 public/data klasörü oluşturuldu');
     }
 
-    // Yeni dosya adı formatı: menu-YYYYMMDD.json
-    const scrapeDateCompact = menuData.scrapeDate.replace(/-/g, '');
-    const filename = `menu-${scrapeDateCompact}.json`;
-    const filePath = path.join(monthDir, filename);
+    // Dosya adını al
+    const filename = (menuData as any)._filename || `menu-${menuData.month}-${Date.now()}.json`;
+    const filePath = path.join(dataDir, filename);
 
-    // JSON'u temizle (_filename'i kaldır) ve kaydet
+    // JSON'u temizle (_filename'i kaldır)
     const { _filename, ...cleanData } = menuData as any;
+
+    // Dosyaya kaydet
     fs.writeFileSync(filePath, JSON.stringify(cleanData, null, 2), 'utf-8');
 
     console.log('\n✅ Scraping tamamlandı!');
-    console.log(`📄 Dosya: public/data/${menuData.month}/${filename}`);
+    console.log(`📄 Dosya: ${filename}`);
     console.log(`📊 Toplam ${menuData.totalDays} gün bulundu`);
     console.log(`📅 Ay: ${menuData.month}`);
 
+    // İstatistikler
     const daysWithData = menuData.days.filter(d => d.hasData).length;
     const totalMeals = menuData.days.reduce((sum, d) => sum + d.meals.length, 0);
 
@@ -49,6 +44,7 @@ async function main() {
     console.log(`   - Toplam yemek sayısı: ${totalMeals}`);
     console.log(`   - Ortalama yemek/gün: ${(totalMeals / daysWithData).toFixed(1)}`);
 
+    // İlk birkaç günü göster (örnek)
     console.log(`\n📋 İlk 3 gün örneği:`);
     menuData.days.slice(0, 3).forEach(day => {
       if (day.hasData) {
@@ -66,32 +62,29 @@ async function main() {
     console.error(error);
     process.exit(1);
   } finally {
-    // Sadece bu ayın klasöründeki eski dosyaları temizle (max 5 tut)
-    if (savedMonth) {
-      try {
-        const monthDir = path.join(__dirname, '..', 'public', 'data', savedMonth);
+    // En eski dosyaları temizle (Sadece 5 dosya tut)
+    try {
+      const dataDir = path.join(__dirname, '..', 'public', 'data');
+      if (fs.existsSync(dataDir)) {
+        const files = fs.readdirSync(dataDir)
+          .filter(file => file.endsWith('.json') && file.startsWith('menu-'))
+          .map(file => ({
+            name: file,
+            path: path.join(dataDir, file)
+          }))
+          .sort((a, b) => b.name.localeCompare(a.name)); // Dosya adına göre yeniden eskiye sırala
 
-        if (fs.existsSync(monthDir)) {
-          const files = fs.readdirSync(monthDir)
-            .filter(file => file.endsWith('.json') && file.startsWith('menu-'))
-            .map(file => ({
-              name: file,
-              path: path.join(monthDir, file)
-            }))
-            .sort((a, b) => b.name.localeCompare(a.name)); // Yeniden eskiye
-
-          if (files.length > 5) {
-            console.log('\n🧹 Eski dosyalar temizleniyor...');
-            const filesToDelete = files.slice(5);
-            filesToDelete.forEach(file => {
-              fs.unlinkSync(file.path);
-              console.log(`   🗑️ Silindi: ${savedMonth}/${file.name}`);
-            });
-          }
+        if (files.length > 5) {
+          console.log('\n🧹 Eski dosyalar temizleniyor...');
+          const filesToDelete = files.slice(5);
+          filesToDelete.forEach(file => {
+            fs.unlinkSync(file.path);
+            console.log(`   🗑️ Silindi: ${file.name}`);
+          });
         }
-      } catch (cleanupError) {
-        console.error('\n⚠️ Dosya temizleme sırasında hata:', cleanupError);
       }
+    } catch (cleanupError) {
+      console.error('\n⚠️ Dosya temizleme sırasında hata:', cleanupError);
     }
   }
 }
