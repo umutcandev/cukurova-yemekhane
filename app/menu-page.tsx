@@ -9,6 +9,7 @@ import { Header } from "@/components/header"
 import { MenuDataProvider } from "@/components/menu-data-provider"
 import { getTurkeyDate } from "@/lib/date-utils"
 import { useDayChange } from "@/hooks/use-day-change"
+import { X } from "lucide-react"
 
 import type { DateRange } from "react-day-picker"
 import type { MenuData } from "@/lib/types"
@@ -23,6 +24,20 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
     const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined)
     const [selectedMeal, setSelectedMeal] = useState<{ id: string; name: string; calories: number } | null>(null)
+    const [showNotice, setShowNotice] = useState(false)
+
+    useEffect(() => {
+        const hiddenUntil = localStorage.getItem('hide-github-notice-until')
+        if (!hiddenUntil || new Date().getTime() > parseInt(hiddenUntil)) {
+            setShowNotice(true)
+        }
+    }, [])
+
+    const handleDismissNotice = () => {
+        setShowNotice(false)
+        const thirtyDaysFromNow = new Date().getTime() + 30 * 24 * 60 * 60 * 1000
+        localStorage.setItem('hide-github-notice-until', thirtyDaysFromNow.toString())
+    }
 
     // Find today's date or nearest available date for mobile initial view
     const findInitialDateIndex = (): number => {
@@ -136,6 +151,22 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
             <div className="container mx-auto px-4 py-6 md:py-8">
 
+                {/* Notice Banner */}
+                {showNotice && (
+                    <div className="max-w-md mx-auto mb-4 relative">
+                        <button
+                            onClick={handleDismissNotice}
+                            className="absolute top-1 right-1 text-muted-foreground/60 hover:text-foreground transition-colors p-1.5 rounded-sm hover:bg-muted/50"
+                            aria-label="Kapat"
+                        >
+                            <X className="w-3 h-3" />
+                        </button>
+                        <p className="block border border-dashed border-border rounded-lg px-3 py-3 text-xs text-muted-foreground/80 bg-muted/20">
+                            Bu proje <a href="https://yemekhane.cu.edu.tr/" title="Çukurova Yemekhane" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>Çukurova Üniversitesinden</a> bağımsız, tamamen gönüllü ve <a href="https://github.com/umutcandev/cukurova-yemekhane" title="Çukurova Yemekhane GitHub" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>açık kaynak</a> geliştirilmektedir.
+                        </p>
+                    </div>
+                )}
+
                 {/* MenuDataProvider — favorites, calorie-goal, daily-log API çağrıları burada 1 kez yapılır */}
                 <MenuDataProvider>
                     {/* Mobile Menu View - Shows selected date(s) from mobile navigation */}
@@ -158,16 +189,6 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                         ) : null}
                     </section>
                 </MenuDataProvider>
-
-                {/* Ad Banner */}
-                <div className="max-w-md mx-auto mt-4">
-                    <p
-                        className="block border border-dashed border-border rounded-lg px-4 py-3 text-center text-xs text-muted-foreground/80 bg-muted/20"
-                    >
-                        Bu proje <a href="https://github.com/umutcandev" title="Umutcan GitHub" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>@umutcandev</a> tarafından <a href="https://github.com/umutcandev/cukurova-yemekhane" title="Çukurova Yemekhane GitHub" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "underline" }}>açık kaynak</a> geliştirilmektedir, yine de resmi yemekhane sitesini ziyaret etmek istiyorsanız <a href="https://yemekhane.cu.edu.tr" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>tıklayınız.</a>
-                    </p>
-                </div>
-
             </div>
 
             {/* Mobile Bottom Navigation */}
