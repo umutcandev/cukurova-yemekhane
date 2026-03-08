@@ -51,9 +51,10 @@ export function MenuSearchCommand() {
     const [open, setOpen] = useState(false)
     const [meals, setMeals] = useState<MealSearchResult[]>([])
     const [loading, setLoading] = useState(false)
+    const [loaded, setLoaded] = useState(false)
     const [query, setQuery] = useState("")
     const [sortMode, setSortMode] = useState<"date-desc" | "date-asc" | "az" | "za">("date-desc")
-    const [sorting, setSorting] = useState(false)
+
     const router = useRouter()
 
     // Ctrl+K / ⌘K kısayolu
@@ -70,7 +71,7 @@ export function MenuSearchCommand() {
 
     // Dialog açıldığında verileri fetch et (bir kez)
     useEffect(() => {
-        if (open && meals.length === 0 && !loading) {
+        if (open && !loaded && !loading) {
             setLoading(true)
             fetch("/api/menu/search")
                 .then((res) => res.json())
@@ -82,9 +83,10 @@ export function MenuSearchCommand() {
                 })
                 .finally(() => {
                     setLoading(false)
+                    setLoaded(true)
                 })
         }
-    }, [open, meals.length, loading])
+    }, [open, loaded, loading])
 
     // Dialog kapanınca query temizle
     const handleOpenChange = useCallback((value: boolean) => {
@@ -139,27 +141,11 @@ export function MenuSearchCommand() {
 
 
     const toggleDateSort = useCallback(() => {
-        setSortMode((prev) => {
-            const next = prev === "date-desc" ? "date-asc" : "date-desc"
-            setSorting(true)
-            setTimeout(() => {
-                setSortMode(next)
-                setSorting(false)
-            }, 150)
-            return prev
-        })
+        setSortMode((prev) => prev === "date-desc" ? "date-asc" : "date-desc")
     }, [])
 
     const toggleAlphaSort = useCallback(() => {
-        setSortMode((prev) => {
-            const next = prev === "az" ? "za" : "az"
-            setSorting(true)
-            setTimeout(() => {
-                setSortMode(next)
-                setSorting(false)
-            }, 150)
-            return prev
-        })
+        setSortMode((prev) => prev === "az" ? "za" : "az")
     }, [])
 
     return (
@@ -248,35 +234,24 @@ export function MenuSearchCommand() {
                                     </button>
                                 </div>
                             </div>
-                            {sorting ? (
-                                <div className="space-y-2 px-2 py-1">
-                                    {[1, 2, 3].map((i) => (
-                                        <div key={i} className="flex flex-col gap-1 animate-pulse">
-                                            <div className="h-4 bg-muted rounded w-3/4" />
-                                            <div className="h-3 bg-muted rounded w-1/3" />
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                sortedResults.map(({ meal, d }) => (
-                                    <CommandItem
-                                        key={`${meal.name}-${d.date}`}
-                                        value={`${meal.name} ${d.date}`}
-                                        onSelect={() => handleSelect(d.date)}
-                                        className="flex flex-col items-start gap-0.5 py-2.5"
-                                    >
-                                        <div className="flex items-center gap-2 w-full">
-                                            <span className="font-medium text-sm">{meal.name}</span>
-                                            <span className="ml-auto text-xs text-muted-foreground">
-                                                {meal.calories} kcal
-                                            </span>
-                                        </div>
-                                        <span className="text-xs text-muted-foreground">
-                                            {d.dayName}, {formatDate(d.date)}
+                            {sortedResults.map(({ meal, d }) => (
+                                <CommandItem
+                                    key={`${meal.name}-${d.date}`}
+                                    value={`${meal.name} ${d.date}`}
+                                    onSelect={() => handleSelect(d.date)}
+                                    className="flex flex-col items-start gap-0.5 py-2.5"
+                                >
+                                    <div className="flex items-center gap-2 w-full">
+                                        <span className="font-medium text-sm">{meal.name}</span>
+                                        <span className="ml-auto text-xs text-muted-foreground">
+                                            {meal.calories} kcal
                                         </span>
-                                    </CommandItem>
-                                ))
-                            )}
+                                    </div>
+                                    <span className="text-xs text-muted-foreground">
+                                        {d.dayName}, {formatDate(d.date)}
+                                    </span>
+                                </CommandItem>
+                            ))}
                         </CommandGroup>
                     )}
                 </CommandList>

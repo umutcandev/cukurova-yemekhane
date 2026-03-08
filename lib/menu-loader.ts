@@ -4,58 +4,7 @@ import type { MenuData, DayMenu } from './types';
 import { parseScrapeDate } from './date-utils';
 
 /**
- * Get the latest menu file for a given month from public/data/<month>/ folder.
- * @param month - Month in YYYY-MM format (e.g., "2026-02")
- * @returns Absolute file path of the latest menu file, or null if not found
- */
-export function getLatestMenuFilePath(month: string): string | null {
-    const monthDir = path.join(process.cwd(), 'public', 'data', month);
-
-    if (!fs.existsSync(monthDir)) {
-        return null;
-    }
-
-    const files = fs.readdirSync(monthDir)
-        .filter(file => file.startsWith('menu-') && file.endsWith('.json'));
-
-    if (files.length === 0) {
-        return null;
-    }
-
-    // Extract scrape dates and find the latest
-    const filesWithDates = files.map(file => {
-        const dateStr = parseScrapeDate(file) || '00000000';
-        return { file, date: parseInt(dateStr) };
-    });
-
-    const latest = filesWithDates.reduce((prev, current) =>
-        current.date > prev.date ? current : prev
-    );
-
-    return path.join(monthDir, latest.file);
-}
-
-/**
- * Load menu data for a given month from public/data/<month>/ folder.
- * @param month - Month in YYYY-MM format (e.g., "2026-02")
- * @returns Menu data object
- * @throws Error if no menu file is found
- */
-export async function loadMenuData(month: string): Promise<MenuData> {
-    const filePath = getLatestMenuFilePath(month);
-
-    if (!filePath) {
-        throw new Error(`No menu data found for ${month}. Please run 'pnpm scrape' to generate data.`);
-    }
-
-    const fileContent = fs.readFileSync(filePath, 'utf-8');
-    const menuData: MenuData = JSON.parse(fileContent);
-
-    return menuData;
-}
-
-/**
- * Search all month folders for a specific date's menu.
+ * Search all menu files for a specific date's menu.
  * Used by the /api/menu/date/:date endpoint.
  *
  * @param date - Date in YYYY-MM-DD format (e.g., "2026-01-15")
@@ -68,33 +17,13 @@ export function findMenuForDate(date: string): DayMenu | null {
         return null;
     }
 
-    // List all YYYY-MM subdirectories, sorted newest first for faster lookup
-    const monthDirs = fs.readdirSync(dataDir)
-        .filter(entry => {
-            const fullPath = path.join(dataDir, entry);
-            return fs.statSync(fullPath).isDirectory() && /^\d{4}-\d{2}$/.test(entry);
-        })
+    // Find all menu JSON files, sorted newest first
+    const files = fs.readdirSync(dataDir)
+        .filter(file => file.startsWith('menu-') && file.endsWith('.json'))
         .sort((a, b) => b.localeCompare(a)); // newest first
 
-    for (const monthDir of monthDirs) {
-        const monthPath = path.join(dataDir, monthDir);
-
-        // Get the latest JSON in this month folder
-        const files = fs.readdirSync(monthPath)
-            .filter(file => file.startsWith('menu-') && file.endsWith('.json'));
-
-        if (files.length === 0) continue;
-
-        const filesWithDates = files.map(file => ({
-            file,
-            date: parseInt(parseScrapeDate(file) || '00000000'),
-        }));
-
-        const latest = filesWithDates.reduce((prev, curr) =>
-            curr.date > prev.date ? curr : prev
-        );
-
-        const filePath = path.join(monthPath, latest.file);
+    for (const file of files) {
+        const filePath = path.join(dataDir, file);
 
         try {
             const content = fs.readFileSync(filePath, 'utf-8');
@@ -112,3 +41,76 @@ export function findMenuForDate(date: string): DayMenu | null {
 
     return null;
 }
+
+/**
+ * Load ALL available menu data from data/ directory.
+ * Reads all JSON files sorted by scrape date (oldest first),
+ * merges all days using a Map — if the same date exists in multiple files,
+ * the newer scrape overwrites the older one.
+ */
+export async function loadAllMenuData(): Promise<MenuData> {
+    const dataDir = path.join(process.cwd(), 'public', 'data');
+
+    if (!fs.existsSync(dataDir)) {
+        throw new Error('No menu data found. Please run \'pnpm scrape\' to generate data.');
+    }
+
+    const allFiles = fs.readdirSync(dataDir)
+        .filter(file => file.startsWith('menu-') && file.endsWith('.json'));
+
+    if (allFiles.length === 0) {
+        throw new Error('No menu data found. Please run \'pnpm scrape\' to generate data.');
+    }
+
+    // Dosyaları scrape tarihine göre eskiden yeniye sırala
+    // parseScrapeDate YYYYMMDD formatında döndürür (ör. 20260130 < 20260201)
+    const sortedFiles = allFiles
+        .map(file => ({
+            file,
+            scrapeDate: parseInt(parseScrapeDate(file) || '0')
+        }))
+        .sort((a, b) => a.scrapeDate - b.scrapeDate);
+
+    // Tüm dosyaları oku, aynı tarih varsa yeni scrape üzerine yazar
+    const dayMap = new Map<string, DayMenu>();
+    let latestUpdated = '';
+    let latestMonth = '';
+
+    for (const { file } of sortedFiles) {
+        const filePath = path.join(dataDir, file);
+        try {
+            const content = fs.readFileSync(filePath, 'utf-8');
+            const menuData: MenuData = JSON.parse(content);
+
+            for (const day of menuData.days) {
+                dayMap.set(day.date, day);
+            }
+
+            // En son okunan dosyanın meta bilgilerini kullan
+            if (menuData.month > latestMonth) {
+                latestMonth = menuData.month;
+            }
+            latestUpdated = menuData.lastUpdated;
+        } catch {
+            continue;
+        }
+    }
+
+    if (dayMap.size === 0) {
+        throw new Error('No menu data found. Please run \'pnpm scrape\' to generate data.');
+    }
+
+    // Map'ten tarihe göre sıralı unique günleri al
+    const uniqueDays = [...dayMap.values()]
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+    return {
+        month: latestMonth,
+        lastUpdated: latestUpdated,
+        scrapeDate: new Date().toISOString().split('T')[0],
+        totalDays: uniqueDays.length,
+        days: uniqueDays,
+    };
+}
+
+

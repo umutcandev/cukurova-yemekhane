@@ -21,35 +21,30 @@ export async function GET() {
             return NextResponse.json({ meals: [] });
         }
 
-        // Tüm YYYY-MM klasörlerini bul
-        const monthDirs = fs.readdirSync(dataDir)
-            .filter(entry => {
-                const fullPath = path.join(dataDir, entry);
-                return fs.statSync(fullPath).isDirectory() && /^\d{4}-\d{2}$/.test(entry);
-            })
-            .sort((a, b) => a.localeCompare(b));
+        // Düz yapıdaki tüm menu JSON dosyalarını bul
+        const allFiles = fs.readdirSync(dataDir)
+            .filter(file => file.startsWith('menu-') && file.endsWith('.json'));
+
+        // Her ay (YYYY-MM) için en güncel dosyayı bul
+        const monthLatest = new Map<string, { file: string; scrapeDate: number }>();
+
+        for (const file of allFiles) {
+            const monthMatch = file.match(/^menu-(\d{4}-\d{2})-/);
+            if (!monthMatch) continue;
+
+            const month = monthMatch[1];
+            const scrapeDate = parseInt(parseScrapeDate(file) || '00000000');
+
+            const existing = monthLatest.get(month);
+            if (!existing || scrapeDate > existing.scrapeDate) {
+                monthLatest.set(month, { file, scrapeDate });
+            }
+        }
 
         const mealMap = new Map<string, MealSearchResult>();
 
-        for (const monthDir of monthDirs) {
-            const monthPath = path.join(dataDir, monthDir);
-
-            const files = fs.readdirSync(monthPath)
-                .filter(file => file.startsWith('menu-') && file.endsWith('.json'));
-
-            if (files.length === 0) continue;
-
-            // En güncel dosyayı bul
-            const filesWithDates = files.map(file => ({
-                file,
-                date: parseInt(parseScrapeDate(file) || '00000000'),
-            }));
-
-            const latest = filesWithDates.reduce((prev, curr) =>
-                curr.date > prev.date ? curr : prev
-            );
-
-            const filePath = path.join(monthPath, latest.file);
+        for (const [, { file }] of monthLatest) {
+            const filePath = path.join(dataDir, file);
 
             try {
                 const content = fs.readFileSync(filePath, 'utf-8');

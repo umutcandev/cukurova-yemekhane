@@ -1,6 +1,5 @@
 import { Suspense } from "react"
-import { loadMenuData } from "@/lib/menu-loader"
-import { getCurrentMonth } from "@/lib/date-utils"
+import { loadAllMenuData } from "@/lib/menu-loader"
 import MenuPage from "./menu-page"
 
 // Her sayfa ziyaretinde menü verisi sunucudan taze çekilir; ISR/önbellek kullanılmaz.
@@ -9,7 +8,7 @@ export const dynamic = "force-dynamic"
 
 export default async function Home() {
   try {
-    const menuData = await loadMenuData(getCurrentMonth())
+    const menuData = await loadAllMenuData()
     return (
       <Suspense>
         <MenuPage menuData={menuData} />

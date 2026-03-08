@@ -21,7 +21,7 @@ export function Header() {
             <header className="dark text-foreground sticky top-0 z-50 border-b border-border bg-background">
                 <div className="container mx-auto px-4 py-3">
                     <div className="flex items-center justify-between">
-                        <div className="relative h-9 w-40 md:w-48">
+                        <Link href="/" className="relative h-9 w-40 md:w-48 block">
                             <Image
                                 src="/logo-cu.svg"
                                 alt="ÇÜ Yemekhane"
@@ -29,7 +29,7 @@ export function Header() {
                                 className="object-contain object-left"
                                 priority
                             />
-                        </div>
+                        </Link>
 
                         {/* Desktop actions */}
                         <div className="hidden md:flex items-center gap-2">

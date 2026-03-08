@@ -1,7 +1,7 @@
 {
   "month": "2026-03",
-  "lastUpdated": "2026-03-06T05:04:26.697Z",
-  "scrapeDate": "2026-03-06",
+  "lastUpdated": "2026-03-08T20:07:46.651Z",
+  "scrapeDate": "2026-03-08",
   "totalDays": 13,
   "days": [
     {
@@ -149,12 +149,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "3",
-          "name": "Zeytinyağlı Taze Fasülye",
-          "calories": 153,
-          "category": "ana_yemek"
-        },
-        {
           "id": "156",
           "name": "Nohutlu Pirinç Pilavı",
           "calories": 377,
@@ -266,13 +260,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "148",
-          "name": "Meyve (Portakal)",
-          "calories": 171,
+          "id": "4358",
+          "name": "Taş Kadayıf",
+          "calories": 367,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 827
+      "totalCalories": 1023
     },
     {
       "ymk": 9,
