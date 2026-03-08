@@ -1,7 +1,4 @@
-<div align="center">
-
-<img alt="Çukurova Üniversitesi Yemekhane" width="30%" src="https://github.com/user-attachments/assets/17646122-441a-4e5c-b7a3-5f8c53f013a5" />
-
+![Çukurova Üniversitesi Yemekhane](public/github-banner.png)
 
 Çukurova Üniversitesi yemekhanesinin günlük yemek menülerini görüntülemek için geliştirilmiş, yüksek performanslı ve modern bir web uygulaması.
 
@@ -11,8 +8,6 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
 ![shadcn/ui](https://img.shields.io/badge/shadcn/ui-000000?logo=shadcnui&logoColor=white)
 ![Radix UI](https://img.shields.io/badge/Radix_UI-161618?logo=radix-ui&logoColor=white)
-
-</div>
 
 Canlı: [https://cukurova.app](https://cukurova.app)
 
