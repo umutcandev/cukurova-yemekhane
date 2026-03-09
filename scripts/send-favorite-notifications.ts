@@ -100,30 +100,33 @@ function getTodayDateTR(): string {
 }
 
 /**
- * Bugünün menüsünü JSON dosyalarından bulur
+ * Bugünün menüsünü JSON dosyalarından bulur.
+ * Flat yapı: public/data/menu-YYYY-MM-YYYYMMDD.json
  */
 function findTodayMenu(today: string): DayData | null {
-    const month = today.substring(0, 7); // "2026-02"
-    const monthDir = path.join(__dirname, "..", "public", "data", month);
+    const month = today.substring(0, 7); // "2026-03"
+    const dataDir = path.join(__dirname, "..", "public", "data");
 
-    if (!fs.existsSync(monthDir)) {
-        console.log(`📁 Ay klasörü bulunamadı: ${month}`);
+    if (!fs.existsSync(dataDir)) {
+        console.log(`📁 data klasörü bulunamadı`);
         return null;
     }
 
-    // En son JSON dosyasını bul
+    // Bu aya ait dosyaları bul, en yenisi önce (dosya adı sırasına göre)
     const files = fs
-        .readdirSync(monthDir)
-        .filter((f) => f.startsWith("menu-") && f.endsWith(".json"))
+        .readdirSync(dataDir)
+        .filter((f) => f.startsWith(`menu-${month}-`) && f.endsWith(".json"))
         .sort()
         .reverse();
 
     if (files.length === 0) {
-        console.log(`📄 JSON dosyası bulunamadı: ${monthDir}`);
+        console.log(`📄 ${month} ayına ait JSON dosyası bulunamadı`);
         return null;
     }
 
-    const latestFile = path.join(monthDir, files[0]);
+    console.log(`📂 Kullanılan dosya: ${files[0]}`);
+
+    const latestFile = path.join(dataDir, files[0]);
     const content = fs.readFileSync(latestFile, "utf-8");
     const menuData: MenuData = JSON.parse(content);
 
