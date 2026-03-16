@@ -38,13 +38,25 @@ import { toast } from "sonner"
 import { CommentReportDialog } from "@/components/comment-report-dialog"
 import { AuthDrawer } from "@/components/auth-drawer"
 
+interface Reply {
+    id: number
+    userId: string
+    userName: string | null
+    userImage: string | null
+    content: string
+    parentId: number
+    createdAt: string
+}
+
 interface Comment {
     id: number
     userId: string
     userName: string | null
     userImage: string | null
     content: string
+    parentId: null
     createdAt: string
+    replies: Reply[]
 }
 
 interface CommentsPanelProps {
@@ -94,7 +106,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     const [hasMore, setHasMore] = useState(false)
     const [newComment, setNewComment] = useState("")
     const [sending, setSending] = useState(false)
-    const [reportComment, setReportComment] = useState<Comment | null>(null)
+    const [reportComment, setReportComment] = useState<Comment | Reply | null>(null)
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
     const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null)
     const [openMenuId, setOpenMenuId] = useState<number | null>(null)
@@ -103,6 +115,11 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     const sendingRef = useRef(false)
     const commentsRef = useRef<Comment[]>([])
     commentsRef.current = comments
+
+    // Reply state
+    const [replyingToId, setReplyingToId] = useState<number | null>(null)
+    const [replyContent, setReplyContent] = useState("")
+    const [sendingReply, setSendingReply] = useState(false)
 
     const scrollToBottom = useCallback(() => {
         setTimeout(() => {
@@ -136,14 +153,35 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
             const res = await fetch(`/api/comments?menuDate=${menuDate}&after=${maxId}`)
             if (res.ok) {
                 const data = await res.json()
-                const newOnes = data.comments as Comment[]
+                // Polling dönen veriler flat (parentId dahil)
+                const newOnes = data.comments as Array<Comment | Reply>
                 if (newOnes.length > 0) {
                     setComments((prev) => {
-                        const existingIds = new Set(prev.map((c) => c.id))
+                        const existingIds = new Set<number>()
+                        prev.forEach((c) => {
+                            existingIds.add(c.id)
+                            c.replies.forEach((r) => existingIds.add(r.id))
+                        })
+
                         const fresh = newOnes.filter((c) => !existingIds.has(c.id))
                         if (fresh.length === 0) return prev
+
+                        const newParents = fresh.filter((c) => c.parentId === null) as Comment[]
+                        const newReplies = fresh.filter((c) => c.parentId !== null) as Reply[]
+
+                        let updated = [
+                            ...prev,
+                            ...newParents.map((p) => ({ ...p, replies: [] as Reply[] })),
+                        ]
+                        for (const reply of newReplies) {
+                            updated = updated.map((c) =>
+                                c.id === reply.parentId
+                                    ? { ...c, replies: [...c.replies, reply] }
+                                    : c
+                            )
+                        }
                         scrollToBottom()
-                        return [...prev, ...fresh]
+                        return updated
                     })
                 }
             }
@@ -194,7 +232,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     }, [open, fetchComments])
 
     // Otomatik yenileme — 20 saniyede bir (sadece yeni yorumlar)
-    // Sayfa görünür olmadığında polling durur (Bulgu 8)
+    // Sayfa görünür olmadığında polling durur
     useEffect(() => {
         if (!open) return
         let interval: ReturnType<typeof setInterval> | null = null
@@ -204,7 +242,12 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
             interval = setInterval(() => {
                 const current = commentsRef.current
                 if (!sendingRef.current && current.length > 0) {
-                    const maxId = Math.max(...current.map((c) => c.id))
+                    // maxId hesabına reply ID'leri de dahil et
+                    const allIds = [
+                        ...current.map((c) => c.id),
+                        ...current.flatMap((c) => c.replies.map((r) => r.id)),
+                    ]
+                    const maxId = Math.max(...allIds)
                     pollNewComments(maxId)
                 }
             }, 20_000)
@@ -263,13 +306,55 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                 return
             }
 
-            setComments((prev) => [...prev, data.comment])
+            setComments((prev) => [...prev, { ...data.comment, replies: [] as Reply[] }])
             setNewComment("")
             scrollToBottom()
         } catch {
             toast.error("Bir hata oluştu.", { duration: 2000 })
         } finally {
             setSending(false)
+            sendingRef.current = false
+        }
+    }
+
+    const handleSendReply = async (parentId: number) => {
+        if (!session) {
+            setShowAuthDrawer(true)
+            return
+        }
+
+        const trimmed = replyContent.trim()
+        if (!trimmed) return
+
+        setSendingReply(true)
+        sendingRef.current = true
+        try {
+            const res = await fetch("/api/comments", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ menuDate, content: trimmed, parentId }),
+            })
+
+            const data = await res.json()
+
+            if (!res.ok) {
+                toast.error(data.error || "Yanıt gönderilemedi.", { duration: 3000 })
+                return
+            }
+
+            setComments((prev) =>
+                prev.map((c) =>
+                    c.id === parentId
+                        ? { ...c, replies: [...c.replies, data.comment as Reply] }
+                        : c
+                )
+            )
+            setReplyContent("")
+            setReplyingToId(null)
+        } catch {
+            toast.error("Bir hata oluştu.", { duration: 2000 })
+        } finally {
+            setSendingReply(false)
             sendingRef.current = false
         }
     }
@@ -284,7 +369,14 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
             })
 
             if (res.ok) {
-                setComments((prev) => prev.filter((c) => c.id !== commentId))
+                setComments((prev) =>
+                    prev
+                        .filter((c) => c.id !== commentId)
+                        .map((c) => ({
+                            ...c,
+                            replies: c.replies.filter((r) => r.id !== commentId),
+                        }))
+                )
                 toast.success("Yorum silindi.", { duration: 2000 })
             } else {
                 const data = await res.json()
@@ -302,16 +394,212 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         }
     }
 
-    const canDelete = (comment: Comment) => {
+    const canDelete = (comment: Comment | Reply) => {
         if (!session?.user?.id) return false
         if (comment.userId === session.user.id) return true
         if (session.user.isModerator) return true
         return false
     }
 
-    const canReport = (comment: Comment) => {
+    const canReport = (comment: Comment | Reply) => {
         if (!session?.user?.id) return false
         return comment.userId !== session.user.id
+    }
+
+    // Tekrar kullanılabilir comment action menu (hem parent hem reply için)
+    const renderActionMenu = (comment: Comment | Reply) => {
+        if (!canDelete(comment) && !canReport(comment)) return null
+
+        if (isMobile) {
+            return (
+                <div className="relative shrink-0">
+                    <button
+                        className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground/50 hover:text-muted-foreground"
+                        onClick={() => setOpenMenuId(openMenuId === comment.id ? null : comment.id)}
+                    >
+                        <MoreHorizontal className="h-4 w-4" />
+                    </button>
+                    {openMenuId === comment.id && (
+                        <>
+                            <div className="fixed inset-0 z-40" onClick={() => setOpenMenuId(null)} />
+                            <div className="absolute right-0 top-full mt-1 z-50 bg-popover border border-border rounded-md shadow-md py-1 min-w-[120px]">
+                                {canReport(comment) && (
+                                    <button
+                                        onClick={() => { setReportComment(comment); setOpenMenuId(null) }}
+                                        className="flex items-center gap-2 w-full px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left"
+                                    >
+                                        <Flag className="h-3.5 w-3.5" />
+                                        Raporla
+                                    </button>
+                                )}
+                                {canDelete(comment) && (
+                                    <button
+                                        onClick={() => { setDeleteConfirmId(comment.id); setOpenMenuId(null) }}
+                                        className="flex items-center gap-2 w-full px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left text-destructive"
+                                    >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                        Sil
+                                    </button>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+            )
+        }
+
+        return (
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <button className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground/50 hover:text-muted-foreground shrink-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                    </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-36">
+                    {canReport(comment) && (
+                        <DropdownMenuItem
+                            onClick={() => setReportComment(comment)}
+                            className="text-xs"
+                        >
+                            <Flag className="h-3.5 w-3.5 mr-2" />
+                            Raporla
+                        </DropdownMenuItem>
+                    )}
+                    {canDelete(comment) && (
+                        <DropdownMenuItem
+                            onClick={() => setDeleteConfirmId(comment.id)}
+                            className="text-xs text-destructive focus:text-destructive"
+                        >
+                            <Trash2 className="h-3.5 w-3.5 mr-2" />
+                            Sil
+                        </DropdownMenuItem>
+                    )}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        )
+    }
+
+    // Tek bir reply satırı
+    const renderReply = (reply: Reply, parentId: number) => {
+        const MAX_CHARS = 100
+        const isLong = reply.content.length > MAX_CHARS
+        const isExpanded = expandedComments.has(reply.id)
+        const displayText = isLong && !isExpanded
+            ? reply.content.slice(0, MAX_CHARS) + "..."
+            : reply.content
+
+        return (
+            <div key={reply.id} className="flex items-start gap-2 py-1">
+                <Avatar className="h-6 w-6 shrink-0 mt-0.5">
+                    {reply.userImage && (
+                        <AvatarImage
+                            src={reply.userImage}
+                            alt={reply.userName || "Kullanıcı"}
+                        />
+                    )}
+                    <AvatarFallback className="text-[10px] bg-muted text-muted-foreground">
+                        {getInitials(reply.userName)}
+                    </AvatarFallback>
+                </Avatar>
+
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-xs font-semibold text-foreground truncate">
+                                {reply.userName || "Anonim"}
+                            </span>
+                            <span className="text-[10px] text-muted-foreground/60 shrink-0">
+                                {formatRelativeTime(reply.createdAt)}
+                            </span>
+                            <span className="text-[10px] font-mono font-medium text-muted-foreground/60 bg-muted/80 border border-border/40 px-1.5 py-0.5 rounded-md shrink-0 leading-none select-none">
+                                #{reply.id}
+                            </span>
+                        </div>
+                        {renderActionMenu(reply)}
+                    </div>
+
+                    <p className="text-sm text-foreground/90 mt-0.5 leading-relaxed break-words">
+                        {displayText}
+                    </p>
+                    {isLong && (
+                        <button
+                            onClick={() => {
+                                setExpandedComments((prev) => {
+                                    const next = new Set(prev)
+                                    if (isExpanded) next.delete(reply.id)
+                                    else next.add(reply.id)
+                                    return next
+                                })
+                            }}
+                            className="text-xs text-primary hover:underline mt-0.5"
+                        >
+                            {isExpanded ? "daha az göster" : "devamını göster"}
+                        </button>
+                    )}
+
+                    <div className="flex items-center gap-3 mt-1">
+                        <button
+                            onClick={() => {
+                                if (!session) { setShowAuthDrawer(true); return }
+                                if (replyingToId === reply.id) {
+                                    setReplyingToId(null)
+                                } else {
+                                    setReplyingToId(reply.id)
+                                    setReplyContent(`@${reply.userName || "Anonim"} `)
+                                }
+                            }}
+                            className="text-xs text-muted-foreground/60 hover:text-primary transition-colors font-medium"
+                        >
+                            Yanıtla
+                        </button>
+                    </div>
+
+                    {/* Inline reply form for this reply (targets the parent comment) */}
+                    {replyingToId === reply.id && (
+                        <div className="mt-1.5 flex items-stretch gap-2" style={{ height: "34px" }}>
+                            <div className="relative flex-1 h-full">
+                                <textarea
+                                    autoFocus
+                                    value={replyContent}
+                                    onChange={(e) => {
+                                        if (e.target.value.length <= CHAR_LIMIT) setReplyContent(e.target.value)
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter" && !e.shiftKey) {
+                                            e.preventDefault()
+                                            handleSendReply(parentId)
+                                        }
+                                        if (e.key === "Escape") setReplyingToId(null)
+                                    }}
+                                    placeholder="Yanıtınızı yazın..."
+                                    maxLength={CHAR_LIMIT}
+                                    rows={1}
+                                    className="w-full h-full resize-none bg-muted/50 border border-border/40 rounded-lg pl-3 pr-14 py-0 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring overflow-hidden"
+                                    style={{ lineHeight: "34px" }}
+                                />
+                                <span className={`pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[10px] tabular-nums font-medium px-1.5 py-0.5 rounded-md ${replyContent.length >= CHAR_LIMIT ? "bg-destructive/10 text-destructive" : replyContent.length >= CHAR_LIMIT * 0.8 ? "bg-amber-500/10 text-amber-500" : "bg-muted text-muted-foreground/50"}`}>
+                                    {replyContent.length}/{CHAR_LIMIT}
+                                </span>
+                            </div>
+                            <Button
+                                size="sm"
+                                onClick={() => handleSendReply(parentId)}
+                                disabled={sendingReply || !replyContent.trim()}
+                                className="h-full px-3 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium shrink-0 min-w-[60px]"
+                            >
+                                {sendingReply ? (
+                                    <span className="flex items-center gap-[3px]">
+                                        <span className="h-1 w-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "0ms" }} />
+                                        <span className="h-1 w-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "150ms" }} />
+                                        <span className="h-1 w-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "300ms" }} />
+                                    </span>
+                                ) : "Gönder"}
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        )
     }
 
     // Yorum listesi - scroll edilebilir alan
@@ -383,72 +671,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                                                     #{comment.id}
                                                 </span>
                                             </div>
-
-                                            {(canDelete(comment) || canReport(comment)) && (
-                                                isMobile ? (
-                                                    <div className="relative shrink-0">
-                                                        <button
-                                                            className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground/50 hover:text-muted-foreground"
-                                                            onClick={() => setOpenMenuId(openMenuId === comment.id ? null : comment.id)}
-                                                        >
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </button>
-                                                        {openMenuId === comment.id && (
-                                                            <>
-                                                                <div className="fixed inset-0 z-40" onClick={() => setOpenMenuId(null)} />
-                                                                <div className="absolute right-0 top-full mt-1 z-50 bg-popover border border-border rounded-md shadow-md py-1 min-w-[120px]">
-                                                                    {canReport(comment) && (
-                                                                        <button
-                                                                            onClick={() => { setReportComment(comment); setOpenMenuId(null) }}
-                                                                            className="flex items-center gap-2 w-full px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left"
-                                                                        >
-                                                                            <Flag className="h-3.5 w-3.5" />
-                                                                            Raporla
-                                                                        </button>
-                                                                    )}
-                                                                    {canDelete(comment) && (
-                                                                        <button
-                                                                            onClick={() => { setDeleteConfirmId(comment.id); setOpenMenuId(null) }}
-                                                                            className="flex items-center gap-2 w-full px-3 py-1.5 text-xs hover:bg-muted transition-colors text-left text-destructive"
-                                                                        >
-                                                                            <Trash2 className="h-3.5 w-3.5" />
-                                                                            Sil
-                                                                        </button>
-                                                                    )}
-                                                                </div>
-                                                            </>
-                                                        )}
-                                                    </div>
-                                                ) : (
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger asChild>
-                                                            <button className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground/50 hover:text-muted-foreground shrink-0">
-                                                                <MoreHorizontal className="h-4 w-4" />
-                                                            </button>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end" className="w-36">
-                                                            {canReport(comment) && (
-                                                                <DropdownMenuItem
-                                                                    onClick={() => setReportComment(comment)}
-                                                                    className="text-xs"
-                                                                >
-                                                                    <Flag className="h-3.5 w-3.5 mr-2" />
-                                                                    Raporla
-                                                                </DropdownMenuItem>
-                                                            )}
-                                                            {canDelete(comment) && (
-                                                                <DropdownMenuItem
-                                                                    onClick={() => setDeleteConfirmId(comment.id)}
-                                                                    className="text-xs text-destructive focus:text-destructive"
-                                                                >
-                                                                    <Trash2 className="h-3.5 w-3.5 mr-2" />
-                                                                    Sil
-                                                                </DropdownMenuItem>
-                                                            )}
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
-                                                )
-                                            )}
+                                            {renderActionMenu(comment)}
                                         </div>
 
                                         {(() => {
@@ -482,8 +705,82 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                                                 </>
                                             )
                                         })()}
+
+                                        {/* Yanıtla butonu */}
+                                        <div className="flex items-center gap-3 mt-1">
+                                            <button
+                                                onClick={() => {
+                                                    if (!session) { setShowAuthDrawer(true); return }
+                                                    if (replyingToId === comment.id) {
+                                                        setReplyingToId(null)
+                                                    } else {
+                                                        setReplyingToId(comment.id)
+                                                        setReplyContent("")
+                                                    }
+                                                }}
+                                                className="text-xs text-muted-foreground/60 hover:text-primary transition-colors font-medium"
+                                            >
+                                                Yanıtla
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+
+                                {/* Replies — tree view with vertical line */}
+                                {comment.replies.length > 0 && (
+                                    <div className="ml-10 mt-1.5 relative">
+                                        {/* Dikey ağaç çizgisi */}
+                                        <div className="absolute left-0 top-0 bottom-0 w-px bg-border/50" />
+                                        <div className="pl-4 space-y-0.5">
+                                            {comment.replies.map((reply) => renderReply(reply, comment.id))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Inline reply form (parent comment için) */}
+                                {replyingToId === comment.id && (
+                                    <div className="ml-10 mt-1.5 flex items-stretch gap-2" style={{ height: "34px" }}>
+                                        <div className="w-px bg-border/50 shrink-0" />
+                                        <div className="relative flex-1 h-full pl-4">
+                                            <textarea
+                                                autoFocus
+                                                value={replyContent}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= CHAR_LIMIT) setReplyContent(e.target.value)
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter" && !e.shiftKey) {
+                                                        e.preventDefault()
+                                                        handleSendReply(comment.id)
+                                                    }
+                                                    if (e.key === "Escape") setReplyingToId(null)
+                                                }}
+                                                placeholder="Yanıtınızı yazın..."
+                                                maxLength={CHAR_LIMIT}
+                                                rows={1}
+                                                className="w-full h-full resize-none bg-muted/50 border border-border/40 rounded-lg pl-3 pr-14 py-0 text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring overflow-hidden"
+                                                style={{ lineHeight: "34px" }}
+                                            />
+                                            <span className={`pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[10px] tabular-nums font-medium px-1.5 py-0.5 rounded-md ${replyContent.length >= CHAR_LIMIT ? "bg-destructive/10 text-destructive" : replyContent.length >= CHAR_LIMIT * 0.8 ? "bg-amber-500/10 text-amber-500" : "bg-muted text-muted-foreground/50"}`}>
+                                                {replyContent.length}/{CHAR_LIMIT}
+                                            </span>
+                                        </div>
+                                        <Button
+                                            size="sm"
+                                            onClick={() => handleSendReply(comment.id)}
+                                            disabled={sendingReply || !replyContent.trim()}
+                                            className="h-full px-3 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-medium shrink-0 min-w-[60px]"
+                                        >
+                                            {sendingReply ? (
+                                                <span className="flex items-center gap-[3px]">
+                                                    <span className="h-1 w-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "0ms" }} />
+                                                    <span className="h-1 w-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "150ms" }} />
+                                                    <span className="h-1 w-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "300ms" }} />
+                                                </span>
+                                            ) : "Gönder"}
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
