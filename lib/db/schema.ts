@@ -11,6 +11,7 @@ import {
     boolean,
     index,
 } from "drizzle-orm/pg-core";
+import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
 // ==========================================
@@ -178,10 +179,12 @@ export const comments = pgTable(
             .references(() => users.id, { onDelete: "cascade" }),
         menuDate: text("menu_date").notNull(),
         content: text("content").notNull(),
+        parentId: integer("parent_id").references((): AnyPgColumn => comments.id, { onDelete: "cascade" }),
         createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     },
     (table) => [
         index("comments_menu_date_id_idx").on(table.menuDate, table.id),
+        index("comments_parent_id_idx").on(table.parentId),
     ]
 );
 

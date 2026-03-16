@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { db } from "@/lib/db/index";
 import { comments, users } from "@/lib/db/schema";
-import { eq, asc, desc, gt, lt, and, count } from "drizzle-orm";
+import { eq, asc, desc, gt, lt, and, count, isNull, inArray } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { checkRateLimit, isValidDateFormat } from "@/lib/rate-limiter";
 import { containsBadWord } from "@/lib/wordlist";
@@ -28,12 +28,41 @@ function sanitizeHtml(input: string): string {
     return result;
 }
 
+interface CommentRow {
+    id: number;
+    userId: string;
+    userName: string | null;
+    userImage: string | null;
+    content: string;
+    parentId: number | null;
+    createdAt: Date;
+}
+
+interface ThreadedComment extends CommentRow {
+    replies: CommentRow[];
+}
+
+function threadComments(parents: CommentRow[], replies: CommentRow[]): ThreadedComment[] {
+    const replyMap = new Map<number, CommentRow[]>();
+    for (const reply of replies) {
+        if (reply.parentId === null) continue;
+        const bucket = replyMap.get(reply.parentId) ?? [];
+        bucket.push(reply);
+        replyMap.set(reply.parentId, bucket);
+    }
+    return parents.map((parent) => ({
+        ...parent,
+        replies: (replyMap.get(parent.id) ?? []).sort((a, b) => a.id - b.id),
+    }));
+}
+
 const commentSelect = {
     id: comments.id,
     userId: comments.userId,
     userName: users.name,
     userImage: users.image,
     content: comments.content,
+    parentId: comments.parentId,
     createdAt: comments.createdAt,
 };
 
@@ -85,7 +114,7 @@ export async function GET(request: NextRequest) {
 
         const limit = Math.min(parseInt(limitParam || "20", 10) || 20, 50);
 
-        // afterId modunda: polling — o ID'den sonraki tüm yeni yorumlar
+        // afterId modunda: polling — o ID'den sonraki tüm yeni yorumlar (flat, parentId dahil)
         if (afterId) {
             const parsedAfterId = parseInt(afterId, 10);
             if (isNaN(parsedAfterId)) {
@@ -103,7 +132,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ comments: rows, hasMore: false });
         }
 
-        // beforeId modunda: daha eski yorumlar
+        // beforeId modunda: daha eski parent yorumlar + onların reply'ları
         if (beforeId) {
             const parsedBeforeId = parseInt(beforeId, 10);
             if (isNaN(parsedBeforeId)) {
@@ -112,30 +141,68 @@ export async function GET(request: NextRequest) {
                     { status: 400 }
                 );
             }
-            const rows = await db
+            const parentRows = await db
                 .select(commentSelect)
                 .from(comments)
                 .leftJoin(users, eq(comments.userId, users.id))
-                .where(and(eq(comments.menuDate, menuDate), lt(comments.id, parsedBeforeId)))
+                .where(and(
+                    eq(comments.menuDate, menuDate),
+                    isNull(comments.parentId),
+                    lt(comments.id, parsedBeforeId)
+                ))
                 .orderBy(desc(comments.id))
                 .limit(limit + 1);
 
-            const hasMore = rows.length > limit;
-            const result = rows.slice(0, limit).reverse(); // kronolojik sıra
+            const hasMore = parentRows.length > limit;
+            const parents = parentRows.slice(0, limit).reverse();
+
+            let result: ThreadedComment[] = [];
+            if (parents.length > 0) {
+                const parentIds = parents.map((p) => p.id);
+                const replyRows = await db
+                    .select(commentSelect)
+                    .from(comments)
+                    .leftJoin(users, eq(comments.userId, users.id))
+                    .where(and(
+                        eq(comments.menuDate, menuDate),
+                        inArray(comments.parentId, parentIds)
+                    ))
+                    .orderBy(asc(comments.id));
+                result = threadComments(parents, replyRows);
+            }
+
             return NextResponse.json({ comments: result, hasMore });
         }
 
-        // Varsayılan: son `limit` yorum (en yeniden geriye doğru)
-        const rows = await db
+        // Varsayılan: son `limit` parent yorum + onların reply'ları
+        const parentRows = await db
             .select(commentSelect)
             .from(comments)
             .leftJoin(users, eq(comments.userId, users.id))
-            .where(eq(comments.menuDate, menuDate))
+            .where(and(
+                eq(comments.menuDate, menuDate),
+                isNull(comments.parentId)
+            ))
             .orderBy(desc(comments.id))
-            .limit(limit + 1); // +1 ile hasMore tespiti
+            .limit(limit + 1);
 
-        const hasMore = rows.length > limit;
-        const result = rows.slice(0, limit).reverse(); // kronolojik sıra
+        const hasMore = parentRows.length > limit;
+        const parents = parentRows.slice(0, limit).reverse();
+
+        let result: ThreadedComment[] = [];
+        if (parents.length > 0) {
+            const parentIds = parents.map((p) => p.id);
+            const replyRows = await db
+                .select(commentSelect)
+                .from(comments)
+                .leftJoin(users, eq(comments.userId, users.id))
+                .where(and(
+                    eq(comments.menuDate, menuDate),
+                    inArray(comments.parentId, parentIds)
+                ))
+                .orderBy(asc(comments.id));
+            result = threadComments(parents, replyRows);
+        }
 
         return NextResponse.json({ comments: result, hasMore });
     } catch (error) {
@@ -148,7 +215,7 @@ export async function GET(request: NextRequest) {
 }
 
 // POST /api/comments
-// Body: { menuDate: "2025-12-30", content: "Yorum metni" }
+// Body: { menuDate: "2025-12-30", content: "Yorum metni", parentId?: number }
 export async function POST(request: NextRequest) {
     try {
         const session = await auth();
@@ -183,7 +250,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { menuDate, content } = body;
+        const { menuDate, content, parentId } = body;
 
         if (!menuDate || !isValidDateFormat(menuDate)) {
             return NextResponse.json(
@@ -234,12 +301,43 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // parentId validasyonu (opsiyonel)
+        let resolvedParentId: number | null = null;
+        if (parentId !== undefined && parentId !== null) {
+            if (typeof parentId !== "number" || !Number.isInteger(parentId) || parentId <= 0) {
+                return NextResponse.json(
+                    { error: "Geçersiz parentId." },
+                    { status: 400 }
+                );
+            }
+            const [parent] = await db
+                .select({ id: comments.id, parentId: comments.parentId, menuDate: comments.menuDate })
+                .from(comments)
+                .where(eq(comments.id, parentId));
+
+            if (!parent) {
+                return NextResponse.json(
+                    { error: "Yanıt verilen yorum bulunamadı." },
+                    { status: 404 }
+                );
+            }
+            if (parent.menuDate !== menuDate) {
+                return NextResponse.json(
+                    { error: "Geçersiz parentId." },
+                    { status: 400 }
+                );
+            }
+            // Flatten: yanıt bir reply'a veriliyorsa üst parent'ı kullan
+            resolvedParentId = parent.parentId !== null ? parent.parentId : parent.id;
+        }
+
         const [newComment] = await db
             .insert(comments)
             .values({
                 userId: session.user.id,
                 menuDate,
                 content: sanitizedContent,
+                parentId: resolvedParentId,
             })
             .returning();
 
@@ -252,6 +350,7 @@ export async function POST(request: NextRequest) {
                     userName: session.user.name,
                     userImage: session.user.image,
                     content: newComment.content,
+                    parentId: newComment.parentId,
                     createdAt: newComment.createdAt,
                 },
             },
