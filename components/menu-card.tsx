@@ -131,6 +131,7 @@ interface Meal {
 interface MenuDay {
     ymk: number
     date: string
+    hasData: boolean
     meals: Meal[]
     totalCalories: number
 }
@@ -169,6 +170,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const [pendingMeal, setPendingMeal] = useState<{ name: string; calories: number; id: string } | null>(null)
     const [showComments, setShowComments] = useState(false)
     const [commentCount, setCommentCount] = useState<number | null>(null)
+    const noData = day.meals.length === 0
     const prompt = generateAiPrompt(day)
     const links = getAiLinks(prompt)
 
@@ -273,80 +275,90 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                             {formatDateShort(day.date)}
                         </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground/60 leading-none mt-0.5">
-                        Yemek verileri son dakika değiştirilmiş olabilir.
-                    </p>
+                    {!noData && (
+                        <p className="text-xs text-muted-foreground/60 leading-none mt-0.5">
+                            Yemek verileri son dakika değiştirilmiş olabilir.
+                        </p>
+                    )}
                 </div>
-                <div className="shrink-0">
+                <div className={cn("shrink-0", noData && "opacity-50 pointer-events-none")}>
                     <LikeDislikeButtons menuDate={day.date} />
                 </div>
             </div>
 
-            {/* Meals Table */}
-            <div className="-my-px overflow-hidden">
-                <Table className="table-fixed w-full">
-                    <TableBody>
-                        {day.meals.map((meal, idx) => (
-                            <TableRow
-                                key={idx}
-                                className="group border-border/40 hover:bg-muted/30 cursor-pointer last:border-b-0"
-                                onClick={() => onMealClick(meal.id, meal.name, meal.calories)}
-                            >
-                                <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground overflow-hidden" style={{ maskImage: 'linear-gradient(to right, black 80%, transparent)' }}>
-                                    <div className="flex items-center gap-1.5 whitespace-nowrap">
-                                        {toTitleCase(meal.name)}
-                                        {day.meals.length === 5 && idx === 0 && (
-                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
-                                                Ana Yemek
-                                            </Badge>
-                                        )}
-                                        {day.meals.length === 5 && idx === 1 && (
-                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
-                                                Seçenek
-                                            </Badge>
-                                        )}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="py-2.5 px-3 text-right w-[140px] whitespace-nowrap">
-                                    <div className="flex items-center justify-end gap-1">
-                                        <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
-                                            {meal.calories} kcal
-                                        </Badge>
-                                        <button
-                                            onClick={(e) => handleFavoriteClick(e, meal.name, meal.id)}
-                                            className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                            aria-label={isFavorited(meal.name) ? "Favorilerden Çıkar" : "Favorilere Ekle"}
-                                        >
-                                            <Bookmark
-                                                className={cn(
-                                                    "h-4 w-4 transition-colors",
-                                                    isFavorited(meal.name)
-                                                        ? "text-foreground fill-foreground"
-                                                        : ""
-                                                )}
-                                            />
-                                        </button>
-                                        <button
-                                            onClick={(e) => handleAddMealClick(e, meal.name, meal.calories, meal.id)}
-                                            className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                            aria-label={isConsumed(meal.name) ? "Günlükten Çıkar" : "Bunu Yedim"}
-                                        >
-                                            {isConsumed(meal.name) ? (
-                                                <CircleCheck className="h-4 w-4 text-foreground" />
-                                            ) : (
-                                                <CirclePlus className="h-4 w-4" />
+            {/* Meals Table or No-Data Message */}
+            {day.meals.length > 0 ? (
+                <div className="-my-px overflow-hidden">
+                    <Table className="table-fixed w-full">
+                        <TableBody>
+                            {day.meals.map((meal, idx) => (
+                                <TableRow
+                                    key={idx}
+                                    className="group border-border/40 hover:bg-muted/30 cursor-pointer last:border-b-0"
+                                    onClick={() => onMealClick(meal.id, meal.name, meal.calories)}
+                                >
+                                    <TableCell className="py-2.5 px-3 font-medium text-sm text-foreground overflow-hidden" style={{ maskImage: 'linear-gradient(to right, black 80%, transparent)' }}>
+                                        <div className="flex items-center gap-1.5 whitespace-nowrap">
+                                            {toTitleCase(meal.name)}
+                                            {day.meals.length === 5 && idx === 0 && (
+                                                <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
+                                                    Ana Yemek
+                                                </Badge>
                                             )}
-                                        </button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
+                                            {day.meals.length === 5 && idx === 1 && (
+                                                <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
+                                                    Seçenek
+                                                </Badge>
+                                            )}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="py-2.5 px-3 text-right w-[140px] whitespace-nowrap">
+                                        <div className="flex items-center justify-end gap-1">
+                                            <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
+                                                {meal.calories} kcal
+                                            </Badge>
+                                            <button
+                                                onClick={(e) => handleFavoriteClick(e, meal.name, meal.id)}
+                                                className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                                aria-label={isFavorited(meal.name) ? "Favorilerden Çıkar" : "Favorilere Ekle"}
+                                            >
+                                                <Bookmark
+                                                    className={cn(
+                                                        "h-4 w-4 transition-colors",
+                                                        isFavorited(meal.name)
+                                                            ? "text-foreground fill-foreground"
+                                                            : ""
+                                                    )}
+                                                />
+                                            </button>
+                                            <button
+                                                onClick={(e) => handleAddMealClick(e, meal.name, meal.calories, meal.id)}
+                                                className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                                aria-label={isConsumed(meal.name) ? "Günlükten Çıkar" : "Bunu Yedim"}
+                                            >
+                                                {isConsumed(meal.name) ? (
+                                                    <CircleCheck className="h-4 w-4 text-foreground" />
+                                                ) : (
+                                                    <CirclePlus className="h-4 w-4" />
+                                                )}
+                                            </button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            ) : (
+                <div className="px-4 py-8 text-center">
+                    <p className="text-sm text-muted-foreground">
+                        Tatil günlerinde Üniversite Merkezi Kafeterya&apos;sı hizmet vermemektedir.
+                    </p>
+                </div>
+            )}
 
             {/* Footer */}
-            <div className="border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2">
+            <div className={cn("border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2", noData && "opacity-50 pointer-events-none")}>
                 {/* Sol: Yorumlar, Kalori, AI */}
                 <div className="flex items-center gap-1.5">
                     <Button
@@ -354,6 +366,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                         variant="outline"
                         className="h-7 text-xs gap-1.5 px-2.5 border-border/40"
                         onClick={() => setShowComments(true)}
+                        disabled={noData}
                         aria-label="Yorumlar"
                         title="Yorumlar"
                     >

@@ -19,6 +19,32 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
     // Tarih her zaman client'ta hesaplanır — cache'li sayfada bile doğru değer döner.
     const initialDate = getTurkeyDate()
 
+    // Bugün verisi yoksa (tatil, hafta sonu vb.) sentetik bir gün ekle
+    const [augmentedDays] = useState(() => {
+        const todayExists = menuData.days.some((day) => day.date === initialDate)
+        if (todayExists) return menuData.days
+
+        const syntheticDay = {
+            ymk: 0,
+            date: initialDate,
+            dayName: new Date(initialDate).toLocaleDateString("tr-TR", {
+                weekday: "long",
+                timeZone: "Europe/Istanbul",
+            }),
+            hasData: false,
+            meals: [],
+            totalCalories: 0,
+        }
+
+        // Tarih sırasına göre doğru yere ekle
+        const days = [...menuData.days, syntheticDay]
+        days.sort((a, b) => a.date.localeCompare(b.date))
+        return days
+    })
+
+    // menuData.days yerine augmentedDays kullan
+    const effectiveMenuData = { ...menuData, days: augmentedDays }
+
     // Gün değişimini izle; yeni güne geçildiğinde sayfayı otomatik yenile.
     useDayChange()
 
@@ -45,18 +71,15 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
         const today = initialDate
 
         // Try to find today's menu
-        const todayIndex = menuData.days.findIndex((day) => day.date === today)
+        const todayIndex = effectiveMenuData.days.findIndex((day) => day.date === today)
         if (todayIndex !== -1) return todayIndex
 
         // If today not found, find nearest future date
-        const futureIndex = menuData.days.findIndex((day) => day.date > today)
+        const futureIndex = effectiveMenuData.days.findIndex((day) => day.date > today)
         if (futureIndex !== -1) return futureIndex
 
         // If no future dates, use the last available date
-        // But if today is Saturday/Sunday (which means we passed all weekdays),
-        // we might want to stay on Friday or show nothing?
-        // Current behavior: show last available (likely Friday)
-        return menuData.days.length - 1
+        return effectiveMenuData.days.length - 1
     }
 
     const [mobileSelectedDateIndex, setMobileSelectedDateIndex] = useState<number>(findInitialDateIndex())
@@ -66,27 +89,27 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
     useEffect(() => {
         const dateParam = searchParams.get("date")
         if (dateParam) {
-            const targetIndex = menuData.days.findIndex((day) => day.date === dateParam)
+            const targetIndex = effectiveMenuData.days.findIndex((day) => day.date === dateParam)
             if (targetIndex !== -1) {
                 setMobileSelectedDateIndex(targetIndex)
                 setSelectedDateRange(undefined)
             }
         }
-    }, [searchParams, menuData.days])
+    }, [searchParams, effectiveMenuData.days])
 
     // Use initialDate here as well to avoid mismatch
     const today = initialDate
 
-    const todayMenu = menuData.days.find((day) => day.date === today)
+    const todayMenu = effectiveMenuData.days.find((day) => day.date === today)
 
     // Create dates in local timezone to avoid off-by-one errors
-    const availableDates = menuData.days.map((day) => {
+    const availableDates = effectiveMenuData.days.map((day) => {
         const [year, month, dayNum] = day.date.split("-").map(Number)
         return new Date(year, month - 1, dayNum)
     })
 
     const selectedDateMenus = selectedDateRange?.from
-        ? menuData.days.filter((day) => {
+        ? effectiveMenuData.days.filter((day) => {
             const dayDateStr = day.date // Already in ISO format: "2025-11-03"
             // Convert Date to local date string (YYYY-MM-DD) without timezone conversion
             const fromDate = selectedDateRange.from!
@@ -143,7 +166,7 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
     }
 
     const mobileCurrentDate = availableDates[mobileSelectedDateIndex]
-    const mobileCurrentMenu = menuData.days[mobileSelectedDateIndex]
+    const mobileCurrentMenu = effectiveMenuData.days[mobileSelectedDateIndex]
 
     return (
         <main className="min-h-screen bg-background pb-20 md:pb-8">
@@ -178,7 +201,7 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                             // Show range of menus if date range is selected
                             <div className="grid gap-4">
                                 {selectedDateMenus.map((day) => (
-                                    <MenuCard key={day.ymk} day={day} onMealClick={handleMealClick} />
+                                    <MenuCard key={day.date} day={day} onMealClick={handleMealClick} />
                                 ))}
                             </div>
                         ) : mobileCurrentMenu ? (
