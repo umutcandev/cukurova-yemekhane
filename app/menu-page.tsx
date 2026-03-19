@@ -19,25 +19,55 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
     // Tarih her zaman client'ta hesaplanır — cache'li sayfada bile doğru değer döner.
     const initialDate = getTurkeyDate()
 
-    // Bugün verisi yoksa (tatil, hafta sonu vb.) sentetik bir gün ekle
+    // JSON aralığındaki tüm eksik günler + bugün için sentetik girişler oluştur
     const [augmentedDays] = useState(() => {
-        const todayExists = menuData.days.some((day) => day.date === initialDate)
-        if (todayExists) return menuData.days
+        if (menuData.days.length === 0) return menuData.days
 
-        const syntheticDay = {
-            ymk: 0,
-            date: initialDate,
-            dayName: new Date(initialDate).toLocaleDateString("tr-TR", {
-                weekday: "long",
-                timeZone: "Europe/Istanbul",
-            }),
-            hasData: false,
-            meals: [],
-            totalCalories: 0,
+        const existingDates = new Set(menuData.days.map((day) => day.date))
+        const syntheticDays: typeof menuData.days = []
+
+        // JSON'daki ilk ve son tarih arasındaki tüm eksik günleri bul
+        const firstDate = menuData.days[0].date
+        const lastDate = menuData.days[menuData.days.length - 1].date
+        const current = new Date(firstDate + "T00:00:00")
+        const end = new Date(lastDate + "T00:00:00")
+
+        while (current <= end) {
+            const dateStr = current.toISOString().split("T")[0]
+            if (!existingDates.has(dateStr)) {
+                syntheticDays.push({
+                    ymk: 0,
+                    date: dateStr,
+                    dayName: current.toLocaleDateString("tr-TR", {
+                        weekday: "long",
+                        timeZone: "Europe/Istanbul",
+                    }),
+                    hasData: false,
+                    meals: [],
+                    totalCalories: 0,
+                })
+            }
+            current.setDate(current.getDate() + 1)
         }
 
-        // Tarih sırasına göre doğru yere ekle
-        const days = [...menuData.days, syntheticDay]
+        // Bugün aralık dışındaysa ve veride yoksa, bugün için de ekle
+        if (!existingDates.has(initialDate) && (initialDate < firstDate || initialDate > lastDate)) {
+            syntheticDays.push({
+                ymk: 0,
+                date: initialDate,
+                dayName: new Date(initialDate + "T00:00:00").toLocaleDateString("tr-TR", {
+                    weekday: "long",
+                    timeZone: "Europe/Istanbul",
+                }),
+                hasData: false,
+                meals: [],
+                totalCalories: 0,
+            })
+        }
+
+        if (syntheticDays.length === 0) return menuData.days
+
+        const days = [...menuData.days, ...syntheticDays]
         days.sort((a, b) => a.date.localeCompare(b.date))
         return days
     })
