@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ChevronRight, Bookmark, CirclePlus, CircleCheck, MessageSquare, Brain } from "lucide-react"
+import { ChevronRight, Bookmark, CirclePlus, CircleCheck, MessageSquare, Brain, MoreHorizontal } from "lucide-react"
 import { motion } from "framer-motion"
 import {
     Table,
@@ -317,31 +317,67 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                                             <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 hover:bg-secondary/70">
                                                 {meal.calories} kcal
                                             </Badge>
-                                            <button
-                                                onClick={(e) => handleFavoriteClick(e, meal.name, meal.id)}
-                                                className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                                aria-label={isFavorited(meal.name) ? "Favorilerden Çıkar" : "Favorilere Ekle"}
-                                            >
-                                                <Bookmark
-                                                    className={cn(
-                                                        "h-4 w-4 transition-colors",
-                                                        isFavorited(meal.name)
-                                                            ? "text-foreground fill-foreground"
-                                                            : ""
-                                                    )}
-                                                />
-                                            </button>
-                                            <button
-                                                onClick={(e) => handleAddMealClick(e, meal.name, meal.calories, meal.id)}
-                                                className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
-                                                aria-label={isConsumed(meal.name) ? "Günlükten Çıkar" : "Bunu Yedim"}
-                                            >
-                                                {isConsumed(meal.name) ? (
-                                                    <CircleCheck className="h-4 w-4 text-foreground" />
-                                                ) : (
-                                                    <CirclePlus className="h-4 w-4" />
-                                                )}
-                                            </button>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <button
+                                                        className="p-1 hover:bg-muted rounded-md transition-colors text-muted-foreground/70 hover:text-foreground"
+                                                        aria-label="Seçenekler"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="w-48">
+                                                    <DropdownMenuLabel className="text-xs font-semibold">İşlemi Seçin</DropdownMenuLabel>
+                                                    <p className="px-2 pb-1.5 text-[12px] text-muted-foreground/60 leading-tight">
+                                                        Yapmak istediğiniz işlemi seçin.
+                                                    </p>
+                                                    <DropdownMenuItem asChild>
+                                                        <motion.button
+                                                            className="cursor-pointer group w-full"
+                                                            whileHover="hover"
+                                                            onClick={(e) => { e.stopPropagation(); handleFavoriteClick(e, meal.name, meal.id); }}
+                                                        >
+                                                            <Bookmark className={cn("h-4 w-4", isFavorited(meal.name) ? "text-foreground fill-foreground" : "text-foreground/80")} />
+                                                            <span className="text-xs text-foreground/80">
+                                                                {isFavorited(meal.name) ? "Favorilerden Çıkar" : "Favorilere Ekle"}
+                                                            </span>
+                                                            <motion.span
+                                                                className="ml-auto"
+                                                                variants={{ hover: { opacity: 1, x: 0 } }}
+                                                                initial={{ opacity: 0, x: -4 }}
+                                                                transition={{ duration: 0.15 }}
+                                                            >
+                                                                <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                            </motion.span>
+                                                        </motion.button>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem asChild>
+                                                        <motion.button
+                                                            className="cursor-pointer group w-full"
+                                                            whileHover="hover"
+                                                            onClick={(e) => { e.stopPropagation(); handleAddMealClick(e, meal.name, meal.calories, meal.id); }}
+                                                        >
+                                                            {isConsumed(meal.name) ? (
+                                                                <CircleCheck className="h-4 w-4 text-foreground" />
+                                                            ) : (
+                                                                <CirclePlus className="h-4 w-4 text-foreground/80" />
+                                                            )}
+                                                            <span className="text-xs text-foreground/80">
+                                                                {isConsumed(meal.name) ? "Günlükten Çıkar" : "Günlüğe Ekle"}
+                                                            </span>
+                                                            <motion.span
+                                                                className="ml-auto"
+                                                                variants={{ hover: { opacity: 1, x: 0 } }}
+                                                                initial={{ opacity: 0, x: -4 }}
+                                                                transition={{ duration: 0.15 }}
+                                                            >
+                                                                <ChevronRight className="h-3.5 w-3.5 text-foreground/60" />
+                                                            </motion.span>
+                                                        </motion.button>
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </div>
                                     </TableCell>
                                 </TableRow>
