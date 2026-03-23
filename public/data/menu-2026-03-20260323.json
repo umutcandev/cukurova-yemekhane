@@ -1,6 +1,6 @@
 {
   "month": "2026-03",
-  "lastUpdated": "2026-03-23T05:25:59.340Z",
+  "lastUpdated": "2026-03-23T09:54:10.848Z",
   "scrapeDate": "2026-03-23",
   "totalDays": 19,
   "days": [
@@ -446,9 +446,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "3",
-          "name": "Zeytinyağlı Taze Fasülye",
-          "calories": 153,
+          "id": "266",
+          "name": "Patates Tava (Etsiz)",
+          "calories": 444,
           "category": "ana_yemek"
         },
         {
