@@ -5,13 +5,22 @@ import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-reac
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/date-picker"
 import {
-    Sheet,
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetDescription,
-    SheetTrigger,
-} from "@/components/ui/sheet"
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerDescription,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { useIsMobile } from "@/components/ui/use-mobile"
 import type { DateRange } from "react-day-picker"
 
 interface MobileBottomNavProps {
@@ -38,6 +47,7 @@ export function MobileBottomNav({
     totalDays,
 }: MobileBottomNavProps) {
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+    const isMobile = useIsMobile()
 
     const handleDateRangeSelect = (range: DateRange | undefined) => {
         onDateRangeSelect(range)
@@ -104,29 +114,55 @@ export function MobileBottomNav({
                 </div>
 
                 {/* Right: Date Picker Trigger */}
-                <Sheet open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
-                    <SheetTrigger asChild>
-                        <Button suppressHydrationWarning variant="outline" size="sm" className="rounded-lg gap-2">
-                            <CalendarIcon className="h-4 w-4" />
-                            <span className="text-xs">Tarih Seç</span>
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="bottom" className="h-auto pb-safe">
-                        <SheetHeader className="px-1 pb-4">
-                            <SheetTitle className="text-center text-lg">Tarih Seçin</SheetTitle>
-                            <SheetDescription className="text-center text-sm text-muted-foreground/80">
-                                Menüsünü görüntülemek istediğiniz günü veya tarih aralığını seçin.
-                            </SheetDescription>
-                        </SheetHeader>
-                        <div className="px-2 pb-6">
+                {isMobile ? (
+                    <Drawer open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
+                        <DrawerTrigger asChild>
+                            <Button suppressHydrationWarning variant="outline" size="sm" className="rounded-lg gap-2">
+                                <CalendarIcon className="h-4 w-4" />
+                                <span className="text-xs">Tarih Seç</span>
+                            </Button>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                            <div className="mx-auto w-full max-w-sm">
+                                <DrawerHeader className="text-center">
+                                    <DrawerTitle className="text-lg">Tarih Seçin</DrawerTitle>
+                                    <DrawerDescription className="text-sm text-muted-foreground/80">
+                                        Menüsünü görüntülemek istediğiniz günü veya tarih aralığını seçin.
+                                    </DrawerDescription>
+                                </DrawerHeader>
+                                <div className="px-4 pb-6">
+                                    <DatePicker
+                                        availableDates={availableDates}
+                                        onDateRangeSelect={handleDateRangeSelect}
+                                        onCancel={handleCancel}
+                                    />
+                                </div>
+                            </div>
+                        </DrawerContent>
+                    </Drawer>
+                ) : (
+                    <Dialog open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
+                        <DialogTrigger asChild>
+                            <Button suppressHydrationWarning variant="outline" size="sm" className="rounded-lg gap-2">
+                                <CalendarIcon className="h-4 w-4" />
+                                <span className="text-xs">Tarih Seç</span>
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-sm">
+                            <DialogHeader>
+                                <DialogTitle>Tarih Seçin</DialogTitle>
+                                <DialogDescription className="text-sm text-muted-foreground/80">
+                                    Menüsünü görüntülemek istediğiniz günü veya tarih aralığını seçin.
+                                </DialogDescription>
+                            </DialogHeader>
                             <DatePicker
                                 availableDates={availableDates}
                                 onDateRangeSelect={handleDateRangeSelect}
                                 onCancel={handleCancel}
                             />
-                        </div>
-                    </SheetContent>
-                </Sheet>
+                        </DialogContent>
+                    </Dialog>
+                )}
             </div>
         </nav>
     )
