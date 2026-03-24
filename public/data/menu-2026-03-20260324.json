@@ -1,7 +1,7 @@
 {
   "month": "2026-03",
-  "lastUpdated": "2026-03-17T05:17:09.965Z",
-  "scrapeDate": "2026-03-17",
+  "lastUpdated": "2026-03-24T05:18:46.724Z",
+  "scrapeDate": "2026-03-24",
   "totalDays": 19,
   "days": [
     {
@@ -380,12 +380,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "266",
-          "name": "Patates Tava (Etsiz)",
-          "calories": 444,
-          "category": "ana_yemek"
-        },
-        {
           "id": "156",
           "name": "Nohutlu Pirinç Pilavı",
           "calories": 377,
@@ -413,9 +407,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "2319",
-          "name": "",
-          "calories": 468,
+          "id": "3358",
+          "name": "Soslu Fırın Baget",
+          "calories": 620,
           "category": "ana_yemek"
         },
         {
@@ -425,9 +419,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "238",
-          "name": "Su",
-          "calories": 1,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -437,7 +431,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 873
+      "totalCalories": 1142
     },
     {
       "ymk": 16,
@@ -464,13 +458,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "144",
-          "name": "Meyve (Elma)",
-          "calories": 142,
+          "id": "63",
+          "name": "Meyve (Armut)",
+          "calories": 128,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1007
+      "totalCalories": 993
     },
     {
       "ymk": 17,
@@ -479,9 +473,15 @@
       "hasData": true,
       "meals": [
         {
-          "id": "288",
-          "name": "Soslu Fırın Tavuk",
-          "calories": 535,
+          "id": "22",
+          "name": "Etli Nohut",
+          "calories": 373,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "204",
+          "name": "Etsiz Nohut Yahnisi",
+          "calories": 277,
           "category": "ana_yemek"
         },
         {
@@ -503,7 +503,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1012
+      "totalCalories": 850
     },
     {
       "ymk": 18,
@@ -512,9 +512,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "22",
-          "name": "Etli Nohut",
-          "calories": 373,
+          "id": "288",
+          "name": "Soslu Fırın Tavuk",
+          "calories": 535,
           "category": "ana_yemek"
         },
         {
@@ -536,7 +536,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 929
+      "totalCalories": 1091
     },
     {
       "ymk": 19,
