@@ -2,7 +2,45 @@
 
 import { useState, useEffect, useCallback, useRef } from "react"
 import { toast } from "sonner"
+import { z } from "zod"
 import type { Comment, Reply } from "@/components/comments/types"
+
+// ─── Runtime API response schemas ────────────────────────────────────────────
+
+const ReplySchema = z.object({
+    id: z.number(),
+    userId: z.string(),
+    userName: z.string().nullable(),
+    userImage: z.string().nullable(),
+    content: z.string(),
+    imageUrl: z.string().nullable(),
+    parentId: z.number().nullable(),
+    createdAt: z.string(),
+})
+
+const CommentSchema = ReplySchema.extend({
+    replies: z.array(ReplySchema).default([]),
+})
+
+const CommentListSchema = z.array(CommentSchema)
+
+function parseComments(raw: unknown): Comment[] {
+    const result = CommentListSchema.safeParse(raw)
+    if (!result.success) {
+        console.warn("[use-comments] API response validation failed:", result.error.flatten())
+        return []
+    }
+    return result.data as Comment[]
+}
+
+function parseComment(raw: unknown): Comment | null {
+    const result = CommentSchema.safeParse(raw)
+    if (!result.success) {
+        console.warn("[use-comments] Comment validation failed:", result.error.flatten())
+        return null
+    }
+    return result.data as Comment
+}
 
 interface UseCommentsOptions {
     open: boolean
@@ -18,6 +56,7 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
     const [sending, setSending] = useState(false)
     const [sendingReply, setSendingReply] = useState(false)
     const sendingRef = useRef(false)
+    const pollFailCount = useRef(0)
     const commentsRef = useRef<Comment[]>([])
     commentsRef.current = comments
 
@@ -36,7 +75,7 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
             const res = await fetch(`/api/comments?menuDate=${menuDate}&limit=20`)
             if (res.ok) {
                 const data = await res.json()
-                setComments(data.comments)
+                setComments(parseComments(data.comments))
                 setHasMore(data.hasMore ?? false)
                 scrollToBottom()
             }
@@ -52,8 +91,14 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
         try {
             const res = await fetch(`/api/comments?menuDate=${menuDate}&after=${maxId}`)
             if (res.ok) {
+                pollFailCount.current = 0
                 const data = await res.json()
-                const newOnes = data.comments as Array<Comment | Reply>
+                if (!Array.isArray(data.comments)) return
+                type ParsedReply = z.SafeParseReturnType<unknown, z.infer<typeof ReplySchema>>
+                const newOnes = (data.comments as unknown[])
+                    .map((c) => ReplySchema.safeParse(c))
+                    .filter((r: ParsedReply): r is z.SafeParseSuccess<z.infer<typeof ReplySchema>> => r.success)
+                    .map((r: z.SafeParseSuccess<z.infer<typeof ReplySchema>>) => r.data) as Array<Comment | Reply>
                 if (newOnes.length > 0) {
                     setComments((prev) => {
                         const existingIds = new Set<number>()
@@ -83,9 +128,15 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
                         return updated
                     })
                 }
+            } else {
+                pollFailCount.current++
             }
         } catch (error) {
             console.error("Polling error:", error)
+            pollFailCount.current++
+            if (pollFailCount.current === 3) {
+                toast.error("Yeni yorumlar yüklenemiyor. Bağlantınızı kontrol edin.", { duration: 4000 })
+            }
         }
     }, [menuDate, scrollToBottom])
 
@@ -98,7 +149,7 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
             const res = await fetch(`/api/comments?menuDate=${menuDate}&before=${minId}&limit=20`)
             if (res.ok) {
                 const data = await res.json()
-                const older = data.comments as Comment[]
+                const older = parseComments(data.comments)
                 setHasMore(data.hasMore ?? false)
                 if (older.length > 0) {
                     const scrollEl = scrollRef.current
@@ -122,22 +173,25 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
     }
 
     // Yeni yorum gönder — başarıda true döner
-    const sendComment = async (content: string): Promise<boolean> => {
+    const sendComment = async (content: string, imageUrl?: string): Promise<boolean> => {
         setSending(true)
         sendingRef.current = true
         try {
             const res = await fetch("/api/comments", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ menuDate, content }),
+                body: JSON.stringify({ menuDate, content: content || "", imageUrl }),
             })
             const data = await res.json()
             if (!res.ok) {
                 toast.error(data.error || "Yorum gönderilemedi.", { duration: 3000 })
                 return false
             }
-            setComments((prev) => [...prev, { ...data.comment, replies: [] as Reply[] }])
-            scrollToBottom()
+            const parsed = parseComment({ ...data.comment, replies: [] })
+            if (parsed) {
+                setComments((prev) => [...prev, parsed])
+                scrollToBottom()
+            }
             return true
         } catch {
             toast.error("Bir hata oluştu.", { duration: 2000 })
@@ -149,27 +203,30 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
     }
 
     // Yanıt gönder — başarıda true döner
-    const sendReply = async (parentId: number, content: string): Promise<boolean> => {
+    const sendReply = async (parentId: number, content: string, imageUrl?: string): Promise<boolean> => {
         setSendingReply(true)
         sendingRef.current = true
         try {
             const res = await fetch("/api/comments", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ menuDate, content, parentId }),
+                body: JSON.stringify({ menuDate, content: content || "", imageUrl, parentId }),
             })
             const data = await res.json()
             if (!res.ok) {
                 toast.error(data.error || "Yanıt gönderilemedi.", { duration: 3000 })
                 return false
             }
-            setComments((prev) =>
-                prev.map((c) =>
-                    c.id === parentId
-                        ? { ...c, replies: [...c.replies, data.comment as Reply] }
-                        : c
+            const parsed = ReplySchema.safeParse(data.comment)
+            if (parsed.success) {
+                setComments((prev) =>
+                    prev.map((c) =>
+                        c.id === parentId
+                            ? { ...c, replies: [...c.replies, parsed.data as Reply] }
+                            : c
+                    )
                 )
-            )
+            }
             return true
         } catch {
             toast.error("Bir hata oluştu.", { duration: 2000 })
@@ -216,8 +273,10 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
         if (!open) return
         let interval: ReturnType<typeof setInterval> | null = null
 
-        const startPolling = () => {
+        const schedulePoll = () => {
             if (interval) return
+            // Exponential backoff: 20s, 40s, 80s (max 80s)
+            const delay = Math.min(20_000 * Math.pow(2, pollFailCount.current), 80_000)
             interval = setInterval(() => {
                 const current = commentsRef.current
                 if (!sendingRef.current && current.length > 0) {
@@ -228,7 +287,7 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
                     const maxId = Math.max(...allIds)
                     pollNewComments(maxId)
                 }
-            }, 20_000)
+            }, delay)
         }
 
         const stopPolling = () => {
@@ -242,12 +301,12 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
             if (document.hidden) {
                 stopPolling()
             } else {
-                startPolling()
+                schedulePoll()
             }
         }
 
         if (!document.hidden) {
-            startPolling()
+            schedulePoll()
         }
 
         document.addEventListener("visibilitychange", handleVisibility)

@@ -34,6 +34,7 @@ interface CommentRow {
     userName: string | null;
     userImage: string | null;
     content: string;
+    imageUrl: string | null;
     parentId: number | null;
     createdAt: Date;
 }
@@ -62,6 +63,7 @@ const commentSelect = {
     userName: users.name,
     userImage: users.image,
     content: comments.content,
+    imageUrl: comments.imageUrl,
     parentId: comments.parentId,
     createdAt: comments.createdAt,
 };
@@ -76,7 +78,7 @@ export async function GET(request: NextRequest) {
             || headersList.get("x-real-ip")
             || "anonymous";
 
-        const getRateLimit = checkRateLimit(ip, {
+        const getRateLimit = await checkRateLimit(ip, {
             prefix: "comments-get",
             maxRequests: GET_RATE_LIMIT,
         });
@@ -98,7 +100,7 @@ export async function GET(request: NextRequest) {
 
         if (!menuDate || !isValidDateFormat(menuDate)) {
             return NextResponse.json(
-                { error: "Invalid date format. Use YYYY-MM-DD" },
+                { error: "Geçersiz tarih formatı. YYYY-MM-DD kullanın." },
                 { status: 400 }
             );
         }
@@ -208,7 +210,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error("Comments GET error:", error);
         return NextResponse.json(
-            { error: "Internal server error" },
+            { error: "Sunucu hatası oluştu." },
             { status: 500 }
         );
     }
@@ -227,7 +229,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Rate limit by user ID
-        const rateLimit = checkRateLimit(session.user.id, {
+        const rateLimit = await checkRateLimit(session.user.id, {
             prefix: "comment",
             maxRequests: COMMENT_RATE_LIMIT,
         });
@@ -250,7 +252,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { menuDate, content, parentId } = body;
+        const { menuDate, content, imageUrl, parentId } = body;
 
         if (!menuDate || !isValidDateFormat(menuDate)) {
             return NextResponse.json(
@@ -259,46 +261,72 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        if (!content || typeof content !== "string") {
+        // Validate imageUrl if provided
+        let validatedImageUrl: string | null = null;
+        if (imageUrl && typeof imageUrl === "string") {
+            const expectedPrefix = process.env.R2_PUBLIC_URL || "";
+            if (!expectedPrefix) {
+                return NextResponse.json(
+                    { error: "Fotoğraf yükleme yapılandırması eksik." },
+                    { status: 500 }
+                );
+            }
+            try {
+                const parsedUrl = new URL(imageUrl);
+                const expectedOrigin = new URL(expectedPrefix).origin;
+                if (parsedUrl.origin !== expectedOrigin || parsedUrl.pathname.includes("..")) {
+                    return NextResponse.json(
+                        { error: "Geçersiz fotoğraf URL'i." },
+                        { status: 400 }
+                    );
+                }
+            } catch {
+                return NextResponse.json(
+                    { error: "Geçersiz fotoğraf URL'i." },
+                    { status: 400 }
+                );
+            }
+            validatedImageUrl = imageUrl;
+        }
+
+        // At least content or imageUrl must be provided
+        const hasContent = content && typeof content === "string" && content.trim().length > 0;
+        if (!hasContent && !validatedImageUrl) {
             return NextResponse.json(
-                { error: "Yorum metni gereklidir." },
+                { error: "Yorum metni veya fotoğraf gereklidir." },
                 { status: 400 }
             );
         }
 
-        const trimmedContent = content.trim();
+        let sanitizedContent = "";
+        if (hasContent) {
+            const trimmedContent = content.trim();
 
-        if (trimmedContent.length === 0) {
-            return NextResponse.json(
-                { error: "Yorum metni boş olamaz." },
-                { status: 400 }
-            );
-        }
+            if (trimmedContent.length > MAX_COMMENT_LENGTH) {
+                return NextResponse.json(
+                    { error: `Yorum en fazla ${MAX_COMMENT_LENGTH} karakter olabilir.` },
+                    { status: 400 }
+                );
+            }
 
-        if (trimmedContent.length > MAX_COMMENT_LENGTH) {
-            return NextResponse.json(
-                { error: `Yorum en fazla ${MAX_COMMENT_LENGTH} karakter olabilir.` },
-                { status: 400 }
-            );
-        }
+            // XSS defense-in-depth: iteratively strip all HTML tags (handles nested/malformed tags)
+            sanitizedContent = sanitizeHtml(trimmedContent);
 
-        // XSS defense-in-depth: iteratively strip all HTML tags (handles nested/malformed tags)
-        const sanitizedContent = sanitizeHtml(trimmedContent);
+            // Reject if sanitization removed all content (e.g. pure HTML/XSS payloads)
+            if (sanitizedContent.trim().length === 0 && !validatedImageUrl) {
+                return NextResponse.json(
+                    { error: "Yorum metni geçersiz içerik barındırmaktadır." },
+                    { status: 400 }
+                );
+            }
 
-        // Reject if sanitization removed all content (e.g. pure HTML/XSS payloads)
-        if (sanitizedContent.trim().length === 0) {
-            return NextResponse.json(
-                { error: "Yorum metni geçersiz içerik barındırmaktadır." },
-                { status: 400 }
-            );
-        }
-
-        // Profanity check
-        if (containsBadWord(sanitizedContent)) {
-            return NextResponse.json(
-                { error: "Yorumunuz uygunsuz içerik barındırmaktadır." },
-                { status: 400 }
-            );
+            // Profanity check
+            if (sanitizedContent.trim().length > 0 && containsBadWord(sanitizedContent)) {
+                return NextResponse.json(
+                    { error: "Yorumunuz uygunsuz içerik barındırmaktadır." },
+                    { status: 400 }
+                );
+            }
         }
 
         // parentId validasyonu (opsiyonel)
@@ -337,6 +365,7 @@ export async function POST(request: NextRequest) {
                 userId: session.user.id,
                 menuDate,
                 content: sanitizedContent,
+                imageUrl: validatedImageUrl,
                 parentId: resolvedParentId,
             })
             .returning();
@@ -350,6 +379,7 @@ export async function POST(request: NextRequest) {
                     userName: session.user.name,
                     userImage: session.user.image,
                     content: newComment.content,
+                    imageUrl: newComment.imageUrl,
                     parentId: newComment.parentId,
                     createdAt: newComment.createdAt,
                 },
@@ -364,7 +394,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error("Comments POST error:", error);
         return NextResponse.json(
-            { error: "Internal server error" },
+            { error: "Sunucu hatası oluştu." },
             { status: 500 }
         );
     }

@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Rate limit by user ID
-        const rateLimit = checkRateLimit(session.user.id, {
+        const rateLimit = await checkRateLimit(session.user.id, {
             prefix: "report",
             maxRequests: REPORT_RATE_LIMIT,
         });

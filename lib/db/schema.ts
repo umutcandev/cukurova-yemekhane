@@ -179,6 +179,7 @@ export const comments = pgTable(
             .references(() => users.id, { onDelete: "cascade" }),
         menuDate: text("menu_date").notNull(),
         content: text("content").notNull(),
+        imageUrl: text("image_url"),
         parentId: integer("parent_id").references((): AnyPgColumn => comments.id, { onDelete: "cascade" }),
         createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     },
