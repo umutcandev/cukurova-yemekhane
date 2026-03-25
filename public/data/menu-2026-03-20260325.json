@@ -1,7 +1,7 @@
 {
   "month": "2026-03",
-  "lastUpdated": "2026-03-18T11:51:02.472Z",
-  "scrapeDate": "2026-03-18",
+  "lastUpdated": "2026-03-25T05:18:51.357Z",
+  "scrapeDate": "2026-03-25",
   "totalDays": 19,
   "days": [
     {
@@ -413,12 +413,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "190",
-          "name": "Ispanak Kavurma",
-          "calories": 42,
-          "category": "ana_yemek"
-        },
-        {
           "id": "231",
           "name": "Yağlı Buğday Çorbası",
           "calories": 148,
@@ -518,6 +512,12 @@
           "category": "ana_yemek"
         },
         {
+          "id": "37",
+          "name": "Zeytinyağlı Barbunya",
+          "calories": 371,
+          "category": "ana_yemek"
+        },
+        {
           "id": "2",
           "name": "Şehriyeli Pirinç Pilavı",
           "calories": 310,
@@ -563,13 +563,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "75",
-          "name": "Puding",
-          "calories": 215,
+          "id": "63",
+          "name": "Meyve (Armut)",
+          "calories": 128,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1099
+      "totalCalories": 1012
     },
     {
       "ymk": 20,
@@ -596,13 +596,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "144",
-          "name": "Meyve (Elma)",
-          "calories": 142,
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 742
+      "totalCalories": 815
     },
     {
       "ymk": 21,
