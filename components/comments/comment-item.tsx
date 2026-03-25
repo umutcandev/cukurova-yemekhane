@@ -1,10 +1,12 @@
 "use client"
 
 import type { Session } from "next-auth"
+import Image from "next/image"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { CommentActionMenu } from "./comment-action-menu"
 import { CommentReply } from "./comment-reply"
-import { ReplyInput } from "./reply-input"
+import { MessageInput } from "./message-input"
+import { useReplyImage } from "./reply-image-context"
 import { formatRelativeTime, getInitials } from "./utils"
 import { CHAR_LIMIT } from "./types"
 import type { Comment, Reply } from "./types"
@@ -54,6 +56,7 @@ export function CommentItem({
     canDelete,
     canReport,
 }: CommentItemProps) {
+    const { replyImagePreview, replyImageFile, replyImageLoading, onReplyImageSelect, onReplyImageClear } = useReplyImage()
     const MAX_CHARS = 100
     const isLong = comment.content.length > MAX_CHARS
     const isExpanded = expandedComments.has(comment.id)
@@ -85,7 +88,7 @@ export function CommentItem({
                             <span className="text-xs text-muted-foreground/60 shrink-0">
                                 {formatRelativeTime(comment.createdAt)}
                             </span>
-                            <span className="text-[10px] font-mono font-medium text-muted-foreground/60 bg-muted/80 border border-border/40 px-1.5 py-0.5 rounded-md shrink-0 leading-none select-none">
+                            <span className="text-[10px] font-mono font-medium text-muted-foreground/60 bg-muted/80 border border-border/40 px-1.5 py-0.5 rounded-sm shrink-0 leading-none select-none">
                                 #{comment.id}
                             </span>
                         </div>
@@ -101,9 +104,25 @@ export function CommentItem({
                         />
                     </div>
 
-                    <p className="text-sm text-foreground/90 mt-0.5 leading-relaxed break-words">
-                        {displayText}
-                    </p>
+                    {/* Inline image */}
+                    {comment.imageUrl && (
+                        <div className="mt-1.5 mb-1">
+                            <Image
+                                src={comment.imageUrl}
+                                alt="Yorum fotoğrafı"
+                                width={240}
+                                height={180}
+                                className="rounded-lg object-cover max-w-full border border-border/40"
+                                style={{ maxWidth: 240, height: "auto" }}
+                            />
+                        </div>
+                    )}
+
+                    {comment.content && (
+                        <p className="text-sm text-foreground/90 mt-0.5 leading-relaxed break-words">
+                            {displayText}
+                        </p>
+                    )}
                     {isLong && (
                         <button
                             onClick={() => onToggleExpand(comment.id)}
@@ -177,13 +196,19 @@ export function CommentItem({
             {/* Inline reply form (parent comment için) */}
             {replyingToId === comment.id && (
                 <div className="ml-10">
-                    <ReplyInput
+                    <MessageInput
+                        mode="reply"
                         value={replyContent}
                         onChange={onReplyContentChange}
                         onSend={() => onSendReply(comment.id)}
                         onCancel={() => onSetReplyingTo(null)}
                         sending={sendingReply}
                         charLimit={CHAR_LIMIT}
+                        imagePreview={replyImagePreview}
+                        imageFile={replyImageFile}
+                        onImageSelect={onReplyImageSelect}
+                        onImageClear={onReplyImageClear}
+                        imageLoading={replyImageLoading}
                     />
                 </div>
             )}

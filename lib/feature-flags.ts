@@ -1,7 +1,6 @@
 /**
  * Feature Flags
  * 
- * Vercel Edge Request limitlerini yönetmek için merkezi feature flag sistemi.
  * AUTH_ENABLED=false yapıldığında:
  * - Middleware auth kontrolü atlanır (edge request düşer)
  * - SessionProvider devre dışı kalır (otomatik /api/auth/session çağrısı yok)
@@ -10,3 +9,5 @@
  */
 
 export const AUTH_ENABLED = process.env.NEXT_PUBLIC_AUTH_ENABLED !== "false"
+
+export const PHOTO_UPLOAD_ENABLED = process.env.NEXT_PUBLIC_PHOTO_UPLOAD_ENABLED !== "false"

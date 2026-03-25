@@ -153,10 +153,10 @@ export function MenuSearchCommand() {
             {/* Trigger Button — shadcn docs stili geniş input */}
             <button
                 onClick={() => setOpen(true)}
-                className="group flex items-center gap-2 h-8 rounded-md border border-border/40 bg-background/50 px-3 text-sm text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors cursor-pointer w-full max-w-[200px] md:max-w-[240px]"
+                className="group flex items-center gap-1.5 h-8 rounded-md border border-border/40 bg-background/50 px-1.5 text-sm text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors cursor-pointer w-full max-w-[200px] md:max-w-[240px]"
             >
                 <Search className="h-3.5 w-3.5 shrink-0 opacity-60" />
-                <span className="flex-1 text-left text-xs truncate md:hidden">Arayın...</span>
+                <span className="flex-1 text-left text-xs truncate md:hidden">Arayın</span>
                 <span className="flex-1 text-left text-xs truncate hidden md:inline">Menüde arayın...</span>
                 <Kbd className="inline-flex h-5 px-1.5 text-[10px] pointer-events-none">
                     <span className="text-[10px]">⌘</span>K
@@ -172,11 +172,19 @@ export function MenuSearchCommand() {
                 showCloseButton={false}
             >
                 <CommandInput
-                    placeholder="Menüde arayın..."
+                    placeholder="Menüdeki yemekleri arayın..."
                     value={query}
                     onValueChange={setQuery}
                 />
-                <CommandList className="h-[50vh] max-h-[50vh] sm:h-[400px] sm:max-h-[400px]">
+                {!loading && query.length === 0 && (
+                    <div className="flex items-center justify-center h-[50vh] sm:h-[400px]">
+                        <svg height="64" width="64" viewBox="0 0 16 16" className="text-muted-foreground/15">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M3.5 7C3.5 5.067 5.067 3.5 7 3.5C8.933 3.5 10.5 5.067 10.5 7C10.5 7.88461 10.1718 8.69256 9.63058 9.30876L9.30876 9.63058C8.69256 10.1718 7.88461 10.5 7 10.5C5.067 10.5 3.5 8.933 3.5 7ZM9.96544 11.0261C9.13578 11.6382 8.11014 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7C12 8.11014 11.6382 9.13578 11.0261 9.96544L14.0303 12.9697L14.5607 13.5L13.5 14.5607L12.9697 14.0303L9.96544 11.0261Z" fill="currentColor" />
+                        </svg>
+                    </div>
+                )}
+
+                <CommandList className={`h-[50vh] max-h-[50vh] sm:h-[400px] sm:max-h-[400px] ${!loading && query.length === 0 ? "hidden" : ""}`}>
                     {loading && (
                         <div className="py-6 text-center text-sm text-muted-foreground">
                             Yükleniyor...
@@ -191,12 +199,6 @@ export function MenuSearchCommand() {
 
                     {!loading && normalizedQuery.length >= 3 && filtered.length === 0 && (
                         <CommandEmpty>Sonuç bulunamadı.</CommandEmpty>
-                    )}
-
-                    {!loading && query.length === 0 && (
-                        <div className="py-6 text-center text-sm text-muted-foreground">
-                            Bir yemek ismi yazarak aramaya başlayın.
-                        </div>
                     )}
 
                     {!loading && filtered.length > 0 && (

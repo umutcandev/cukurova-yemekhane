@@ -6,6 +6,7 @@ export interface Reply {
     userName: string | null
     userImage: string | null
     content: string
+    imageUrl: string | null
     parentId: number
     createdAt: string
 }
@@ -16,6 +17,7 @@ export interface Comment {
     userName: string | null
     userImage: string | null
     content: string
+    imageUrl: string | null
     parentId: null
     createdAt: string
     replies: Reply[]

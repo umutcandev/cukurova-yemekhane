@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
 
         // Check rate limit
-        const rateLimit = checkRateLimit(ip);
+        const rateLimit = await checkRateLimit(ip);
         if (!rateLimit.allowed) {
             return NextResponse.json(
                 { error: 'Too many requests. Please wait.', resetIn: rateLimit.resetIn },

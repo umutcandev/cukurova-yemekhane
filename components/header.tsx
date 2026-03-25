@@ -5,7 +5,6 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { ThemeToggle } from "@/components/theme-toggle"
-import { InfoDialog } from "@/components/info-dialog"
 import { AuthButton } from "@/components/auth-button"
 import { MobileMenu } from "@/components/mobile-menu"
 import { MenuSearchCommand } from "@/components/menu-search-command"
@@ -42,7 +41,6 @@ export function Header() {
                                     </svg>
                                 </Link>
                             </Button>
-                            <InfoDialog />
                             <AuthButton />
                             <div className="h-4 w-px bg-border/60 mx-1" aria-hidden="true" />
                             <ThemeToggle />
