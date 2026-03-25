@@ -6,6 +6,7 @@ import { eq, asc, desc, gt, lt, and, count, isNull, inArray } from "drizzle-orm"
 import { auth } from "@/lib/auth";
 import { checkRateLimit, isValidDateFormat } from "@/lib/rate-limiter";
 import { containsBadWord } from "@/lib/wordlist";
+import { PHOTO_UPLOAD_ENABLED } from "@/lib/feature-flags";
 
 const MAX_COMMENT_LENGTH = 200;
 const COMMENT_RATE_LIMIT = 5; // 5 comments per minute
@@ -258,6 +259,14 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { error: "Geçersiz tarih formatı." },
                 { status: 400 }
+            );
+        }
+
+        // Reject imageUrl when photo uploads are disabled
+        if (imageUrl && !PHOTO_UPLOAD_ENABLED) {
+            return NextResponse.json(
+                { error: "Fotoğraf yükleme özelliği şu an devre dışı." },
+                { status: 403 }
             );
         }
 

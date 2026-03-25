@@ -9,7 +9,7 @@ import { comments } from "@/lib/db/schema";
 import { eq, and, isNotNull, gte, count } from "drizzle-orm";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 const DAILY_PHOTO_LIMIT = 3;
 const UPLOAD_RATE_LIMIT = 3; // 3 requests per minute
 
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
         // Validate file size
         if (file.size > MAX_FILE_SIZE) {
             return NextResponse.json(
-                { error: "Dosya boyutu en fazla 25MB olabilir." },
+                { error: "Dosya boyutu en fazla 50MB olabilir." },
                 { status: 400 }
             );
         }

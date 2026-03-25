@@ -269,15 +269,16 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
 
     // Otomatik yenileme — 20 saniyede bir (sadece yeni yorumlar)
     // Sayfa görünür olmadığında polling durur
+    // Exponential backoff: hata arttıkça 20s → 40s → 80s (max 80s), başarıda 20s'e döner
     useEffect(() => {
         if (!open) return
-        let interval: ReturnType<typeof setInterval> | null = null
+        let timeout: ReturnType<typeof setTimeout> | null = null
+        let stopped = false
 
         const schedulePoll = () => {
-            if (interval) return
-            // Exponential backoff: 20s, 40s, 80s (max 80s)
+            if (timeout || stopped) return
             const delay = Math.min(20_000 * Math.pow(2, pollFailCount.current), 80_000)
-            interval = setInterval(() => {
+            timeout = setTimeout(async () => {
                 const current = commentsRef.current
                 if (!sendingRef.current && current.length > 0) {
                     const allIds = [
@@ -285,23 +286,31 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
                         ...current.flatMap((c) => c.replies.map((r) => r.id)),
                     ]
                     const maxId = Math.max(...allIds)
-                    pollNewComments(maxId)
+                    await pollNewComments(maxId)
                 }
+                timeout = null
+                if (!stopped) schedulePoll()
             }, delay)
         }
 
         const stopPolling = () => {
-            if (interval) {
-                clearInterval(interval)
-                interval = null
+            stopped = true
+            if (timeout) {
+                clearTimeout(timeout)
+                timeout = null
             }
+        }
+
+        const resumePolling = () => {
+            stopped = false
+            schedulePoll()
         }
 
         const handleVisibility = () => {
             if (document.hidden) {
                 stopPolling()
             } else {
-                schedulePoll()
+                resumePolling()
             }
         }
 
