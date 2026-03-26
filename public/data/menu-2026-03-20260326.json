@@ -1,6 +1,6 @@
 {
   "month": "2026-03",
-  "lastUpdated": "2026-03-26T05:27:29.148Z",
+  "lastUpdated": "2026-03-26T22:35:38.704Z",
   "scrapeDate": "2026-03-26",
   "totalDays": 23,
   "days": [
@@ -512,12 +512,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "193",
-          "name": "Fırın Bamya",
-          "calories": 77,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2315",
           "name": "Mercimekli Bulgur Pilavı",
           "calories": 364,
@@ -548,6 +542,12 @@
           "id": "8402",
           "name": "Etli Patates",
           "calories": 270,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "271",
+          "name": "Patates Musakka (Etsiz)",
+          "calories": 220,
           "category": "ana_yemek"
         },
         {
