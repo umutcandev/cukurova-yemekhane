@@ -39,6 +39,10 @@ interface MenuDataContextType {
     addMeal: (date: string, mealName: string, calories: number, mealId: string) => Promise<boolean>
     removeMeal: (date: string, mealName: string) => Promise<boolean>
     isConsumed: (date: string, mealName: string) => boolean
+
+    // Onboarding
+    onboardingCompleted: boolean | null // null = loading
+    completeOnboarding: () => Promise<void>
 }
 
 const MenuDataContext = createContext<MenuDataContextType | null>(null)
@@ -75,6 +79,8 @@ function MenuDataProviderDisabled({ children }: { children: ReactNode }) {
                 addMeal: async () => false,
                 removeMeal: async () => false,
                 isConsumed: () => false,
+                onboardingCompleted: true,
+                completeOnboarding: async () => {},
             }}
         >
             {children}
@@ -215,6 +221,41 @@ function MenuDataProviderEnabled({ children }: { children: ReactNode }) {
         },
         [isAuthenticated, calorieGoal]
     )
+
+    // ── Onboarding ────────────────────────────────────────────────────────
+    const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null)
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            setOnboardingCompleted(null)
+            return
+        }
+        const controller = new AbortController()
+        const fetchOnboarding = async () => {
+            try {
+                const res = await fetch("/api/onboarding", { signal: controller.signal })
+                if (res.ok) {
+                    const data = await res.json()
+                    setOnboardingCompleted(data.completed)
+                }
+            } catch (e) {
+                if (!controller.signal.aborted) {
+                    setOnboardingCompleted(true) // fail-safe: don't block user
+                }
+            }
+        }
+        fetchOnboarding()
+        return () => controller.abort()
+    }, [isAuthenticated])
+
+    const completeOnboarding = useCallback(async () => {
+        try {
+            await fetch("/api/onboarding", { method: "POST" })
+            setOnboardingCompleted(true)
+        } catch {
+            setOnboardingCompleted(true) // fail-safe
+        }
+    }, [])
 
     // ── Daily Logs (per-date) ──────────────────────────────────────────────
     const [dailyLogs, setDailyLogs] = useState<Record<string, DailyLogData>>({})
@@ -363,6 +404,8 @@ function MenuDataProviderEnabled({ children }: { children: ReactNode }) {
                 addMeal,
                 removeMeal,
                 isConsumed,
+                onboardingCompleted,
+                completeOnboarding,
             }}
         >
             {children}

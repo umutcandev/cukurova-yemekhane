@@ -71,21 +71,26 @@ export function MenuSearchCommand() {
 
     // Dialog açıldığında verileri fetch et (bir kez)
     useEffect(() => {
-        if (open && !loaded && !loading) {
-            setLoading(true)
-            fetch("/api/menu/search")
-                .then((res) => res.json())
-                .then((data) => {
-                    setMeals(data.meals || [])
-                })
-                .catch(() => {
-                    setMeals([])
-                })
-                .finally(() => {
+        if (!open || loaded || loading) return
+
+        const controller = new AbortController()
+        setLoading(true)
+        fetch("/api/menu/search", { signal: controller.signal })
+            .then((res) => res.json())
+            .then((data) => {
+                setMeals(data.meals || [])
+            })
+            .catch((e) => {
+                if (!controller.signal.aborted) setMeals([])
+            })
+            .finally(() => {
+                if (!controller.signal.aborted) {
                     setLoading(false)
                     setLoaded(true)
-                })
-        }
+                }
+            })
+
+        return () => controller.abort()
     }, [open, loaded, loading])
 
     // Dialog kapanınca query temizle
