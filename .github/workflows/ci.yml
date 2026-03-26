@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Repoyu Cek
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: pnpm Kur
         uses: pnpm/action-setup@v4
@@ -21,7 +21,7 @@ jobs:
           version: 9
 
       - name: Node.js Kur
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: 'pnpm'
