@@ -8,6 +8,7 @@ import { AUTH_ENABLED } from "@/lib/feature-flags"
 import { AuthSessionProvider } from "@/components/auth-session-provider"
 
 import { Toaster } from "@/components/ui/sonner"
+import { OnboardingModal } from "@/components/onboarding-modal"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -67,6 +68,7 @@ export default function RootLayout({
           <AuthSessionProvider>
             <MenuDataProvider>
               {children}
+              <OnboardingModal />
             </MenuDataProvider>
             <Toaster />
           </AuthSessionProvider>

@@ -42,6 +42,7 @@ export const users = pgTable("users", {
     emailVerified: timestamp("emailVerified", { mode: "date" }),
     image: text("image"),
     calorieGoal: integer("calorie_goal"),
+    onboardingCompletedAt: timestamp("onboarding_completed_at", { mode: "date" }),
 });
 
 export const accounts = pgTable(
