@@ -47,11 +47,11 @@ export function DatePicker({ availableDates, onDateRangeSelect, onCancel }: Date
         />
       </div>
 
-      <div className="flex gap-3 px-2">
-        <Button variant="outline" onClick={handleCancel} className="flex-1 h-11 bg-transparent">
+      <div className="flex justify-end gap-2 px-2">
+        <Button variant="outline" size="sm" onClick={handleCancel}>
           İptal
         </Button>
-        <Button onClick={handleShow} className="flex-1 h-11" disabled={!dateRange?.from}>
+        <Button size="sm" onClick={handleShow} disabled={!dateRange?.from}>
           Göster
         </Button>
       </div>

@@ -20,7 +20,7 @@ import {
     DialogDescription,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { useIsMobile } from "@/components/ui/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import type { DateRange } from "react-day-picker"
 
 interface MobileBottomNavProps {
@@ -76,9 +76,9 @@ export function MobileBottomNav({
     }
 
     return (
-        <nav className="dark text-foreground fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border">
+        <nav className="dark text-foreground fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/40">
             {/* Info Bar */}
-            <div className="bg-muted/20 border-b border-border/50">
+            <div className="bg-muted/20 border-b border-border/40">
                 <div className="container mx-auto flex items-center justify-between px-4 py-1.5 text-xs text-muted-foreground">
                     <span>Son Güncelleme: <span className="font-mono text-foreground/80" suppressHydrationWarning>{formatLastUpdated(lastUpdated)}</span></span>
                     <span>Menüdeki Gün Sayısı: <span className="font-mono text-foreground/80">{totalDays}</span></span>

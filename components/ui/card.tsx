@@ -2,20 +2,18 @@ import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    data-slot="card"
-    ref={ref}
-    className={cn(
-      "text-card-foreground flex flex-col gap-6 rounded-xl border bg-card",
-      className,
-    )}
-    {...props}
-  />
-))
+function Card({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="card"
+      className={cn(
+        "text-card-foreground flex flex-col gap-6 rounded-xl border bg-card",
+        className,
+      )}
+      {...props}
+    />
+  )
+}
 
 function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
