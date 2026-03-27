@@ -19,7 +19,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className="h-8 w-8 border border-border/40">
+      <Button variant="outline" size="icon-sm">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -46,9 +46,8 @@ export function ThemeToggle() {
 
   return (
     <Button
-      variant="ghost"
-      size="icon"
-      className="h-8 w-8 border border-border/40"
+      variant="outline"
+      size="icon-sm"
       onClick={toggleTheme}
     >
       <svg

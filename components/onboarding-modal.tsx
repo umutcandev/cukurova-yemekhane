@@ -17,7 +17,7 @@ import {
     DrawerTitle,
     DrawerDescription,
 } from "@/components/ui/drawer"
-import { useIsMobile } from "@/components/ui/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { useMenuData } from "@/components/menu-data-provider"
 import { ArrowRight } from "lucide-react"
 
