@@ -27,7 +27,7 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { CommentReportDialog } from "@/components/comment-report-dialog"
-import { AuthDrawer } from "@/components/auth-drawer"
+import { AuthModal } from "@/components/auth-modal"
 import { useComments } from "@/hooks/use-comments"
 import { CommentsList } from "@/components/comments/comments-list"
 import { MessageInput } from "@/components/comments/message-input"
@@ -419,10 +419,9 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
 
                 <CommentReportDialog comment={reportComment} onClose={() => setReportComment(null)} />
                 {deleteDialog}
-                <AuthDrawer
+                <AuthModal
                     open={showAuthDrawer}
                     onOpenChange={setShowAuthDrawer}
-                    message="Yorum yapmak için giriş yapmanız gerekmektedir."
                 />
             </>
         )
@@ -447,10 +446,9 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
 
             <CommentReportDialog comment={reportComment} onClose={() => setReportComment(null)} />
             {deleteDialog}
-            <AuthDrawer
+            <AuthModal
                 open={showAuthDrawer}
                 onOpenChange={setShowAuthDrawer}
-                message="Yorum yapmak için giriş yapmanız gerekmektedir."
             />
         </>
     )

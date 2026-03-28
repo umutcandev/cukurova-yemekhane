@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import { Bookmark, Flame, LogOut } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -19,82 +19,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog"
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-} from "@/components/ui/drawer"
-import { useMediaQuery } from "@/hooks/use-media-query"
-
-function GoogleIcon({ className }: { className?: string }) {
-    return (
-        <svg viewBox="0 0 24 24" className={className}>
-            <path
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
-                fill="#4285F4"
-            />
-            <path
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                fill="#34A853"
-            />
-            <path
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                fill="#FBBC05"
-            />
-            <path
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                fill="#EA4335"
-            />
-        </svg>
-    )
-}
-
-function AuthDialogContent({ onSignIn, disabled }: { onSignIn: () => void; disabled?: boolean }) {
-    return (
-        <div className="flex flex-col items-center gap-4 py-2">
-            {disabled && (
-                <span className="inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                    Giriş sistemi geçici olarak devre dışı
-                </span>
-            )}
-            <Button
-                className="w-full h-11 gap-3 text-sm font-medium"
-                variant="outline"
-                onClick={onSignIn}
-                disabled={disabled}
-            >
-                <GoogleIcon className="h-5 w-5" />
-                Google ile Giriş Yap
-            </Button>
-            <div className="space-y-2 text-center">
-                <p className="text-[11px] text-muted-foreground/60">
-                    {disabled
-                        ? "Sistem bakım nedeniyle geçici olarak kapatılmıştır."
-                        : "Yalnızca Google hesabınızla giriş yapabilirsiniz."
-                    }
-                </p>
-            </div>
-        </div>
-    )
-}
+import { AuthModal } from "@/components/auth-modal"
 
 export function AuthButton() {
-    // Auth kapalıysa useSession çağırmıyoruz — hook'ları koşullu çağıramayız
-    // ama SessionProvider olmayınca useSession zaten undefined döner.
-    // AUTH_ENABLED false iken SessionProvider yok, bu yüzden
-    // useSession'ı try etmek yerine direkt disabled UI gösteriyoruz.
-
     if (!AUTH_ENABLED) {
         return <AuthButtonDisabled />
     }
@@ -104,7 +31,6 @@ export function AuthButton() {
 
 function AuthButtonDisabled() {
     const [authOpen, setAuthOpen] = useState(false)
-    const isDesktop = useMediaQuery("(min-width: 768px)")
 
     return (
         <>
@@ -117,52 +43,10 @@ function AuthButtonDisabled() {
                 Giriş Yap
             </Button>
 
-            {isDesktop ? (
-                <Dialog open={authOpen} onOpenChange={setAuthOpen}>
-                    <DialogContent className="sm:max-w-sm">
-                        <DialogHeader className="text-center">
-                            <DialogTitle className="text-lg">
-                                Giriş Yapın
-                                <span className="ml-2 inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400 align-middle">
-                                    Devre Dışı
-                                </span>
-                            </DialogTitle>
-                            <DialogDescription className="text-sm text-muted-foreground">
-                                Giriş sistemi şu anda geçici olarak devre dışıdır.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <AuthDialogContent onSignIn={() => { }} disabled />
-                    </DialogContent>
-                </Dialog>
-            ) : (
-                <Drawer open={authOpen} onOpenChange={setAuthOpen}>
-                    <DrawerContent>
-                        <div className="mx-auto w-full max-w-sm">
-                            <DrawerHeader className="text-center">
-                                <DrawerTitle className="text-lg">
-                                    Giriş Yapın
-                                    <span className="ml-2 inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400 align-middle">
-                                        Devre Dışı
-                                    </span>
-                                </DrawerTitle>
-                                <DrawerDescription className="text-sm text-muted-foreground">
-                                    Giriş sistemi şu anda geçici olarak devre dışıdır.
-                                </DrawerDescription>
-                            </DrawerHeader>
-                            <div className="px-4 pb-2">
-                                <AuthDialogContent onSignIn={() => { }} disabled />
-                            </div>
-                            <DrawerFooter className="pt-2">
-                                <DrawerClose asChild>
-                                    <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
-                                        Vazgeç
-                                    </Button>
-                                </DrawerClose>
-                            </DrawerFooter>
-                        </div>
-                    </DrawerContent>
-                </Drawer>
-            )}
+            <AuthModal
+                open={authOpen}
+                onOpenChange={setAuthOpen}
+            />
         </>
     )
 }
@@ -170,7 +54,6 @@ function AuthButtonDisabled() {
 function AuthButtonEnabled() {
     const { data: session, status } = useSession()
     const [authOpen, setAuthOpen] = useState(false)
-    const isDesktop = useMediaQuery("(min-width: 768px)")
 
     if (status === "loading") {
         return (
@@ -190,42 +73,10 @@ function AuthButtonEnabled() {
                     Giriş Yap
                 </Button>
 
-                {isDesktop ? (
-                    <Dialog open={authOpen} onOpenChange={setAuthOpen}>
-                        <DialogContent className="sm:max-w-sm">
-                            <DialogHeader className="text-center">
-                                <DialogTitle className="text-lg">Giriş Yapın</DialogTitle>
-                                <DialogDescription className="text-sm text-muted-foreground">
-                                    Favori yemeklerinizi kaydedin ve kalori takibi yapın.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <AuthDialogContent onSignIn={() => signIn("google")} />
-                        </DialogContent>
-                    </Dialog>
-                ) : (
-                    <Drawer open={authOpen} onOpenChange={setAuthOpen}>
-                        <DrawerContent>
-                            <div className="mx-auto w-full max-w-sm">
-                                <DrawerHeader className="text-center">
-                                    <DrawerTitle className="text-lg">Giriş Yapın</DrawerTitle>
-                                    <DrawerDescription className="text-sm text-muted-foreground">
-                                        Favori yemeklerinizi kaydedin ve kalori takibi yapın.
-                                    </DrawerDescription>
-                                </DrawerHeader>
-                                <div className="px-4 pb-2">
-                                    <AuthDialogContent onSignIn={() => signIn("google")} />
-                                </div>
-                                <DrawerFooter className="pt-2">
-                                    <DrawerClose asChild>
-                                        <Button variant="ghost" size="sm" className="text-xs text-muted-foreground">
-                                            Vazgeç
-                                        </Button>
-                                    </DrawerClose>
-                                </DrawerFooter>
-                            </div>
-                        </DrawerContent>
-                    </Drawer>
-                )}
+                <AuthModal
+                    open={authOpen}
+                    onOpenChange={setAuthOpen}
+                />
             </>
         )
     }

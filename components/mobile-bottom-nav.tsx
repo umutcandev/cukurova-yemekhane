@@ -7,6 +7,7 @@ import { DatePicker } from "@/components/date-picker"
 import {
     Drawer,
     DrawerContent,
+    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerDescription,
@@ -15,6 +16,7 @@ import {
 import {
     Dialog,
     DialogContent,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogDescription,
@@ -47,14 +49,17 @@ export function MobileBottomNav({
     totalDays,
 }: MobileBottomNavProps) {
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
     const isMobile = useIsMobile()
 
-    const handleDateRangeSelect = (range: DateRange | undefined) => {
-        onDateRangeSelect(range)
+    const handleShow = () => {
+        onDateRangeSelect(dateRange)
+        setDateRange(undefined)
         setIsDatePickerOpen(false)
     }
 
     const handleCancel = () => {
+        setDateRange(undefined)
         setIsDatePickerOpen(false)
     }
 
@@ -123,21 +128,27 @@ export function MobileBottomNav({
                             </Button>
                         </DrawerTrigger>
                         <DrawerContent>
-                            <div className="mx-auto w-full max-w-sm">
-                                <DrawerHeader className="text-center">
-                                    <DrawerTitle className="text-lg">Tarih Seçin</DrawerTitle>
-                                    <DrawerDescription className="text-sm text-muted-foreground/80">
-                                        Menüsünü görüntülemek istediğiniz günü veya tarih aralığını seçin.
-                                    </DrawerDescription>
-                                </DrawerHeader>
-                                <div className="px-4 pb-6">
-                                    <DatePicker
-                                        availableDates={availableDates}
-                                        onDateRangeSelect={handleDateRangeSelect}
-                                        onCancel={handleCancel}
-                                    />
-                                </div>
+                            <DrawerHeader className="text-center">
+                                <DrawerTitle className="text-lg">Tarih Seçin</DrawerTitle>
+                                <DrawerDescription className="text-sm text-muted-foreground/80">
+                                    Menüsünü görüntülemek istediğiniz günü veya tarih aralığını seçin.
+                                </DrawerDescription>
+                            </DrawerHeader>
+                            <div className="flex-1 overflow-y-auto px-4">
+                                <DatePicker
+                                    availableDates={availableDates}
+                                    dateRange={dateRange}
+                                    onSelect={setDateRange}
+                                />
                             </div>
+                            <DrawerFooter>
+                                <Button size="sm" onClick={handleShow} disabled={!dateRange?.from}>
+                                    Göster
+                                </Button>
+                                <Button variant="outline" size="sm" onClick={handleCancel}>
+                                    İptal
+                                </Button>
+                            </DrawerFooter>
                         </DrawerContent>
                     </Drawer>
                 ) : (
@@ -157,9 +168,17 @@ export function MobileBottomNav({
                             </DialogHeader>
                             <DatePicker
                                 availableDates={availableDates}
-                                onDateRangeSelect={handleDateRangeSelect}
-                                onCancel={handleCancel}
+                                dateRange={dateRange}
+                                onSelect={setDateRange}
                             />
+                            <DialogFooter>
+                                <Button variant="outline" size="sm" onClick={handleCancel}>
+                                    İptal
+                                </Button>
+                                <Button size="sm" onClick={handleShow} disabled={!dateRange?.from}>
+                                    Göster
+                                </Button>
+                            </DialogFooter>
                         </DialogContent>
                     </Dialog>
                 )}
