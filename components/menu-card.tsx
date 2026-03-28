@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table"
 import { LikeDislikeButtons } from "@/components/like-dislike-buttons"
 import { MenuShareButton } from "@/components/menu-share-bar"
-import { AuthDrawer } from "@/components/auth-drawer"
+import { AuthModal } from "@/components/auth-modal"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -165,7 +165,6 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const addMeal = (mealName: string, calories: number, mealId: string) => addMealCtx(day.date, mealName, calories, mealId)
     const removeMeal = (mealName: string) => removeMealCtx(day.date, mealName)
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
-    const [authDrawerMessage, setAuthDrawerMessage] = useState("")
     const [showCalorieGoalModal, setShowCalorieGoalModal] = useState(false)
     const [pendingMeal, setPendingMeal] = useState<{ name: string; calories: number; id: string } | null>(null)
     const [showComments, setShowComments] = useState(false)
@@ -184,7 +183,6 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const handleFavoriteClick = async (e: React.MouseEvent, mealName: string, mealId?: string) => {
         e.stopPropagation()
         if (!session) {
-            setAuthDrawerMessage("Favori yemeklerinizi kaydedin, menüde çıktığında haberdar olun! Giriş yaparak bu özelliği kullanabilirsiniz.")
             setShowAuthDrawer(true)
             return
         }
@@ -206,7 +204,6 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const handleAddMealClick = async (e: React.MouseEvent, mealName: string, calories: number, mealId: string) => {
         e.stopPropagation()
         if (!session) {
-            setAuthDrawerMessage("Yediğiniz yemekleri işaretleyin, günlük kalori alımınızı kolayca takip edin! Giriş yaparak bu özelliği kullanabilirsiniz.")
             setShowAuthDrawer(true)
             return
         }
@@ -559,10 +556,9 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
             </div>
 
             {/* Auth Drawer for unauthenticated users */}
-            <AuthDrawer
+            <AuthModal
                 open={showAuthDrawer}
                 onOpenChange={setShowAuthDrawer}
-                message={authDrawerMessage}
             />
 
             {/* Calorie Goal Modal */}

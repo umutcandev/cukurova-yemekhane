@@ -297,7 +297,7 @@ export default function KaloriTakibiPage() {
                         className="ml-auto h-7 text-xs px-3"
                         onClick={() => setShowGoalModal(true)}
                     >
-                        {calorieGoal ? `Hedef: ${calorieGoal} kcal` : 'Hedef Belirle'}
+                        {calorieGoal ? `Hedefi Güncelle` : 'Hedef Belirle'}
                     </Button>
                 </div>
 

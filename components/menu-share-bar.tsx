@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
-import { Download, Copy, Share2, Loader2, Check } from "lucide-react"
+import { Download, Share2, Loader2 } from "lucide-react"
 import { toPng } from "html-to-image"
 import {
     Dialog,
@@ -295,41 +295,20 @@ function ShareDialog({
                 </div>
 
                 {/* Action Buttons */}
-                <DialogFooter className="flex-row gap-2">
+                <DialogFooter>
                     <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1 gap-2"
+                        className="gap-2"
                         onClick={onDownload}
                         disabled={!isImageReady}
                     >
                         <Download className="h-4 w-4" />
-                        İndir
+                        Görseli İndir
                     </Button>
-
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 gap-2"
-                        onClick={onCopyLink}
-                        disabled={isGenerating}
-                    >
-                        {copied ? (
-                            <>
-                                <Check className="h-4 w-4 text-green-500" />
-                                Kopyalandı!
-                            </>
-                        ) : (
-                            <>
-                                <Copy className="h-4 w-4" />
-                                Link Kopyala
-                            </>
-                        )}
-                    </Button>
-
                     <Button
                         size="sm"
-                        className="flex-1 gap-2"
+                        className="gap-2"
                         onClick={onNativeShare}
                         disabled={!isImageReady}
                     >
@@ -363,7 +342,7 @@ export function MenuShareButton({ day }: MenuShareBarProps) {
             const dataUrl = await toPng(templateRef.current, {
                 quality: 1,
                 pixelRatio: 2,
-                backgroundColor: "#000000"
+                backgroundColor: "#101010", // Match the template background for better quality
             })
 
             // Optional: Add a small artificial delay so the spinner is visible

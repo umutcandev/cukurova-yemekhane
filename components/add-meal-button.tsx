@@ -5,7 +5,7 @@ import { Plus, Check } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
-import { AuthDrawer } from "@/components/auth-drawer"
+import { AuthModal } from "@/components/auth-modal"
 import { CalorieGoalModal } from "@/components/calorie-goal-modal"
 import { useDailyLog } from "@/hooks/use-daily-log"
 import { useCalorieGoal } from "@/hooks/use-calorie-goal"
@@ -111,10 +111,9 @@ export function AddMealButton({ mealName, calories, mealId, menuDate }: AddMealB
                     </motion.div>
                 </AnimatePresence>
             </button>
-            <AuthDrawer
+            <AuthModal
                 open={showAuthDrawer}
                 onOpenChange={setShowAuthDrawer}
-                message="Kalori takibi için giriş yapmanız gerekiyor."
             />
             <CalorieGoalModal
                 open={showCalorieGoalModal}
