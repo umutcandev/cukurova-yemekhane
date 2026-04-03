@@ -1,7 +1,7 @@
 {
-  "month": "2026-03",
-  "lastUpdated": "2026-03-27T05:28:22.047Z",
-  "scrapeDate": "2026-03-27",
+  "month": "2026-04",
+  "lastUpdated": "2026-04-03T05:27:58.515Z",
+  "scrapeDate": "2026-04-03",
   "totalDays": 23,
   "days": [
     {
@@ -545,21 +545,15 @@
           "category": "ana_yemek"
         },
         {
-          "id": "271",
-          "name": "Patates Musakka (Etsiz)",
-          "calories": 220,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2",
           "name": "Şehriyeli Pirinç Pilavı",
           "calories": 310,
           "category": "ana_yemek"
         },
         {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
+          "id": "2332",
+          "name": "Meyve (elma)",
+          "calories": 142,
           "category": "ana_yemek"
         },
         {
@@ -569,7 +563,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 815
+      "totalCalories": 937
     },
     {
       "ymk": 21,
@@ -713,6 +707,12 @@
           "id": "182",
           "name": "Tavuk Haşlama",
           "calories": 396,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "193",
+          "name": "Fırın Bamya",
+          "calories": 77,
           "category": "ana_yemek"
         },
         {
