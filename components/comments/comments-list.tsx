@@ -18,6 +18,7 @@ interface CommentsListProps {
     session: Session | null
     openMenuId: number | null
     sendingReply: boolean
+    commentsDisabled: boolean
     onReplyContentChange: (val: string) => void
     onSetReplyingTo: (id: number | null) => void
     onSendReply: (parentId: number) => void
@@ -46,6 +47,7 @@ export function CommentsList({
     session,
     openMenuId,
     sendingReply,
+    commentsDisabled,
     onReplyContentChange,
     onSetReplyingTo,
     onSendReply,
@@ -103,6 +105,7 @@ export function CommentsList({
                             <CommentItem
                                 key={comment.id}
                                 comment={comment}
+                                commentsDisabled={commentsDisabled}
                                 expandedComments={expandedComments}
                                 expandedReplies={expandedReplies}
                                 replyingToId={replyingToId}

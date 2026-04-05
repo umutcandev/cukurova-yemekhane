@@ -68,19 +68,24 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
         }, 100)
     }, [scrollRef])
 
-    // İlk yükleme: son 20 yorum
-    const fetchComments = useCallback(async () => {
+    // İlk yükleme: son 20 yorum — AbortController ile eski istekler iptal edilir
+    const fetchComments = useCallback(async (signal?: AbortSignal) => {
         setLoading(true)
         try {
-            const res = await fetch(`/api/comments?menuDate=${menuDate}&limit=20`)
+            const res = await fetch(`/api/comments?menuDate=${menuDate}&limit=20`, { signal })
             if (res.ok) {
                 const data = await res.json()
                 setComments(parseComments(data.comments))
                 setHasMore(data.hasMore ?? false)
                 scrollToBottom()
+            } else if (res.status === 429) {
+                const data = await res.json().catch(() => ({}))
+                toast.error(data.error || "Çok fazla istek gönderdiniz. Lütfen bekleyin.", { duration: 4000 })
             }
         } catch (error) {
-            console.error("Failed to fetch comments:", error)
+            if ((error as { name?: string }).name !== "AbortError") {
+                console.error("Failed to fetch comments:", error)
+            }
         } finally {
             setLoading(false)
         }
@@ -260,11 +265,14 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
         }
     }
 
-    // İlk açılış fetch'i
+    // İlk açılış fetch'i — menuDate değişince eski istek iptal edilir, stale veri temizlenir
     useEffect(() => {
-        if (open) {
-            fetchComments()
-        }
+        if (!open) return
+        const controller = new AbortController()
+        setComments([])
+        setHasMore(false)
+        fetchComments(controller.signal)
+        return () => controller.abort()
     }, [open, fetchComments])
 
     // Otomatik yenileme — 20 saniyede bir (sadece yeni yorumlar)

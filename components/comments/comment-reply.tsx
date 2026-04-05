@@ -13,6 +13,7 @@ import type { Comment, Reply } from "./types"
 interface CommentReplyProps {
     reply: Reply
     parentId: number
+    commentsDisabled: boolean
     replyingToId: number | null
     expandedComments: Set<number>
     session: Session | null
@@ -35,6 +36,7 @@ interface CommentReplyProps {
 export function CommentReply({
     reply,
     parentId,
+    commentsDisabled,
     replyingToId,
     expandedComments,
     session,
@@ -128,25 +130,27 @@ export function CommentReply({
                     </button>
                 )}
 
-                <div className="flex items-center gap-3 mt-1">
-                    <button
-                        onClick={() => {
-                            if (!session) { onShowAuth(); return }
-                            if (replyingToId === reply.id) {
-                                onSetReplyingTo(null)
-                            } else {
-                                onSetReplyingTo(reply.id)
-                                onReplyContentChange(`@${reply.userName || "Anonim"} `)
-                            }
-                        }}
-                        className="text-xs text-muted-foreground/60 hover:text-primary transition-colors font-medium"
-                    >
-                        Yanıtla
-                    </button>
-                </div>
+                {!commentsDisabled && (
+                    <div className="flex items-center gap-3 mt-1">
+                        <button
+                            onClick={() => {
+                                if (!session) { onShowAuth(); return }
+                                if (replyingToId === reply.id) {
+                                    onSetReplyingTo(null)
+                                } else {
+                                    onSetReplyingTo(reply.id)
+                                    onReplyContentChange(`@${reply.userName || "Anonim"} `)
+                                }
+                            }}
+                            className="text-xs text-muted-foreground/60 hover:text-primary transition-colors font-medium"
+                        >
+                            Yanıtla
+                        </button>
+                    </div>
+                )}
 
                 {/* Inline reply form — targets the parent comment */}
-                {replyingToId === reply.id && (
+                {replyingToId === reply.id && !commentsDisabled && (
                     <MessageInput
                         mode="reply"
                         value={replyContent}

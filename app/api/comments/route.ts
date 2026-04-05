@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { checkRateLimit, isValidDateFormat } from "@/lib/rate-limiter";
 import { containsBadWord } from "@/lib/wordlist";
 import { PHOTO_UPLOAD_ENABLED } from "@/lib/feature-flags";
+import { getTurkeyDate } from "@/lib/date-utils";
 
 const MAX_COMMENT_LENGTH = 200;
 const COMMENT_RATE_LIMIT = 5; // 5 comments per minute
@@ -259,6 +260,14 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { error: "Geçersiz tarih formatı." },
                 { status: 400 }
+            );
+        }
+
+        // Only allow comments on today's menu
+        if (menuDate !== getTurkeyDate()) {
+            return NextResponse.json(
+                { error: "Sadece bugünün menüsüne yorum yapabilirsiniz." },
+                { status: 403 }
             );
         }
 
