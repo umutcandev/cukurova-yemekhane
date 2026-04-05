@@ -278,7 +278,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                         </p>
                     )}
                 </div>
-                <div className={cn("shrink-0", noData && "opacity-50 pointer-events-none")}>
+                <div className={cn("shrink-0", noData && "opacity-20")} inert={noData || undefined}>
                     <LikeDislikeButtons menuDate={day.date} />
                 </div>
             </div>
@@ -391,7 +391,7 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
             )}
 
             {/* Footer */}
-            <div className={cn("border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2", noData && "opacity-50 pointer-events-none")}>
+            <div className={cn("border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2", noData && "opacity-20")} inert={noData || undefined}>
                 {/* Sol: Yorumlar, Kalori, AI */}
                 <div className="flex items-center gap-1.5">
                     <Button
@@ -399,7 +399,6 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
                         variant="outline"
                         className="h-7 text-xs gap-1.5 px-2.5 border-border/40"
                         onClick={() => setShowComments(true)}
-                        disabled={noData}
                         aria-label="Yorumlar"
                         title="Yorumlar"
                     >

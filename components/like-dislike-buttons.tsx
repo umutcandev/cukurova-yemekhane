@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 // Custom Like icon (Geist)
 function LikeIcon({ className }: { className?: string }) {
@@ -23,20 +24,28 @@ function DislikeIcon({ className }: { className?: string }) {
     )
 }
 
-// Animated counter component - only shows when value > 0
-function AnimatedCounter({ value }: { value: number }) {
+// Animated number — spring-based counting animation, hidden when 0
+function AnimatedNumber({ value }: { value: number }) {
+    const motionVal = useMotionValue(value)
+    const spring = useSpring(motionVal, { stiffness: 300, damping: 30 })
+    const rounded = useTransform(spring, Math.round)
+
+    useEffect(() => {
+        motionVal.set(value)
+    }, [value, motionVal])
+
     return (
         <AnimatePresence>
             {value > 0 && (
                 <motion.span
-                    key={value}
-                    initial={{ opacity: 0, scale: 0.5, width: 0 }}
-                    animate={{ opacity: 1, scale: 1, width: "auto" }}
-                    exit={{ opacity: 0, scale: 0.5, width: 0 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
-                    className="font-mono text-[10px] text-center inline-block overflow-hidden"
+                    key="num"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="font-mono text-[10px] overflow-hidden inline-block"
                 >
-                    {value}
+                    <motion.span>{rounded}</motion.span>
                 </motion.span>
             )}
         </AnimatePresence>
@@ -200,38 +209,38 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
     return (
         <div className="flex items-center gap-1">
             {/* Like Button */}
-            <motion.button
+            <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => handleReaction("like")}
-                whileTap={{ scale: 0.95 }}
-                className={cn(
-                    "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
-                    "border border-border/40 hover:border-border",
-                    userAction === "like"
-                        ? "bg-green-500/10 border-green-500/50 text-green-600 dark:text-green-400"
-                        : "bg-muted/30 text-muted-foreground hover:bg-muted/50"
-                )}
                 aria-label="Beğen"
+                className={cn(
+                    "h-6 px-1 has-[>svg]:px-1 gap-1 text-xs rounded-md border border-border/40",
+                    userAction === "like"
+                        ? "bg-green-500/10 border-green-500/50 text-green-600 dark:text-green-400 hover:bg-green-500/15"
+                        : "bg-muted/30 text-muted-foreground"
+                )}
             >
-                <LikeIcon className="h-3.5 w-3.5" />
-                <AnimatedCounter value={likeCount ?? 0} />
-            </motion.button>
+                <LikeIcon className="size-3.5 shrink-0" />
+                <AnimatedNumber value={likeCount ?? 0} />
+            </Button>
 
             {/* Dislike Button */}
-            <motion.button
+            <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => handleReaction("dislike")}
-                whileTap={{ scale: 0.95 }}
-                className={cn(
-                    "flex items-center gap-1 h-6 px-1.5 rounded-md text-xs transition-colors",
-                    "border border-border/40 hover:border-border",
-                    userAction === "dislike"
-                        ? "bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400"
-                        : "bg-muted/30 text-muted-foreground hover:bg-muted/50"
-                )}
                 aria-label="Beğenme"
+                className={cn(
+                    "h-6 px-1 has-[>svg]:px-1 gap-1 text-xs rounded-md border border-border/40",
+                    userAction === "dislike"
+                        ? "bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400 hover:bg-red-500/15"
+                        : "bg-muted/30 text-muted-foreground"
+                )}
             >
-                <DislikeIcon className="h-3.5 w-3.5" />
-                <AnimatedCounter value={dislikeCount ?? 0} />
-            </motion.button>
+                <DislikeIcon className="size-3.5 shrink-0" />
+                <AnimatedNumber value={dislikeCount ?? 0} />
+            </Button>
         </div>
     )
 }

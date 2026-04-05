@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
-import { Search, ArrowUp01, ArrowUp10, ArrowUpAZ, ArrowUpZA } from "lucide-react"
+import { Search, ArrowUp01, ArrowUp10, ArrowUpAZ, ArrowUpZA, ArrowUp, ArrowDown, CornerDownLeft } from "lucide-react"
 import {
     CommandDialog,
     CommandInput,
@@ -262,12 +262,12 @@ export function MenuSearchCommand() {
                 <div className="flex items-center justify-between border-t border-border px-3 py-2 text-xs text-muted-foreground">
                     <div className="flex items-center gap-3">
                         <span className="flex items-center gap-1">
-                            <Kbd>↑</Kbd>
-                            <Kbd>↓</Kbd>
+                            <Kbd><ArrowUp className="size-3" /></Kbd>
+                            <Kbd><ArrowDown className="size-3" /></Kbd>
                             <span className="ml-0.5">Gez</span>
                         </span>
                         <span className="flex items-center gap-1">
-                            <Kbd>↵</Kbd>
+                            <Kbd><CornerDownLeft className="size-3" /></Kbd>
                             <span className="ml-0.5">Seç</span>
                         </span>
                     </div>

@@ -34,6 +34,8 @@ import { MessageInput } from "@/components/comments/message-input"
 import { ReplyImageProvider } from "@/components/comments/reply-image-context"
 import { CHAR_LIMIT } from "@/components/comments/types"
 import type { Comment, Reply, CommentsPanelProps } from "@/components/comments/types"
+import { getTurkeyDate } from "@/lib/date-utils"
+import { Info } from "lucide-react"
 
 const MAX_IMAGE_DIMENSION = 2048
 const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB
@@ -117,6 +119,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     const isMobile = useIsMobile()
     const { data: session } = useSession()
     const scrollRef = useRef<HTMLDivElement>(null!)
+    const isToday = menuDate === getTurkeyDate()
 
     // UI state
     const [newComment, setNewComment] = useState("")
@@ -244,6 +247,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     }, [])
 
     const handleSend = async () => {
+        if (!isToday) return
         if (!session) { setShowAuthDrawer(true); return }
         if (sending || commentImageLoading) return
         const trimmed = newComment.trim()
@@ -270,6 +274,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     }
 
     const handleSendReply = async (parentId: number) => {
+        if (!isToday) return
         if (!session) { setShowAuthDrawer(true); return }
         if (sendingReply || replyImageLoading) return
         const trimmed = replyContent.trim()
@@ -349,6 +354,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         session,
         openMenuId,
         sendingReply,
+        commentsDisabled: !isToday,
         onReplyContentChange: setReplyContent,
         onSetReplyingTo: handleSetReplyingTo,
         onSendReply: handleSendReply,
@@ -376,6 +382,17 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         onImageClear: handleCommentImageClear,
         imageLoading: commentImageLoading,
     }
+
+    const commentDisabledBanner = (
+        <div className="border-t border-border/40 px-3 py-3 shrink-0">
+            <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-muted/30 px-3 py-2.5">
+                <Info className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+                <span className="text-sm text-muted-foreground/70">
+                    Yalnızca günün menüsüne yorum yapabilirsiniz.
+                </span>
+            </div>
+        </div>
+    )
 
     const deleteDialog = (
         <AlertDialog open={deleteConfirmId !== null} onOpenChange={(o) => { if (!o) setDeleteConfirmId(null) }}>
@@ -413,7 +430,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                         <ReplyImageProvider value={replyImageContextValue}>
                         <CommentsList {...sharedListProps} />
                     </ReplyImageProvider>
-                        <MessageInput {...sharedInputProps} />
+                        {isToday ? <MessageInput {...sharedInputProps} /> : commentDisabledBanner}
                     </DrawerContent>
                 </Drawer>
 
@@ -440,7 +457,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                     <ReplyImageProvider value={replyImageContextValue}>
                         <CommentsList {...sharedListProps} />
                     </ReplyImageProvider>
-                    <MessageInput {...sharedInputProps} />
+                    {isToday ? <MessageInput {...sharedInputProps} /> : commentDisabledBanner}
                 </DialogContent>
             </Dialog>
 

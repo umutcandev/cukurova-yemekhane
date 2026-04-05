@@ -13,6 +13,7 @@ import type { Comment, Reply } from "./types"
 
 interface CommentItemProps {
     comment: Comment
+    commentsDisabled: boolean
     expandedComments: Set<number>
     expandedReplies: Set<number>
     replyingToId: number | null
@@ -36,6 +37,7 @@ interface CommentItemProps {
 
 export function CommentItem({
     comment,
+    commentsDisabled,
     expandedComments,
     expandedReplies,
     replyingToId,
@@ -133,22 +135,24 @@ export function CommentItem({
                     )}
 
                     {/* Yanıtla butonu */}
-                    <div className="flex items-center gap-3 mt-1">
-                        <button
-                            onClick={() => {
-                                if (!session) { onShowAuth(); return }
-                                if (replyingToId === comment.id) {
-                                    onSetReplyingTo(null)
-                                } else {
-                                    onSetReplyingTo(comment.id)
-                                    onReplyContentChange("")
-                                }
-                            }}
-                            className="text-xs text-muted-foreground/60 hover:text-primary transition-colors font-medium"
-                        >
-                            Yanıtla
-                        </button>
-                    </div>
+                    {!commentsDisabled && (
+                        <div className="flex items-center gap-3 mt-1">
+                            <button
+                                onClick={() => {
+                                    if (!session) { onShowAuth(); return }
+                                    if (replyingToId === comment.id) {
+                                        onSetReplyingTo(null)
+                                    } else {
+                                        onSetReplyingTo(comment.id)
+                                        onReplyContentChange("")
+                                    }
+                                }}
+                                className="text-xs text-muted-foreground/60 hover:text-primary transition-colors font-medium"
+                            >
+                                Yanıtla
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -169,6 +173,7 @@ export function CommentItem({
                                     key={reply.id}
                                     reply={reply}
                                     parentId={comment.id}
+                                    commentsDisabled={commentsDisabled}
                                     replyingToId={replyingToId}
                                     expandedComments={expandedComments}
                                     session={session}
@@ -194,7 +199,7 @@ export function CommentItem({
             )}
 
             {/* Inline reply form (parent comment için) */}
-            {replyingToId === comment.id && (
+            {replyingToId === comment.id && !commentsDisabled && (
                 <div className="ml-10">
                     <MessageInput
                         mode="reply"
