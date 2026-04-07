@@ -60,12 +60,7 @@ export function CommentReply({
     canReport,
 }: CommentReplyProps) {
     const { replyImagePreview, replyImageFile, replyImageLoading, onReplyImageSelect, onReplyImageClear } = useReplyImage()
-    const MAX_CHARS = 100
-    const isLong = reply.content.length > MAX_CHARS
-    const isExpanded = expandedComments.has(reply.id)
-    const displayText = isLong && !isExpanded
-        ? reply.content.slice(0, MAX_CHARS) + "..."
-        : reply.content
+    const displayText = reply.content
 
     return (
         <div key={reply.id} className="flex items-start gap-2 py-1">
@@ -84,10 +79,10 @@ export function CommentReply({
             <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-xs font-semibold text-foreground truncate">
+                        <span className="text-sm font-semibold text-foreground truncate">
                             {reply.userName || "Anonim"}
                         </span>
-                        <span className="text-[10px] text-muted-foreground/60 shrink-0">
+                        <span className="text-xs text-muted-foreground/60 shrink-0">
                             {formatRelativeTime(reply.createdAt)}
                         </span>
                         <span className="text-[10px] font-mono font-medium text-muted-foreground/60 bg-muted/80 border border-border/40 px-1.5 py-0.5 rounded-sm shrink-0 leading-none select-none">
@@ -125,17 +120,8 @@ export function CommentReply({
                         {displayText}
                     </p>
                 )}
-                {isLong && (
-                    <button
-                        onClick={() => onToggleExpand(reply.id)}
-                        className="text-xs text-primary hover:underline mt-0.5"
-                    >
-                        {isExpanded ? "daha az göster" : "devamını göster"}
-                    </button>
-                )}
-
-                {!commentsDisabled && (
-                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+<div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                    {!commentsDisabled && (
                         <button
                             onClick={() => {
                                 if (!session) { onShowAuth(); return }
@@ -150,22 +136,23 @@ export function CommentReply({
                         >
                             Yanıtla
                         </button>
-                        <EmojiReactionPicker
-                            commentId={reply.id}
-                            session={session}
-                            onToggleReaction={onToggleReaction}
-                            onShowAuth={onShowAuth}
-                        />
-                        <EmojiReactionBadges
-                            commentId={reply.id}
-                            reactions={reply.reactions}
-                            userReaction={reply.userReaction}
-                            session={session}
-                            onToggleReaction={onToggleReaction}
-                            onShowAuth={onShowAuth}
-                        />
-                    </div>
-                )}
+                    )}
+                    <EmojiReactionPicker
+                        commentId={reply.id}
+                        session={session}
+                        isMobile={isMobile}
+                        onToggleReaction={onToggleReaction}
+                        onShowAuth={onShowAuth}
+                    />
+                    <EmojiReactionBadges
+                        commentId={reply.id}
+                        reactions={reply.reactions}
+                        userReaction={reply.userReaction}
+                        session={session}
+                        onToggleReaction={onToggleReaction}
+                        onShowAuth={onShowAuth}
+                    />
+                </div>
 
                 {/* Inline reply form — targets the parent comment */}
                 {replyingToId === reply.id && !commentsDisabled && (

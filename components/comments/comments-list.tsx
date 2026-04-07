@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import type { Session } from "next-auth"
 import { CommentItem } from "./comment-item"
 import type { Comment, Reply } from "./types"
@@ -63,11 +64,21 @@ export function CommentsList({
     canDelete,
     canReport,
 }: CommentsListProps) {
+    const [isScrolled, setIsScrolled] = useState(false)
+
+    useEffect(() => {
+        const el = scrollRef.current
+        if (!el || !isMobile) return
+        const handleScroll = () => setIsScrolled(el.scrollTop > 0)
+        el.addEventListener("scroll", handleScroll, { passive: true })
+        return () => el.removeEventListener("scroll", handleScroll)
+    }, [scrollRef, isMobile])
+
     return (
         <div
             ref={scrollRef}
             className="flex-1 min-h-0 overflow-y-auto"
-            style={isMobile && !loading && comments.length > 0 ? {
+            style={isMobile && isScrolled && !loading && comments.length > 0 ? {
                 maskImage: "linear-gradient(to bottom, transparent 0%, black 32px, black 100%)",
                 WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 32px, black 100%)",
             } : undefined}
@@ -83,8 +94,7 @@ export function CommentsList({
                     </div>
                 ) : (
                     <div>
-                        {/* Fade mask alanı kadar üst boşluk */}
-                        {isMobile && <div className="h-2" />}
+
                         {hasMore && (
                             <div className="flex justify-center pb-2 pt-1">
                                 <button

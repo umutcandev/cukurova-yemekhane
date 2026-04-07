@@ -63,12 +63,7 @@ export function CommentItem({
     canReport,
 }: CommentItemProps) {
     const { replyImagePreview, replyImageFile, replyImageLoading, onReplyImageSelect, onReplyImageClear } = useReplyImage()
-    const MAX_CHARS = 100
-    const isLong = comment.content.length > MAX_CHARS
-    const isExpanded = expandedComments.has(comment.id)
-    const displayText = isLong && !isExpanded
-        ? comment.content.slice(0, MAX_CHARS) + "..."
-        : comment.content
+    const displayText = comment.content
 
     return (
         <div className="py-1.5">
@@ -129,18 +124,9 @@ export function CommentItem({
                             {displayText}
                         </p>
                     )}
-                    {isLong && (
-                        <button
-                            onClick={() => onToggleExpand(comment.id)}
-                            className="text-xs text-primary hover:underline mt-0.5"
-                        >
-                            {isExpanded ? "daha az göster" : "devamını göster"}
-                        </button>
-                    )}
-
-                    {/* Yanıtla + emoji picker + reaction badges */}
-                    {!commentsDisabled && (
-                        <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+{/* Yanıtla + emoji picker + reaction badges */}
+                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                        {!commentsDisabled && (
                             <button
                                 onClick={() => {
                                     if (!session) { onShowAuth(); return }
@@ -155,22 +141,23 @@ export function CommentItem({
                             >
                                 Yanıtla
                             </button>
-                            <EmojiReactionPicker
-                                commentId={comment.id}
-                                session={session}
-                                onToggleReaction={onToggleReaction}
-                                onShowAuth={onShowAuth}
-                            />
-                            <EmojiReactionBadges
-                                commentId={comment.id}
-                                reactions={comment.reactions}
-                                userReaction={comment.userReaction}
-                                session={session}
-                                onToggleReaction={onToggleReaction}
-                                onShowAuth={onShowAuth}
-                            />
-                        </div>
-                    )}
+                        )}
+                        <EmojiReactionPicker
+                            commentId={comment.id}
+                            session={session}
+                            isMobile={isMobile}
+                            onToggleReaction={onToggleReaction}
+                            onShowAuth={onShowAuth}
+                        />
+                        <EmojiReactionBadges
+                            commentId={comment.id}
+                            reactions={comment.reactions}
+                            userReaction={comment.userReaction}
+                            session={session}
+                            onToggleReaction={onToggleReaction}
+                            onShowAuth={onShowAuth}
+                        />
+                    </div>
                 </div>
             </div>
 

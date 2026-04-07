@@ -7,12 +7,14 @@ import { toast } from "sonner"
 import {
     Drawer,
     DrawerContent,
+    DrawerDescription,
     DrawerHeader,
     DrawerTitle,
 } from "@/components/ui/drawer"
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
@@ -428,6 +430,9 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                     >
                         <DrawerHeader className="px-4 pb-2 shrink-0">
                             <DrawerTitle className="text-lg">Yorumlar</DrawerTitle>
+                            <DrawerDescription>
+                                Saygılı ve yapıcı olun, uygunsuz içerikleri raporlayın.
+                            </DrawerDescription>
                         </DrawerHeader>
                         <ReplyImageProvider value={replyImageContextValue}>
                         <CommentsList {...sharedListProps} />
@@ -453,8 +458,11 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
                     className="sm:max-w-md p-0 gap-0 overflow-hidden"
                     style={{ display: "flex", flexDirection: "column", maxHeight: "80vh" }}
                 >
-                    <DialogHeader className="px-4 py-3 border-b border-border/40 shrink-0">
+                    <DialogHeader className="px-4 py-2 border-b border-border/40 shrink-0 gap-0.5">
                         <DialogTitle className="text-lg">Yorumlar</DialogTitle>
+                        <DialogDescription>
+                            Saygılı ve yapıcı olun, uygunsuz içerikleri raporlayın.
+                        </DialogDescription>
                     </DialogHeader>
                     <ReplyImageProvider value={replyImageContextValue}>
                         <CommentsList {...sharedListProps} />

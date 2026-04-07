@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Paperclip, X, Loader2 } from "lucide-react"
 import { PHOTO_UPLOAD_ENABLED } from "@/lib/feature-flags"
@@ -37,7 +37,6 @@ export function MessageInput({
     className,
 }: MessageInputProps) {
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const [dismissed, setDismissed] = useState(false)
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -161,20 +160,6 @@ export function MessageInput({
                     </div>
                 </div>
 
-                {/* Banner — inside container, attached */}
-                {mode === "comment" && !dismissed && (
-                    <div className="flex items-center justify-between gap-2 px-3 py-1.5 border-t border-border/30 bg-muted/40">
-                        <span className="text-[12px] text-muted-foreground/60 leading-tight">
-                            Saygılı ve yapıcı olun, uygunsuz içerikleri raporlayın.
-                        </span>
-                        <button
-                            onClick={() => setDismissed(true)}
-                            className="shrink-0 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-                        >
-                            <X className="h-3 w-3" />
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     )
