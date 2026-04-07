@@ -190,6 +190,25 @@ export const comments = pgTable(
     ]
 );
 
+export const commentReactions = pgTable(
+    "comment_reactions",
+    {
+        id: serial("id").primaryKey(),
+        commentId: integer("comment_id")
+            .notNull()
+            .references(() => comments.id, { onDelete: "cascade" }),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        emoji: text("emoji").notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        uniqueIndex("comment_reactions_user_comment_idx").on(table.commentId, table.userId),
+        index("comment_reactions_comment_id_idx").on(table.commentId),
+    ]
+);
+
 export const commentReports = pgTable(
     "comment_reports",
     {

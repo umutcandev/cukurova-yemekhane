@@ -4,6 +4,8 @@ import type { Session } from "next-auth"
 import Image from "next/image"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { CommentActionMenu } from "./comment-action-menu"
+import { EmojiReactionPicker } from "./emoji-reaction-picker"
+import { EmojiReactionBadges } from "./emoji-reaction-badges"
 import { CommentReply } from "./comment-reply"
 import { MessageInput } from "./message-input"
 import { useReplyImage } from "./reply-image-context"
@@ -31,6 +33,7 @@ interface CommentItemProps {
     onToggleExpand: (id: number) => void
     onToggleReplies: (id: number) => void
     onShowAuth: () => void
+    onToggleReaction: (commentId: number, emoji: string) => void
     canDelete: (comment: Comment | Reply) => boolean
     canReport: (comment: Comment | Reply) => boolean
 }
@@ -55,6 +58,7 @@ export function CommentItem({
     onToggleExpand,
     onToggleReplies,
     onShowAuth,
+    onToggleReaction,
     canDelete,
     canReport,
 }: CommentItemProps) {
@@ -134,9 +138,9 @@ export function CommentItem({
                         </button>
                     )}
 
-                    {/* Yanıtla butonu */}
+                    {/* Yanıtla + emoji picker + reaction badges */}
                     {!commentsDisabled && (
-                        <div className="flex items-center gap-3 mt-1">
+                        <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                             <button
                                 onClick={() => {
                                     if (!session) { onShowAuth(); return }
@@ -151,6 +155,20 @@ export function CommentItem({
                             >
                                 Yanıtla
                             </button>
+                            <EmojiReactionPicker
+                                commentId={comment.id}
+                                session={session}
+                                onToggleReaction={onToggleReaction}
+                                onShowAuth={onShowAuth}
+                            />
+                            <EmojiReactionBadges
+                                commentId={comment.id}
+                                reactions={comment.reactions}
+                                userReaction={comment.userReaction}
+                                session={session}
+                                onToggleReaction={onToggleReaction}
+                                onShowAuth={onShowAuth}
+                            />
                         </div>
                     )}
                 </div>
@@ -189,6 +207,7 @@ export function CommentItem({
                                     onDelete={onDelete}
                                     onToggleExpand={onToggleExpand}
                                     onShowAuth={onShowAuth}
+                                    onToggleReaction={onToggleReaction}
                                     canDelete={canDelete}
                                     canReport={canReport}
                                 />

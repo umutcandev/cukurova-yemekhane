@@ -16,6 +16,8 @@ const ReplySchema = z.object({
     imageUrl: z.string().nullable(),
     parentId: z.number().nullable(),
     createdAt: z.string(),
+    reactions: z.record(z.string(), z.number()).default({}),
+    userReaction: z.string().nullable().default(null),
 })
 
 const CommentSchema = ReplySchema.extend({
@@ -112,14 +114,35 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
                             c.replies.forEach((r) => existingIds.add(r.id))
                         })
 
+                        // Update reactions on existing comments/replies
+                        const incomingMap = new Map<number, { reactions: Record<string, number>; userReaction: string | null }>()
+                        for (const item of newOnes) {
+                            if (existingIds.has(item.id)) {
+                                incomingMap.set(item.id, { reactions: item.reactions, userReaction: item.userReaction })
+                            }
+                        }
+
                         const fresh = newOnes.filter((c) => !existingIds.has(c.id))
+
+                        let updated = prev.map((c) => {
+                            const parentUpdate = incomingMap.get(c.id)
+                            const updatedReplies = c.replies.map((r) => {
+                                const replyUpdate = incomingMap.get(r.id)
+                                return replyUpdate ? { ...r, ...replyUpdate } : r
+                            })
+                            return parentUpdate
+                                ? { ...c, ...parentUpdate, replies: updatedReplies }
+                                : { ...c, replies: updatedReplies }
+                        })
+
+                        if (fresh.length === 0 && incomingMap.size > 0) return updated
                         if (fresh.length === 0) return prev
 
                         const newParents = fresh.filter((c) => c.parentId === null) as Comment[]
                         const newReplies = fresh.filter((c) => c.parentId !== null) as Reply[]
 
-                        let updated = [
-                            ...prev,
+                        updated = [
+                            ...updated,
                             ...newParents.map((p) => ({ ...p, replies: [] as Reply[] })),
                         ]
                         for (const reply of newReplies) {
@@ -242,6 +265,68 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
         }
     }
 
+    // Emoji tepki toggle
+    const toggleReaction = async (commentId: number, emoji: string): Promise<boolean> => {
+        // Snapshot for rollback
+        const snapshot = [...comments]
+
+        // Optimistic update
+        setComments((prev) =>
+            prev.map((c) => {
+                const updateItem = <T extends Comment | Reply>(item: T): T => {
+                    if (item.id !== commentId) return item
+                    const sameEmoji = item.userReaction === emoji
+                    const oldEmoji = item.userReaction
+                    const newReactions = { ...item.reactions }
+
+                    // Remove old reaction count if changing
+                    if (oldEmoji && oldEmoji !== emoji) {
+                        newReactions[oldEmoji] = (newReactions[oldEmoji] || 1) - 1
+                        if (newReactions[oldEmoji] <= 0) delete newReactions[oldEmoji]
+                    }
+
+                    if (sameEmoji) {
+                        // Toggle off
+                        newReactions[emoji] = (newReactions[emoji] || 1) - 1
+                        if (newReactions[emoji] <= 0) delete newReactions[emoji]
+                        return { ...item, reactions: newReactions, userReaction: null }
+                    } else {
+                        // Add new
+                        newReactions[emoji] = (newReactions[emoji] || 0) + 1
+                        return { ...item, reactions: newReactions, userReaction: emoji }
+                    }
+                }
+
+                if (c.id === commentId) return updateItem(c) as Comment
+                return {
+                    ...c,
+                    replies: c.replies.map((r) =>
+                        r.id === commentId ? (updateItem(r) as Reply) : r
+                    ),
+                }
+            })
+        )
+
+        try {
+            const res = await fetch("/api/comments/reactions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ commentId, emoji }),
+            })
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}))
+                setComments(snapshot)
+                toast.error(data.error || "Bir hata oluştu.", { duration: 2000 })
+                return false
+            }
+            return true
+        } catch {
+            setComments(snapshot)
+            toast.error("Bir hata oluştu.", { duration: 2000 })
+            return false
+        }
+    }
+
     // Yorum sil
     const deleteComment = async (id: number): Promise<void> => {
         try {
@@ -345,5 +430,6 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
         sendComment,
         sendReply,
         deleteComment,
+        toggleReaction,
     }
 }

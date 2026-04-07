@@ -163,6 +163,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         sendComment,
         sendReply,
         deleteComment,
+        toggleReaction,
     } = useComments({ open, menuDate, scrollRef })
 
     const canDelete = (comment: Comment | Reply) => {
@@ -364,6 +365,7 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         onToggleExpand: handleToggleExpand,
         onToggleReplies: handleToggleReplies,
         onShowAuth: () => setShowAuthDrawer(true),
+        onToggleReaction: toggleReaction,
         onLoadMore: loadMoreComments,
         canDelete,
         canReport,

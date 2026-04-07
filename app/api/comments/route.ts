@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { db } from "@/lib/db/index";
-import { comments, users } from "@/lib/db/schema";
-import { eq, asc, desc, gt, lt, and, count, isNull, inArray } from "drizzle-orm";
+import { comments, users, commentReactions } from "@/lib/db/schema";
+import { eq, asc, desc, gt, lt, and, count, isNull, inArray, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { checkRateLimit, isValidDateFormat } from "@/lib/rate-limiter";
 import { containsBadWord } from "@/lib/wordlist";
@@ -41,12 +41,72 @@ interface CommentRow {
     createdAt: Date;
 }
 
-interface ThreadedComment extends CommentRow {
-    replies: CommentRow[];
+interface CommentWithReactions extends CommentRow {
+    reactions: Record<string, number>;
+    userReaction: string | null;
 }
 
-function threadComments(parents: CommentRow[], replies: CommentRow[]): ThreadedComment[] {
-    const replyMap = new Map<number, CommentRow[]>();
+interface ThreadedComment extends CommentWithReactions {
+    replies: CommentWithReactions[];
+}
+
+async function attachReactions(
+    commentRows: CommentRow[],
+    currentUserId: string | null
+): Promise<CommentWithReactions[]> {
+    if (commentRows.length === 0) return [];
+
+    const ids = commentRows.map((c) => c.id);
+
+    // Aggregated counts per comment per emoji
+    const reactionCounts = await db
+        .select({
+            commentId: commentReactions.commentId,
+            emoji: commentReactions.emoji,
+            count: sql<number>`count(*)::int`,
+        })
+        .from(commentReactions)
+        .where(inArray(commentReactions.commentId, ids))
+        .groupBy(commentReactions.commentId, commentReactions.emoji);
+
+    // Build map: commentId -> { emoji: count }
+    const reactionsMap = new Map<number, Record<string, number>>();
+    for (const row of reactionCounts) {
+        if (!reactionsMap.has(row.commentId)) {
+            reactionsMap.set(row.commentId, {});
+        }
+        reactionsMap.get(row.commentId)![row.emoji] = row.count;
+    }
+
+    // Current user's reactions
+    const userReactionsMap = new Map<number, string>();
+    if (currentUserId) {
+        const userRows = await db
+            .select({
+                commentId: commentReactions.commentId,
+                emoji: commentReactions.emoji,
+            })
+            .from(commentReactions)
+            .where(
+                and(
+                    inArray(commentReactions.commentId, ids),
+                    eq(commentReactions.userId, currentUserId)
+                )
+            );
+        for (const row of userRows) {
+            userReactionsMap.set(row.commentId, row.emoji);
+        }
+    }
+
+    return commentRows.map((c) => ({
+        ...c,
+        reactions: reactionsMap.get(c.id) ?? {},
+        userReaction: userReactionsMap.get(c.id) ?? null,
+    }));
+}
+
+function threadComments(parents: CommentWithReactions[], replies: CommentWithReactions[]): ThreadedComment[] {
+    const replyMap = new Map<number, CommentWithReactions[]>();
     for (const reply of replies) {
         if (reply.parentId === null) continue;
         const bucket = replyMap.get(reply.parentId) ?? [];
@@ -118,6 +178,10 @@ export async function GET(request: NextRequest) {
 
         const limit = Math.min(parseInt(limitParam || "20", 10) || 20, 50);
 
+        // Get current user for reaction data
+        const session = await auth();
+        const currentUserId = session?.user?.id ?? null;
+
         // afterId modunda: polling — o ID'den sonraki tüm yeni yorumlar (flat, parentId dahil)
         if (afterId) {
             const parsedAfterId = parseInt(afterId, 10);
@@ -133,7 +197,8 @@ export async function GET(request: NextRequest) {
                 .leftJoin(users, eq(comments.userId, users.id))
                 .where(and(eq(comments.menuDate, menuDate), gt(comments.id, parsedAfterId)))
                 .orderBy(asc(comments.id));
-            return NextResponse.json({ comments: rows, hasMore: false });
+            const withReactions = await attachReactions(rows, currentUserId);
+            return NextResponse.json({ comments: withReactions, hasMore: false });
         }
 
         // beforeId modunda: daha eski parent yorumlar + onların reply'ları
@@ -172,7 +237,11 @@ export async function GET(request: NextRequest) {
                         inArray(comments.parentId, parentIds)
                     ))
                     .orderBy(asc(comments.id));
-                result = threadComments(parents, replyRows);
+                const allRows = [...parents, ...replyRows];
+                const withReactions = await attachReactions(allRows, currentUserId);
+                const parentsWithReactions = withReactions.filter((c) => c.parentId === null);
+                const repliesWithReactions = withReactions.filter((c) => c.parentId !== null);
+                result = threadComments(parentsWithReactions, repliesWithReactions);
             }
 
             return NextResponse.json({ comments: result, hasMore });
@@ -205,7 +274,11 @@ export async function GET(request: NextRequest) {
                     inArray(comments.parentId, parentIds)
                 ))
                 .orderBy(asc(comments.id));
-            result = threadComments(parents, replyRows);
+            const allRows = [...parents, ...replyRows];
+            const withReactions = await attachReactions(allRows, currentUserId);
+            const parentsWithReactions = withReactions.filter((c) => c.parentId === null);
+            const repliesWithReactions = withReactions.filter((c) => c.parentId !== null);
+            result = threadComments(parentsWithReactions, repliesWithReactions);
         }
 
         return NextResponse.json({ comments: result, hasMore });
