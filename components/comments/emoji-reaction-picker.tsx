@@ -44,6 +44,7 @@ export function EmojiReactionPicker({
                 align="start"
                 sideOffset={2}
                 className="w-auto p-1 border border-border shadow-md"
+                onPointerDown={(e) => e.stopPropagation()}
             >
                 <div className="flex gap-0.5">
                     {COMMENT_EMOJIS.map((emoji) => (
