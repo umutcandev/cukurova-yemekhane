@@ -28,6 +28,7 @@ interface CommentsListProps {
     onToggleExpand: (id: number) => void
     onToggleReplies: (id: number) => void
     onShowAuth: () => void
+    onToggleReaction: (commentId: number, emoji: string) => void
     onLoadMore: () => void
     canDelete: (comment: Comment | Reply) => boolean
     canReport: (comment: Comment | Reply) => boolean
@@ -57,6 +58,7 @@ export function CommentsList({
     onToggleExpand,
     onToggleReplies,
     onShowAuth,
+    onToggleReaction,
     onLoadMore,
     canDelete,
     canReport,
@@ -123,6 +125,7 @@ export function CommentsList({
                                 onToggleExpand={onToggleExpand}
                                 onToggleReplies={onToggleReplies}
                                 onShowAuth={onShowAuth}
+                                onToggleReaction={onToggleReaction}
                                 canDelete={canDelete}
                                 canReport={canReport}
                             />

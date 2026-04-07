@@ -4,6 +4,8 @@ import type { Session } from "next-auth"
 import Image from "next/image"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { CommentActionMenu } from "./comment-action-menu"
+import { EmojiReactionPicker } from "./emoji-reaction-picker"
+import { EmojiReactionBadges } from "./emoji-reaction-badges"
 import { MessageInput } from "./message-input"
 import { useReplyImage } from "./reply-image-context"
 import { formatRelativeTime, getInitials } from "./utils"
@@ -29,6 +31,7 @@ interface CommentReplyProps {
     onDelete: (id: number) => void
     onToggleExpand: (id: number) => void
     onShowAuth: () => void
+    onToggleReaction: (commentId: number, emoji: string) => void
     canDelete: (comment: Comment | Reply) => boolean
     canReport: (comment: Comment | Reply) => boolean
 }
@@ -52,6 +55,7 @@ export function CommentReply({
     onDelete,
     onToggleExpand,
     onShowAuth,
+    onToggleReaction,
     canDelete,
     canReport,
 }: CommentReplyProps) {
@@ -131,7 +135,7 @@ export function CommentReply({
                 )}
 
                 {!commentsDisabled && (
-                    <div className="flex items-center gap-3 mt-1">
+                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                         <button
                             onClick={() => {
                                 if (!session) { onShowAuth(); return }
@@ -146,6 +150,20 @@ export function CommentReply({
                         >
                             Yanıtla
                         </button>
+                        <EmojiReactionPicker
+                            commentId={reply.id}
+                            session={session}
+                            onToggleReaction={onToggleReaction}
+                            onShowAuth={onShowAuth}
+                        />
+                        <EmojiReactionBadges
+                            commentId={reply.id}
+                            reactions={reply.reactions}
+                            userReaction={reply.userReaction}
+                            session={session}
+                            onToggleReaction={onToggleReaction}
+                            onShowAuth={onShowAuth}
+                        />
                     </div>
                 )}
 

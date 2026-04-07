@@ -9,6 +9,8 @@ export interface Reply {
     imageUrl: string | null
     parentId: number
     createdAt: string
+    reactions: Record<string, number>
+    userReaction: string | null
 }
 
 export interface Comment {
@@ -21,6 +23,8 @@ export interface Comment {
     parentId: null
     createdAt: string
     replies: Reply[]
+    reactions: Record<string, number>
+    userReaction: string | null
 }
 
 export interface CommentsPanelProps {
