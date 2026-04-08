@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
 import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
@@ -116,6 +116,8 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
     // URL'den ?date= parametresini oku → arama sonuçlarından navigasyon
     const searchParams = useSearchParams()
+    const [autoOpenCommentsDate, setAutoOpenCommentsDate] = useState<string | null>(null)
+    const handleCommentsOpened = useCallback(() => setAutoOpenCommentsDate(null), [])
     useEffect(() => {
         const dateParam = searchParams.get("date")
         if (dateParam) {
@@ -123,6 +125,9 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
             if (targetIndex !== -1) {
                 setMobileSelectedDateIndex(targetIndex)
                 setSelectedDateRange(undefined)
+            }
+            if (searchParams.get("openComments")) {
+                setAutoOpenCommentsDate(dateParam)
             }
         }
     }, [searchParams, effectiveMenuData.days])
@@ -231,13 +236,13 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                             // Show range of menus if date range is selected
                             <div className="grid gap-4">
                                 {selectedDateMenus.map((day) => (
-                                    <MenuCard key={day.date} day={day} onMealClick={handleMealClick} />
+                                    <MenuCard key={day.date} day={day} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === day.date} onCommentsOpened={handleCommentsOpened} />
                                 ))}
                             </div>
                         ) : mobileCurrentMenu ? (
                             // Show single menu from arrow navigation
                             <div className="max-w-md mx-auto">
-                                <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} />
+                                <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === mobileCurrentMenu.date} onCommentsOpened={handleCommentsOpened} />
                             </div>
                         ) : null}
                     </section>

@@ -5,6 +5,7 @@ import { eq, and, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { checkRateLimit } from "@/lib/rate-limiter";
 import { VALID_EMOJI_KEYS } from "@/lib/emoji-constants";
+import { createNotification } from "@/lib/notifications";
 
 const REACTION_RATE_LIMIT = 20;
 
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
 
         // Verify comment exists
         const [comment] = await db
-            .select({ id: comments.id })
+            .select({ id: comments.id, userId: comments.userId })
             .from(comments)
             .where(eq(comments.id, commentId));
 
@@ -97,6 +98,20 @@ export async function POST(request: NextRequest) {
                 emoji,
             });
             action = "added";
+        }
+
+        // Tepki eklendiğinde veya değiştiğinde bildirim oluştur
+        if (action === "added" || action === "changed") {
+            try {
+                await createNotification({
+                    userId: comment.userId,
+                    actorId: session.user.id,
+                    type: "reaction",
+                    commentId,
+                });
+            } catch (notifError) {
+                console.error("Reaction notification error:", notifError);
+            }
         }
 
         // Fetch updated aggregated reactions for this comment

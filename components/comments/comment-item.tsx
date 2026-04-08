@@ -10,6 +10,7 @@ import { CommentReply } from "./comment-reply"
 import { MessageInput } from "./message-input"
 import { useReplyImage } from "./reply-image-context"
 import { formatRelativeTime, getInitials } from "./utils"
+import { MentionText } from "./mention-text"
 import { CHAR_LIMIT } from "./types"
 import type { Comment, Reply } from "./types"
 
@@ -36,6 +37,7 @@ interface CommentItemProps {
     onToggleReaction: (commentId: number, emoji: string) => void
     canDelete: (comment: Comment | Reply) => boolean
     canReport: (comment: Comment | Reply) => boolean
+    onReplyMentionAdd?: (user: { id: string }) => void
 }
 
 export function CommentItem({
@@ -61,9 +63,9 @@ export function CommentItem({
     onToggleReaction,
     canDelete,
     canReport,
+    onReplyMentionAdd,
 }: CommentItemProps) {
     const { replyImagePreview, replyImageFile, replyImageLoading, onReplyImageSelect, onReplyImageClear } = useReplyImage()
-    const displayText = comment.content
 
     return (
         <div className="py-1.5">
@@ -121,7 +123,7 @@ export function CommentItem({
 
                     {comment.content && (
                         <p className="text-sm text-foreground/90 mt-0.5 leading-relaxed break-words">
-                            {displayText}
+                            <MentionText text={comment.content} />
                         </p>
                     )}
 {/* Yanıtla + emoji picker + reaction badges */}
@@ -197,6 +199,7 @@ export function CommentItem({
                                     onToggleReaction={onToggleReaction}
                                     canDelete={canDelete}
                                     canReport={canReport}
+                                    onReplyMentionAdd={onReplyMentionAdd}
                                 />
                             ))}
                         </div>
@@ -220,6 +223,8 @@ export function CommentItem({
                         onImageSelect={onReplyImageSelect}
                         onImageClear={onReplyImageClear}
                         imageLoading={replyImageLoading}
+                        onMentionAdd={onReplyMentionAdd}
+                        isMobile={isMobile}
                     />
                 </div>
             )}

@@ -139,9 +139,11 @@ interface MenuDay {
 interface MenuCardProps {
     day: MenuDay
     onMealClick: (mealId: string, mealName: string, mealCalories: number) => void
+    autoOpenComments?: boolean
+    onCommentsOpened?: () => void
 }
 
-export function MenuCard({ day, onMealClick }: MenuCardProps) {
+export function MenuCard({ day, onMealClick, autoOpenComments, onCommentsOpened }: MenuCardProps) {
     const {
         session,
         isFavorited,
@@ -168,6 +170,13 @@ export function MenuCard({ day, onMealClick }: MenuCardProps) {
     const [showCalorieGoalModal, setShowCalorieGoalModal] = useState(false)
     const [pendingMeal, setPendingMeal] = useState<{ name: string; calories: number; id: string } | null>(null)
     const [showComments, setShowComments] = useState(false)
+
+    useEffect(() => {
+        if (autoOpenComments) {
+            setShowComments(true)
+            onCommentsOpened?.()
+        }
+    }, [autoOpenComments, onCommentsOpened])
     const [commentCount, setCommentCount] = useState<number | null>(null)
     const noData = day.meals.length === 0
     const prompt = generateAiPrompt(day)

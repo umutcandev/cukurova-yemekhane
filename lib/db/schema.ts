@@ -209,6 +209,28 @@ export const commentReactions = pgTable(
     ]
 );
 
+export const notifications = pgTable(
+    "notifications",
+    {
+        id: serial("id").primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        actorId: text("actor_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        type: text("type").$type<"mention" | "reaction" | "reply">().notNull(),
+        commentId: integer("comment_id")
+            .references(() => comments.id, { onDelete: "cascade" }),
+        read: boolean("read").default(false).notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        index("notifications_user_read_idx").on(table.userId, table.read),
+        index("notifications_user_created_idx").on(table.userId, table.createdAt),
+    ]
+);
+
 export const commentReports = pgTable(
     "comment_reports",
     {

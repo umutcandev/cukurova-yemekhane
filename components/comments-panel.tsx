@@ -133,6 +133,8 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set())
     const [replyingToId, setReplyingToId] = useState<number | null>(null)
     const [replyContent, setReplyContent] = useState("")
+    const [commentMentionIds, setCommentMentionIds] = useState<string[]>([])
+    const [replyMentionIds, setReplyMentionIds] = useState<string[]>([])
 
     // Image state — comment input
     const [commentImagePreview, setCommentImagePreview] = useState<string | null>(null)
@@ -269,9 +271,10 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
             }
         }
 
-        const ok = await sendComment(trimmed, imageUrl)
+        const ok = await sendComment(trimmed, imageUrl, commentMentionIds.length > 0 ? commentMentionIds : undefined)
         if (ok) {
             setNewComment("")
+            setCommentMentionIds([])
             handleCommentImageClear()
         }
     }
@@ -296,10 +299,11 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
             }
         }
 
-        const ok = await sendReply(parentId, trimmed, imageUrl)
+        const ok = await sendReply(parentId, trimmed, imageUrl, replyMentionIds.length > 0 ? replyMentionIds : undefined)
         if (ok) {
             setExpandedReplies((prev) => { const next = new Set(prev); next.add(parentId); return next })
             setReplyContent("")
+            setReplyMentionIds([])
             setReplyingToId(null)
             handleReplyImageClear()
         }
@@ -371,6 +375,9 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         onLoadMore: loadMoreComments,
         canDelete,
         canReport,
+        onReplyMentionAdd: (user: { id: string }) => {
+            setReplyMentionIds((prev) => prev.includes(user.id) ? prev : [...prev, user.id])
+        },
     }
 
     const sharedInputProps = {
@@ -385,6 +392,10 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         onImageSelect: handleCommentImageSelect,
         onImageClear: handleCommentImageClear,
         imageLoading: commentImageLoading,
+        onMentionAdd: (user: { id: string }) => {
+            setCommentMentionIds((prev) => prev.includes(user.id) ? prev : [...prev, user.id])
+        },
+        isMobile,
     }
 
     const commentDisabledBanner = (
