@@ -33,6 +33,7 @@ interface CommentsListProps {
     onLoadMore: () => void
     canDelete: (comment: Comment | Reply) => boolean
     canReport: (comment: Comment | Reply) => boolean
+    onReplyMentionAdd?: (user: { id: string }) => void
 }
 
 export function CommentsList({
@@ -63,6 +64,7 @@ export function CommentsList({
     onLoadMore,
     canDelete,
     canReport,
+    onReplyMentionAdd,
 }: CommentsListProps) {
     const [isScrolled, setIsScrolled] = useState(false)
 
@@ -138,6 +140,7 @@ export function CommentsList({
                                 onToggleReaction={onToggleReaction}
                                 canDelete={canDelete}
                                 canReport={canReport}
+                                onReplyMentionAdd={onReplyMentionAdd}
                             />
                         ))}
                     </div>

@@ -201,14 +201,14 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
     }
 
     // Yeni yorum gönder — başarıda true döner
-    const sendComment = async (content: string, imageUrl?: string): Promise<boolean> => {
+    const sendComment = async (content: string, imageUrl?: string, mentionedUserIds?: string[]): Promise<boolean> => {
         setSending(true)
         sendingRef.current = true
         try {
             const res = await fetch("/api/comments", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ menuDate, content: content || "", imageUrl }),
+                body: JSON.stringify({ menuDate, content: content || "", imageUrl, mentionedUserIds }),
             })
             const data = await res.json()
             if (!res.ok) {
@@ -231,14 +231,14 @@ export function useComments({ open, menuDate, scrollRef }: UseCommentsOptions) {
     }
 
     // Yanıt gönder — başarıda true döner
-    const sendReply = async (parentId: number, content: string, imageUrl?: string): Promise<boolean> => {
+    const sendReply = async (parentId: number, content: string, imageUrl?: string, mentionedUserIds?: string[]): Promise<boolean> => {
         setSendingReply(true)
         sendingRef.current = true
         try {
             const res = await fetch("/api/comments", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ menuDate, content: content || "", imageUrl, parentId }),
+                body: JSON.stringify({ menuDate, content: content || "", imageUrl, parentId, mentionedUserIds }),
             })
             const data = await res.json()
             if (!res.ok) {

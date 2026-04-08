@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { db } from "@/lib/db/index";
-import { comments, users, commentReactions } from "@/lib/db/schema";
+import { comments, users, commentReactions, notifications } from "@/lib/db/schema";
 import { eq, asc, desc, gt, lt, and, count, isNull, inArray, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { checkRateLimit, isValidDateFormat } from "@/lib/rate-limiter";
 import { containsBadWord } from "@/lib/wordlist";
 import { PHOTO_UPLOAD_ENABLED } from "@/lib/feature-flags";
 import { getTurkeyDate } from "@/lib/date-utils";
+import { createNotification } from "@/lib/notifications";
 
 const MAX_COMMENT_LENGTH = 200;
 const COMMENT_RATE_LIMIT = 5; // 5 comments per minute
@@ -327,7 +328,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { menuDate, content, imageUrl, parentId } = body;
+        const { menuDate, content, imageUrl, parentId, mentionedUserIds } = body;
 
         if (!menuDate || !isValidDateFormat(menuDate)) {
             return NextResponse.json(
@@ -460,6 +461,62 @@ export async function POST(request: NextRequest) {
                 parentId: resolvedParentId,
             })
             .returning();
+
+        // Bildirimleri oluştur (fire-and-forget)
+        try {
+            // Reply bildirimi: parent yorumun sahibine
+            let replyRecipientId: string | null = null;
+            if (resolvedParentId) {
+                const [parentComment] = await db
+                    .select({ userId: comments.userId })
+                    .from(comments)
+                    .where(eq(comments.id, resolvedParentId));
+                if (parentComment) {
+                    replyRecipientId = parentComment.userId;
+                    await createNotification({
+                        userId: parentComment.userId,
+                        actorId: session.user.id,
+                        type: "reply",
+                        commentId: newComment.id,
+                    });
+                }
+            }
+
+            // Mention bildirimleri — validate & limit
+            if (Array.isArray(mentionedUserIds) && mentionedUserIds.length > 0) {
+                const candidateIds = mentionedUserIds
+                    .filter((id): id is string => typeof id === "string")
+                    .slice(0, 10); // max 10 mention
+
+                if (candidateIds.length > 0) {
+                    // Verify mentioned users exist in DB
+                    const existingUsers = await db
+                        .select({ id: users.id })
+                        .from(users)
+                        .where(inArray(users.id, candidateIds));
+                    const validIds = existingUsers.map((u) => u.id);
+
+                    // Filter out self and reply recipient (prevent duplicate notification)
+                    const mentionTargets = validIds.filter(
+                        (id) => id !== session.user.id && id !== replyRecipientId
+                    );
+
+                    if (mentionTargets.length > 0) {
+                        const actorId = session.user.id!;
+                        await db.insert(notifications).values(
+                            mentionTargets.map((userId) => ({
+                                userId,
+                                actorId,
+                                type: "mention" as const,
+                                commentId: newComment.id,
+                            }))
+                        );
+                    }
+                }
+            }
+        } catch (notifError) {
+            console.error("Notification creation error:", notifError);
+        }
 
         // Return comment with user info
         return NextResponse.json(

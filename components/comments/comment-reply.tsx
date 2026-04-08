@@ -9,6 +9,7 @@ import { EmojiReactionBadges } from "./emoji-reaction-badges"
 import { MessageInput } from "./message-input"
 import { useReplyImage } from "./reply-image-context"
 import { formatRelativeTime, getInitials } from "./utils"
+import { MentionText } from "./mention-text"
 import { CHAR_LIMIT } from "./types"
 import type { Comment, Reply } from "./types"
 
@@ -34,6 +35,7 @@ interface CommentReplyProps {
     onToggleReaction: (commentId: number, emoji: string) => void
     canDelete: (comment: Comment | Reply) => boolean
     canReport: (comment: Comment | Reply) => boolean
+    onReplyMentionAdd?: (user: { id: string }) => void
 }
 
 export function CommentReply({
@@ -58,9 +60,9 @@ export function CommentReply({
     onToggleReaction,
     canDelete,
     canReport,
+    onReplyMentionAdd,
 }: CommentReplyProps) {
     const { replyImagePreview, replyImageFile, replyImageLoading, onReplyImageSelect, onReplyImageClear } = useReplyImage()
-    const displayText = reply.content
 
     return (
         <div key={reply.id} className="flex items-start gap-2 py-1">
@@ -117,7 +119,7 @@ export function CommentReply({
 
                 {reply.content && (
                     <p className="text-sm text-foreground/90 mt-0.5 leading-relaxed break-words">
-                        {displayText}
+                        <MentionText text={reply.content} />
                     </p>
                 )}
 <div className="flex items-center gap-1.5 mt-1 flex-wrap">
@@ -169,6 +171,8 @@ export function CommentReply({
                         onImageSelect={onReplyImageSelect}
                         onImageClear={onReplyImageClear}
                         imageLoading={replyImageLoading}
+                        onMentionAdd={onReplyMentionAdd}
+                        isMobile={isMobile}
                     />
                 )}
             </div>
