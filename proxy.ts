@@ -7,8 +7,8 @@ const AUTH_ENABLED = process.env.NEXT_PUBLIC_AUTH_ENABLED !== "false"
 // Protected routes that require authentication
 const protectedRoutes = ["/favorilerim", "/kalori-takibi"]
 
-export default async function middleware(req: NextRequest) {
-    // Auth kapalıysa middleware hiçbir şey yapmaz — edge request minimuma iner
+export default async function proxy(req: NextRequest) {
+    // Auth kapalıysa proxy hiçbir şey yapmaz — edge request minimuma iner
     if (!AUTH_ENABLED) {
         return NextResponse.next()
     }
@@ -28,8 +28,6 @@ export default async function middleware(req: NextRequest) {
 
     return NextResponse.next()
 }
-
-export const runtime = "nodejs"
 
 export const config = {
     /*

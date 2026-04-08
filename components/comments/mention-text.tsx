@@ -7,8 +7,8 @@ import { Fragment } from "react"
  * Pattern: @Name or @Name Surname (captures @ followed by word chars and spaces up to 30 chars)
  */
 export function MentionText({ text }: { text: string }) {
-    // Match @Username patterns — captures @ followed by non-whitespace chars (\u00A0 non-breaking space is kept as part of name)
-    const parts = text.split(/(@\S+)/g)
+    // Match @Username patterns — \u00A0 is treated as whitespace by JS regex \S, so we include it explicitly
+    const parts = text.split(/(@[\S\u00A0]+)/g)
 
     return (
         <>
