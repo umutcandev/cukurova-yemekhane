@@ -41,13 +41,13 @@ export function EmojiReactionBadges({
                             }
                             onToggleReaction(commentId, key)
                         }}
-                        className={`inline-flex items-center gap-0.5 text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-sm leading-none select-none transition-colors border ${
+                        className={`inline-flex items-center gap-1 text-[11px] font-semibold px-1.5 py-0.5 rounded-full leading-none select-none transition-colors border flex-shrink-0 ${
                             isOwn
                                 ? "bg-primary/10 border-primary/30 text-primary"
-                                : "bg-muted/80 border-border/40 text-muted-foreground/60 hover:bg-muted"
+                                : "bg-muted/60 border-border/20 text-muted-foreground hover:bg-muted/80"
                         }`}
                     >
-                        <span className="text-xs leading-none">{getEmojiNative(key)}</span>
+                        <span className="text-[11px] leading-none">{getEmojiNative(key)}</span>
                         <span className="leading-none">{reactions[key]}</span>
                     </button>
                 )

@@ -12,6 +12,7 @@ import {
     index,
 } from "drizzle-orm/pg-core";
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import type { AdapterAccountType } from "next-auth/adapters";
 
 // ==========================================
@@ -33,17 +34,26 @@ export const menuReactions = pgTable("menu_reactions", {
 // NextAuth.js Tables
 // ==========================================
 
-export const users = pgTable("users", {
-    id: text("id")
-        .primaryKey()
-        .$defaultFn(() => crypto.randomUUID()),
-    name: text("name"),
-    email: text("email").unique(),
-    emailVerified: timestamp("emailVerified", { mode: "date" }),
-    image: text("image"),
-    calorieGoal: integer("calorie_goal"),
-    onboardingCompletedAt: timestamp("onboarding_completed_at", { mode: "date" }),
-});
+export const users = pgTable(
+    "users",
+    {
+        id: text("id")
+            .primaryKey()
+            .$defaultFn(() => crypto.randomUUID()),
+        name: text("name"),
+        email: text("email").unique(),
+        emailVerified: timestamp("emailVerified", { mode: "date" }),
+        image: text("image"),
+        calorieGoal: integer("calorie_goal"),
+        onboardingCompletedAt: timestamp("onboarding_completed_at", { mode: "date" }),
+        nickname: text("nickname"),
+        customImage: text("custom_image"),
+        hideProfilePicture: boolean("hide_profile_picture").default(false).notNull(),
+    },
+    (table) => [
+        uniqueIndex("users_nickname_lower_idx").on(sql`lower(${table.nickname})`),
+    ]
+);
 
 export const accounts = pgTable(
     "accounts",

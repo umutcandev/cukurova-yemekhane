@@ -3,12 +3,13 @@
 import { useState } from "react"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
-import { Home, Bookmark, Flame, Monitor, Sun, Moon, Loader2 } from "lucide-react"
+import { Home, Bookmark, Flame, Monitor, Sun, Moon, Loader2, Settings } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { AuthModal, GoogleIcon } from "@/components/auth-modal"
-import { AUTH_ENABLED } from "@/lib/feature-flags"
+import { AUTH_ENABLED, PROFILE_CUSTOMIZATION_ENABLED } from "@/lib/feature-flags"
+import { resolveSelfIdentity } from "@/lib/user-identity"
 import {
     Avatar,
     AvatarFallback,
@@ -174,6 +175,13 @@ function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
     const [isSigningIn, setIsSigningIn] = useState(false)
     const [authDrawerOpen, setAuthDrawerOpen] = useState(false)
 
+    const { displayName, displayImage } = resolveSelfIdentity({
+        name: session?.user?.name,
+        image: session?.user?.image,
+        nickname: session?.user?.nickname,
+        customImage: session?.user?.customImage,
+    })
+
     const handleSignIn = async () => {
         setIsSigningIn(true)
         await signIn("google")
@@ -256,7 +264,7 @@ function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
                                         <div className="flex items-center justify-between px-1">
                                             <div className="flex flex-col gap-0.5 overflow-hidden">
                                                 <span className="text-base font-semibold truncate">
-                                                    {session.user?.name}
+                                                    {displayName}
                                                 </span>
                                                 <span className="text-xs text-muted-foreground truncate">
                                                     {session.user?.email}
@@ -264,11 +272,11 @@ function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
                                             </div>
                                             <Avatar className="h-8 w-8 flex-shrink-0">
                                                 <AvatarImage
-                                                    src={session.user?.image || ""}
-                                                    alt={session.user?.name || ""}
+                                                    src={displayImage || ""}
+                                                    alt={displayName || ""}
                                                 />
                                                 <AvatarFallback className="text-[10px] bg-primary text-primary-foreground">
-                                                    {session.user?.name?.charAt(0)?.toUpperCase() || "U"}
+                                                    {displayName?.charAt(0)?.toUpperCase() || "U"}
                                                 </AvatarFallback>
                                             </Avatar>
                                         </div>
@@ -279,6 +287,16 @@ function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
                                 <nav>
                                     {session ? (
                                         <>
+                                            {PROFILE_CUSTOMIZATION_ENABLED && (
+                                                <Link
+                                                    href="/ayarlar"
+                                                    onClick={onClose}
+                                                    className="flex items-center justify-between h-12 px-1 text-base text-muted-foreground hover:text-foreground transition-colors"
+                                                >
+                                                    <span>Hesap Ayarları</span>
+                                                    <Settings className="h-4 w-4" />
+                                                </Link>
+                                            )}
                                             <Link
                                                 href="/"
                                                 onClick={onClose}

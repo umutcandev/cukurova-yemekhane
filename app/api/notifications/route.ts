@@ -4,6 +4,7 @@ import { db } from "@/lib/db"
 import { notifications, users, comments } from "@/lib/db/schema"
 import { eq, desc, and, sql, inArray } from "drizzle-orm"
 import { checkRateLimit } from "@/lib/rate-limiter"
+import { resolvePublicIdentity } from "@/lib/user-identity"
 
 export async function GET(req: NextRequest) {
     const session = await auth()
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
     const limitParam = req.nextUrl.searchParams.get("limit")
     const limit = Math.min(Math.max(Number(limitParam) || 50, 1), 50)
 
-    const rows = await db
+    const rawRows = await db
         .select({
             id: notifications.id,
             type: notifications.type,
@@ -31,6 +32,9 @@ export async function GET(req: NextRequest) {
             commentId: notifications.commentId,
             actorName: users.name,
             actorImage: users.image,
+            actorNickname: users.nickname,
+            actorCustomImage: users.customImage,
+            actorHideProfilePicture: users.hideProfilePicture,
             commentContent: comments.content,
             menuDate: comments.menuDate,
         })
@@ -40,6 +44,21 @@ export async function GET(req: NextRequest) {
         .where(eq(notifications.userId, session.user.id))
         .orderBy(desc(notifications.createdAt))
         .limit(limit)
+
+    const rows = rawRows.map(({ actorNickname, actorCustomImage, actorHideProfilePicture, ...rest }) => {
+        const { displayName, displayImage } = resolvePublicIdentity({
+            name: rest.actorName,
+            image: rest.actorImage,
+            nickname: actorNickname,
+            customImage: actorCustomImage,
+            hideProfilePicture: actorHideProfilePicture ?? false,
+        })
+        return {
+            ...rest,
+            actorName: displayName,
+            actorImage: displayImage,
+        }
+    })
 
     const [countResult] = await db
         .select({ count: sql<number>`count(*)::int` })

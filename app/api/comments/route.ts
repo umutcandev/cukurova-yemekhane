@@ -9,27 +9,13 @@ import { containsBadWord } from "@/lib/wordlist";
 import { PHOTO_UPLOAD_ENABLED } from "@/lib/feature-flags";
 import { getTurkeyDate } from "@/lib/date-utils";
 import { createNotification } from "@/lib/notifications";
+import { resolvePublicIdentity } from "@/lib/user-identity";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 const MAX_COMMENT_LENGTH = 200;
 const COMMENT_RATE_LIMIT = 5; // 5 comments per minute
 const GET_RATE_LIMIT = 30; // 30 requests per minute for GET
 
-/**
- * Robust HTML sanitizer — iteratively strips all HTML tags
- * to prevent bypass via nested/malformed tags like <scr<script>ipt>.
- */
-function sanitizeHtml(input: string): string {
-    let result = input;
-    let prev = "";
-    // Iteratively strip until no more tags remain
-    while (result !== prev) {
-        prev = result;
-        result = result.replace(/<[^>]*>?/g, "");
-    }
-    // Also strip any remaining event-handler-like patterns
-    result = result.replace(/on\w+\s*=/gi, "");
-    return result;
-}
 
 interface CommentRow {
     id: number;
@@ -123,13 +109,50 @@ function threadComments(parents: CommentWithReactions[], replies: CommentWithRea
 const commentSelect = {
     id: comments.id,
     userId: comments.userId,
-    userName: users.name,
-    userImage: users.image,
+    name: users.name,
+    image: users.image,
+    nickname: users.nickname,
+    customImage: users.customImage,
+    hideProfilePicture: users.hideProfilePicture,
     content: comments.content,
     imageUrl: comments.imageUrl,
     parentId: comments.parentId,
     createdAt: comments.createdAt,
 };
+
+type RawCommentRow = {
+    id: number;
+    userId: string;
+    name: string | null;
+    image: string | null;
+    nickname: string | null;
+    customImage: string | null;
+    hideProfilePicture: boolean | null;
+    content: string;
+    imageUrl: string | null;
+    parentId: number | null;
+    createdAt: Date;
+};
+
+function toCommentRow(raw: RawCommentRow): CommentRow {
+    const { displayName, displayImage } = resolvePublicIdentity({
+        name: raw.name,
+        image: raw.image,
+        nickname: raw.nickname,
+        customImage: raw.customImage,
+        hideProfilePicture: raw.hideProfilePicture ?? false,
+    });
+    return {
+        id: raw.id,
+        userId: raw.userId,
+        userName: displayName,
+        userImage: displayImage,
+        content: raw.content,
+        imageUrl: raw.imageUrl,
+        parentId: raw.parentId,
+        createdAt: raw.createdAt,
+    };
+}
 
 // GET /api/comments?menuDate=2025-12-30&count=true  (sadece sayı)
 // GET /api/comments?menuDate=2025-12-30&limit=20&before=<id>&after=<id>
@@ -192,12 +215,13 @@ export async function GET(request: NextRequest) {
                     { status: 400 }
                 );
             }
-            const rows = await db
+            const rawRows = await db
                 .select(commentSelect)
                 .from(comments)
                 .leftJoin(users, eq(comments.userId, users.id))
                 .where(and(eq(comments.menuDate, menuDate), gt(comments.id, parsedAfterId)))
                 .orderBy(asc(comments.id));
+            const rows = rawRows.map(toCommentRow);
             const withReactions = await attachReactions(rows, currentUserId);
             return NextResponse.json({ comments: withReactions, hasMore: false });
         }
@@ -211,7 +235,7 @@ export async function GET(request: NextRequest) {
                     { status: 400 }
                 );
             }
-            const parentRows = await db
+            const rawParentRows = await db
                 .select(commentSelect)
                 .from(comments)
                 .leftJoin(users, eq(comments.userId, users.id))
@@ -223,13 +247,13 @@ export async function GET(request: NextRequest) {
                 .orderBy(desc(comments.id))
                 .limit(limit + 1);
 
-            const hasMore = parentRows.length > limit;
-            const parents = parentRows.slice(0, limit).reverse();
+            const hasMore = rawParentRows.length > limit;
+            const parents = rawParentRows.slice(0, limit).reverse().map(toCommentRow);
 
             let result: ThreadedComment[] = [];
             if (parents.length > 0) {
                 const parentIds = parents.map((p) => p.id);
-                const replyRows = await db
+                const rawReplyRows = await db
                     .select(commentSelect)
                     .from(comments)
                     .leftJoin(users, eq(comments.userId, users.id))
@@ -238,6 +262,7 @@ export async function GET(request: NextRequest) {
                         inArray(comments.parentId, parentIds)
                     ))
                     .orderBy(asc(comments.id));
+                const replyRows = rawReplyRows.map(toCommentRow);
                 const allRows = [...parents, ...replyRows];
                 const withReactions = await attachReactions(allRows, currentUserId);
                 const parentsWithReactions = withReactions.filter((c) => c.parentId === null);
@@ -249,7 +274,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Varsayılan: son `limit` parent yorum + onların reply'ları
-        const parentRows = await db
+        const rawParentRows = await db
             .select(commentSelect)
             .from(comments)
             .leftJoin(users, eq(comments.userId, users.id))
@@ -260,13 +285,13 @@ export async function GET(request: NextRequest) {
             .orderBy(desc(comments.id))
             .limit(limit + 1);
 
-        const hasMore = parentRows.length > limit;
-        const parents = parentRows.slice(0, limit).reverse();
+        const hasMore = rawParentRows.length > limit;
+        const parents = rawParentRows.slice(0, limit).reverse().map(toCommentRow);
 
         let result: ThreadedComment[] = [];
         if (parents.length > 0) {
             const parentIds = parents.map((p) => p.id);
-            const replyRows = await db
+            const rawReplyRows = await db
                 .select(commentSelect)
                 .from(comments)
                 .leftJoin(users, eq(comments.userId, users.id))
@@ -275,6 +300,7 @@ export async function GET(request: NextRequest) {
                     inArray(comments.parentId, parentIds)
                 ))
                 .orderBy(asc(comments.id));
+            const replyRows = rawReplyRows.map(toCommentRow);
             const allRows = [...parents, ...replyRows];
             const withReactions = await attachReactions(allRows, currentUserId);
             const parentsWithReactions = withReactions.filter((c) => c.parentId === null);
@@ -518,14 +544,24 @@ export async function POST(request: NextRequest) {
             console.error("Notification creation error:", notifError);
         }
 
-        // Return comment with user info
+        // Return comment with display identity matching what GET returns,
+        // so the optimistic insert is consistent with the public feed view
+        // (e.g. hideProfilePicture also blanks the avatar on the user's own comments).
+        const { displayName, displayImage } = resolvePublicIdentity({
+            name: session.user.name ?? null,
+            image: session.user.image ?? null,
+            nickname: session.user.nickname ?? null,
+            customImage: session.user.customImage ?? null,
+            hideProfilePicture: session.user.hideProfilePicture ?? false,
+        });
+
         return NextResponse.json(
             {
                 comment: {
                     id: newComment.id,
                     userId: session.user.id,
-                    userName: session.user.name,
-                    userImage: session.user.image,
+                    userName: displayName,
+                    userImage: displayImage,
                     content: newComment.content,
                     imageUrl: newComment.imageUrl,
                     parentId: newComment.parentId,

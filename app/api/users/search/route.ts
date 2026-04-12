@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { users } from "@/lib/db/schema"
-import { ilike } from "drizzle-orm"
+import { ilike, or } from "drizzle-orm"
 import { checkRateLimit } from "@/lib/rate-limiter"
+import { resolvePublicIdentity } from "@/lib/user-identity"
 
 export async function GET(req: NextRequest) {
     const session = await auth()
@@ -28,10 +29,27 @@ export async function GET(req: NextRequest) {
     const sanitized = q.replace(/[%_\\]/g, "\\$&")
 
     const results = await db
-        .select({ id: users.id, name: users.name, image: users.image })
+        .select({
+            id: users.id,
+            name: users.name,
+            image: users.image,
+            nickname: users.nickname,
+            customImage: users.customImage,
+            hideProfilePicture: users.hideProfilePicture,
+        })
         .from(users)
-        .where(ilike(users.name, `%${sanitized}%`))
+        .where(
+            or(
+                ilike(users.nickname, `%${sanitized}%`),
+                ilike(users.name, `%${sanitized}%`)
+            )
+        )
         .limit(5)
 
-    return NextResponse.json({ users: results })
+    const mapped = results.map((u) => {
+        const { displayName, displayImage } = resolvePublicIdentity(u)
+        return { id: u.id, name: displayName, image: displayImage }
+    })
+
+    return NextResponse.json({ users: mapped })
 }
