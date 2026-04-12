@@ -87,9 +87,6 @@ export function CommentReply({
                         <span className="text-xs text-muted-foreground/60 shrink-0">
                             {formatRelativeTime(reply.createdAt)}
                         </span>
-                        <span className="text-[10px] font-mono font-medium text-muted-foreground/60 bg-muted/80 border border-border/40 px-1.5 py-0.5 rounded-sm shrink-0 leading-none select-none">
-                            #{reply.id}
-                        </span>
                     </div>
                     <CommentActionMenu
                         comment={reply}

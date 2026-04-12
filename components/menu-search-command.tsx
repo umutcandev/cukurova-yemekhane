@@ -12,6 +12,7 @@ import {
     CommandItem,
 } from "@/components/ui/command"
 import { Kbd } from "@/components/ui/kbd"
+import { Button } from "@/components/ui/button"
 
 // ─── Türkçe Normalize ────────────────────────────────────────────────────────
 
@@ -47,7 +48,7 @@ interface MealSearchResult {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export function MenuSearchCommand() {
+export function MenuSearchCommand({ compact }: { compact?: boolean }) {
     const [open, setOpen] = useState(false)
     const [meals, setMeals] = useState<MealSearchResult[]>([])
     const [loading, setLoading] = useState(false)
@@ -150,18 +151,24 @@ export function MenuSearchCommand() {
 
     return (
         <>
-            {/* Trigger Button — shadcn docs stili geniş input */}
-            <button
-                onClick={() => setOpen(true)}
-                className="group flex items-center gap-1.5 h-8 rounded-md border border-input bg-background shadow-xs px-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 transition-all cursor-pointer w-full max-w-[200px] md:max-w-[240px] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
-            >
-                <Search className="h-3.5 w-3.5 shrink-0 opacity-60" />
-                <span className="flex-1 text-left text-xs truncate md:hidden">Arayın</span>
-                <span className="flex-1 text-left text-xs truncate hidden md:inline">Menüde arayın...</span>
-                <Kbd className="inline-flex h-5 px-1.5 text-[10px] pointer-events-none">
-                    <span className="text-[10px]">⌘</span>K
-                </Kbd>
-            </button>
+            {/* Trigger Button — compact (1:1 ikon) veya geniş input */}
+            {compact ? (
+                <Button variant="outline" size="icon-sm" onClick={() => setOpen(true)}>
+                    <Search />
+                </Button>
+            ) : (
+                <button
+                    onClick={() => setOpen(true)}
+                    className="group flex items-center gap-1.5 h-8 rounded-md border border-input bg-background shadow-xs px-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 transition-all cursor-pointer w-full max-w-[200px] md:max-w-[240px] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                >
+                    <Search className="h-3.5 w-3.5 shrink-0 opacity-60" />
+                    <span className="flex-1 text-left text-xs truncate md:hidden">Arayın</span>
+                    <span className="flex-1 text-left text-xs truncate hidden md:inline">Menüde arayın...</span>
+                    <Kbd className="inline-flex h-5 px-1.5 text-[10px] pointer-events-none">
+                        <span className="text-[10px]">⌘</span>K
+                    </Kbd>
+                </button>
+            )}
 
             {/* Command Dialog */}
             <CommandDialog

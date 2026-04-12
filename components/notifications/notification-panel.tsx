@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
+import { motion } from "framer-motion"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { formatRelativeTime, getInitials } from "@/components/comments/utils"
 import { cn } from "@/lib/utils"
@@ -55,6 +56,23 @@ export function NotificationPanel({
     const [page, setPage] = useState(0)
     const PAGE_SIZE = 5
 
+    const tabsRef = useRef<HTMLDivElement>(null)
+    const allTabRef = useRef<HTMLButtonElement>(null)
+    const readTabRef = useRef<HTMLButtonElement>(null)
+    const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null)
+
+    useLayoutEffect(() => {
+        const activeEl = tab === "all" ? allTabRef.current : readTabRef.current
+        const container = tabsRef.current
+        if (!container || !activeEl) return
+        const containerRect = container.getBoundingClientRect()
+        const activeRect = activeEl.getBoundingClientRect()
+        setIndicator({
+            left: activeRect.left - containerRect.left,
+            width: activeRect.width,
+        })
+    }, [tab, notifications.length])
+
     useEffect(() => {
         onFetch()
     }, [onFetch])
@@ -82,7 +100,7 @@ export function NotificationPanel({
     }
 
     return (
-        <div className="w-[320px] sm:w-[340px] max-h-[400px] flex flex-col">
+        <div className="w-[300px] sm:w-[340px] max-h-[400px] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between px-3 py-2">
                 <h2 className="text-sm font-semibold text-foreground">Bildirimler</h2>
@@ -97,11 +115,12 @@ export function NotificationPanel({
             </div>
 
             {/* Tabs */}
-            <div className="flex items-center gap-4 px-3 pt-1 border-b border-border/40">
+            <div ref={tabsRef} className="relative flex items-center gap-4 px-3 pt-1 border-b border-border/40">
                 <button
+                    ref={allTabRef}
                     onClick={() => setTab("all")}
                     className={cn(
-                        "relative flex items-center gap-1.5 pb-2 text-[12px] font-medium transition-colors",
+                        "flex items-center gap-1.5 pb-2 text-[12px] font-medium transition-colors",
                         tab === "all"
                             ? "text-foreground"
                             : "text-muted-foreground hover:text-foreground"
@@ -118,24 +137,27 @@ export function NotificationPanel({
                             {notifications.length}
                         </span>
                     )}
-                    {tab === "all" && (
-                        <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground rounded-full" />
-                    )}
                 </button>
                 <button
+                    ref={readTabRef}
                     onClick={() => setTab("read")}
                     className={cn(
-                        "relative pb-2 text-[12px] font-medium transition-colors",
+                        "pb-2 text-[12px] font-medium transition-colors",
                         tab === "read"
                             ? "text-foreground"
                             : "text-muted-foreground hover:text-foreground"
                     )}
                 >
                     Okunmuş
-                    {tab === "read" && (
-                        <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground rounded-full" />
-                    )}
                 </button>
+                {indicator && (
+                    <motion.div
+                        className="absolute bottom-0 h-[2px] bg-foreground rounded-full"
+                        initial={false}
+                        animate={{ left: indicator.left, width: indicator.width }}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                )}
             </div>
 
             {/* List */}

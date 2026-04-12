@@ -5,6 +5,8 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { Comment, Reply } from "./types"
@@ -63,6 +65,11 @@ export function CommentActionMenu({
                                     Sil
                                 </button>
                             )}
+                            <div className="border-t border-border/50 mt-1 pt-1 px-3 pb-0.5">
+                                <span className="text-[10px] font-mono text-muted-foreground/50 select-all">
+                                    #{comment.id}
+                                </span>
+                            </div>
                         </div>
                     </>
                 )}
@@ -96,6 +103,10 @@ export function CommentActionMenu({
                         Sil
                     </DropdownMenuItem>
                 )}
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel className="text-[10px] font-mono font-normal text-muted-foreground/50 py-1 select-all">
+                    #{comment.id}
+                </DropdownMenuLabel>
             </DropdownMenuContent>
         </DropdownMenu>
     )

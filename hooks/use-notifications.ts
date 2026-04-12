@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 
 interface Notification {
     id: number
@@ -35,6 +35,12 @@ export function useNotifications(authenticated: boolean) {
             setLoading(false)
         }
     }, [authenticated])
+
+    useEffect(() => {
+        if (authenticated) {
+            fetchNotifications()
+        }
+    }, [authenticated, fetchNotifications])
 
     const markAsRead = useCallback(async (notificationIds: number[]) => {
         try {
