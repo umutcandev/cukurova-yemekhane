@@ -1,7 +1,7 @@
 {
   "month": "2026-04",
-  "lastUpdated": "2026-04-07T05:42:25.074Z",
-  "scrapeDate": "2026-04-07",
+  "lastUpdated": "2026-04-14T05:54:17.347Z",
+  "scrapeDate": "2026-04-14",
   "totalDays": 23,
   "days": [
     {
@@ -215,12 +215,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "188",
-          "name": "Zeytinyağlı Pırasa",
-          "calories": 114,
-          "category": "ana_yemek"
-        },
-        {
           "id": "160",
           "name": "Bahar Pilavı",
           "calories": 441,
@@ -326,9 +320,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "11",
-          "name": "Ayran",
-          "calories": 60,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -338,7 +332,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 607
+      "totalCalories": 665
     },
     {
       "ymk": 11,
@@ -359,9 +353,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "42",
-          "name": "Domates Çorba",
-          "calories": 245,
+          "id": "20",
+          "name": "Mercimek Çorba",
+          "calories": 244,
           "category": "ana_yemek"
         },
         {
@@ -371,7 +365,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1211
+      "totalCalories": 1210
     },
     {
       "ymk": 12,
@@ -383,6 +377,12 @@
           "id": "278",
           "name": "Tavuk Izgara",
           "calories": 620,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "203",
+          "name": "Karışık Kızartma (Yoğurtlu)",
+          "calories": 220,
           "category": "ana_yemek"
         },
         {
@@ -458,9 +458,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -470,7 +470,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 975
+      "totalCalories": 996
     },
     {
       "ymk": 15,
@@ -518,9 +518,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "1305",
-          "name": "Soslu Makarna",
-          "calories": 305,
+          "id": "2",
+          "name": "Şehriyeli Pirinç Pilavı",
+          "calories": 310,
           "category": "ana_yemek"
         },
         {
@@ -536,7 +536,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 859
+      "totalCalories": 864
     },
     {
       "ymk": 17,
@@ -584,15 +584,15 @@
           "category": "ana_yemek"
         },
         {
-          "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
-          "calories": 352,
+          "id": "2",
+          "name": "Şehriyeli Pirinç Pilavı",
+          "calories": 310,
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -602,7 +602,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1263
+      "totalCalories": 1242
     },
     {
       "ymk": 20,
@@ -611,9 +611,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "4362",
-          "name": "Tavuk Köfte+Patates püresi",
-          "calories": 350,
+          "id": "77",
+          "name": "Arap Tava",
+          "calories": 234,
           "category": "ana_yemek"
         },
         {
@@ -635,7 +635,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 879
+      "totalCalories": 763
     },
     {
       "ymk": 21,
