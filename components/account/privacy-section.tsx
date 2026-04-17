@@ -46,7 +46,7 @@ export function PrivacySection({ isHidden, onChange }: PrivacySectionProps) {
                     Hesabınızın gizlilik tercihlerini yönetin.
                 </p>
             </div>
-            <Card className="border border-border/40 bg-card p-3">
+            <Card className="bg-card p-3">
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground">

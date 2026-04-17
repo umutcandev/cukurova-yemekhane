@@ -161,7 +161,7 @@ export default function FavorilerimPage() {
 
                 {/* Email Notification Opt-in */}
                 {favorites.length > 0 && (
-                    <Card className="border border-border/40 bg-card p-3 mb-4">
+                    <Card className="bg-card p-3 mb-4">
                         <div className="flex items-start gap-3">
                             <div className="p-1.5 rounded-md bg-muted/50 flex-shrink-0 mt-0.5">
                                 <Mail className="h-4 w-4 text-muted-foreground" />
@@ -187,7 +187,7 @@ export default function FavorilerimPage() {
 
                 {/* Favorites List */}
                 {favorites.length === 0 ? (
-                    <Card className="border border-border/40 bg-card p-8 text-center">
+                    <Card className="bg-card p-8 text-center">
                         <Bookmark className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" />
                         <p className="text-sm text-muted-foreground">
                             Henüz favori yemeğiniz yok. Hemen favori yemeğinizi ekleyin!
@@ -206,7 +206,7 @@ export default function FavorilerimPage() {
                         {favorites.map((fav) => (
                             <Card
                                 key={fav.mealName}
-                                className="border border-border/40 bg-card px-3 py-2.5 flex flex-row items-center justify-between gap-3"
+                                className="bg-card px-3 py-2.5 flex flex-row items-center justify-between gap-3"
                             >
                                 <span className="text-sm font-medium text-foreground truncate min-w-0">
                                     {toTitleCase(fav.mealName)}

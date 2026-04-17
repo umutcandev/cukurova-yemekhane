@@ -149,7 +149,7 @@ export function AvatarUploader({
 
     return (
         <>
-            <div className="rounded-xl border border-border/40 bg-card overflow-hidden">
+            <div className="rounded-xl ring-1 ring-foreground/10 bg-card overflow-hidden">
                 {/* Body — title + description left, avatar right */}
                 <div className="flex items-start justify-between gap-6 px-5 pt-5 pb-4">
                     <div className="space-y-1">
@@ -195,7 +195,7 @@ export function AvatarUploader({
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between gap-4 border-t border-border/40 bg-muted/30 px-4 py-2">
+                <div className="flex items-center justify-between gap-4 border-t border-border/40 bg-muted/50 px-4 py-2">
                     <p className="text-xs text-muted-foreground">
                         Profil fotoğrafı isteğe bağlıdır.
                     </p>

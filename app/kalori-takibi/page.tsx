@@ -303,7 +303,7 @@ export default function KaloriTakibiPage() {
 
                 {/* Empty State */}
                 {logs.length === 0 ? (
-                    <Card className="border border-border/40 bg-card p-8 text-center">
+                    <Card className="bg-card p-8 text-center">
                         <Flame className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" />
                         <p className="text-sm text-muted-foreground">
                             Kalori takibi için henüz bir kayıt bulunamadı. Menüdeki ekle butonunu kullanarak kalori takibine başlayabilirsiniz.
@@ -404,7 +404,7 @@ export default function KaloriTakibiPage() {
                                 />
 
                                 {/* Meal List */}
-                                <Card className="border border-border/40 bg-card flex flex-col gap-0">
+                                <Card className="bg-card flex flex-col gap-0">
                                     <div className="px-4 pt-3 pb-1">
                                         <span className="text-sm font-medium text-muted-foreground">
                                             Yenilen Yemekler
@@ -521,9 +521,9 @@ function MiniDonutCard({ log, calorieGoal, isSelected, chartData, chartConfig, o
 
     return (
         <Card
-            className={`border cursor-pointer transition-all flex-1 min-w-0 ${isSelected
-                ? "border-primary/50 bg-card shadow-md ring-1 ring-primary/20"
-                : "border-border/40 bg-card hover:border-border/60 hover:shadow-sm"
+            className={`cursor-pointer transition-all flex-1 min-w-0 ${isSelected
+                ? "bg-card shadow-md ring-primary/40"
+                : "bg-card hover:ring-foreground/20 hover:shadow-sm"
                 }`}
             onClick={onClick}
         >
@@ -610,7 +610,7 @@ function BigDonutCard({ log, calorieGoal, chartData, chartConfig }: BigDonutCard
     const badgeClass = getGoalStatusBadgeClass(log.totalCalories, calorieGoal)
 
     return (
-        <Card className="border border-border/40 bg-card flex flex-col gap-0">
+        <Card className="bg-card flex flex-col gap-0">
             <CardContent className="p-3 flex-1 flex flex-col items-center justify-center">
                 <ChartContainer
                     config={chartConfig}
@@ -690,7 +690,7 @@ function BigDonutCard({ log, calorieGoal, chartData, chartConfig }: BigDonutCard
 
 function MiniDonutSkeleton() {
     return (
-        <Card className="border border-border/40 bg-card flex-1 min-w-0">
+        <Card className="bg-card flex-1 min-w-0">
             <CardContent className="p-1.5 md:p-3 flex flex-col items-center gap-1 md:gap-2">
                 <Skeleton className="w-[56px] h-[56px] md:w-[80px] md:h-[80px] rounded-full" />
                 <div className="hidden md:flex flex-col items-center gap-1">
