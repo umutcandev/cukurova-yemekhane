@@ -63,7 +63,7 @@ export default function AyarlarPage() {
             <main className="min-h-screen bg-background">
                 <Header />
                 <div className="container mx-auto px-4 py-6 max-w-2xl">
-                    <Card className="border border-border/40 bg-card p-6 text-center">
+                    <Card className="bg-card p-6 text-center">
                         <p className="text-sm text-muted-foreground">
                             Profil özelleştirme özelliği şu an devre dışı.
                         </p>

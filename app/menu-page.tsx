@@ -204,49 +204,62 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
     const mobileCurrentMenu = effectiveMenuData.days[mobileSelectedDateIndex]
 
     return (
-        <main className="min-h-screen bg-background pb-20 md:pb-8">
-            <Header />
+        <main className="relative min-h-screen bg-background pb-20 md:pb-8">
+            {/* Halftone Background */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[28rem] w-full bg-[url('/Halftone-Dots-forlight.png')] bg-[length:100%_auto] bg-bottom bg-no-repeat opacity-20 md:hidden dark:bg-[url('/Halftone-Dots-fordark.png')]"
+                style={{
+                    maskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 100%)',
+                }}
+            />
 
-            <div className="container mx-auto px-4 py-6 md:py-8">
+            {/* Tüm içerik — halftone DOM sırası nedeniyle zaten üstte, ayrı z-index gerekmez */}
+            <div className="relative">
+                <Header />
 
-                {/* Notice Banner */}
-                {showNotice && (
-                    <div className="max-w-md mx-auto mb-4 relative">
-                        <button
-                            onClick={handleDismissNotice}
-                            className="absolute top-1 right-1 text-muted-foreground/60 hover:text-foreground transition-colors p-1.5 rounded-sm hover:bg-muted/50"
-                            aria-label="Kapat"
-                        >
-                            <X className="w-3 h-3" />
-                        </button>
-                        <p className="block border border-dashed border-border rounded-lg px-3 py-3 text-xs text-muted-foreground/80 bg-muted/20">
-                            Bu proje <a href="https://yemekhane.cu.edu.tr/" title="Çukurova Yemekhane" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>Çukurova Üniversitesinden</a> bağımsız, tamamen gönüllü ve <a href="https://github.com/umutcandev/cukurova-yemekhane" title="Çukurova Yemekhane GitHub" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>açık kaynak</a> geliştirilmektedir.
-                        </p>
-                    </div>
-                )}
+                <div className="container mx-auto px-4 py-6 md:py-8">
 
-                {/* MenuDataProvider — favorites, calorie-goal, daily-log API çağrıları burada 1 kez yapılır */}
-                <MenuDataProvider>
-                    {/* Mobile Menu View - Shows selected date(s) from mobile navigation */}
-                    <section className="max-w-md mx-auto">
+                    {/* Notice Banner */}
+                    {showNotice && (
+                        <div className="max-w-md mx-auto mb-4 relative">
+                            <button
+                                onClick={handleDismissNotice}
+                                className="absolute top-1 right-1 text-muted-foreground/60 hover:text-foreground transition-colors p-1.5 rounded-sm hover:bg-muted/50"
+                                aria-label="Kapat"
+                            >
+                                <X className="w-3 h-3" />
+                            </button>
+                            <p className="block border border-dashed border-border rounded-lg px-3 py-3 text-xs text-muted-foreground/80 bg-muted/20">
+                                Bu proje <a href="https://yemekhane.cu.edu.tr/" title="Çukurova Yemekhane" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>Çukurova Üniversitesinden</a> bağımsız, tamamen gönüllü ve <a href="https://github.com/umutcandev/cukurova-yemekhane" title="Çukurova Yemekhane GitHub" target="_blank" rel="noopener noreferrer nofollow" style={{ textDecoration: "underline" }}>açık kaynak</a> geliştirilmektedir.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* MenuDataProvider — favorites, calorie-goal, daily-log API çağrıları burada 1 kez yapılır */}
+                    <MenuDataProvider>
+                        {/* Mobile Menu View - Shows selected date(s) from mobile navigation */}
+                        <section className="max-w-md mx-auto">
 
 
 
-                        {selectedDateRange?.from && selectedDateMenus.length > 0 ? (
-                            // Show range of menus if date range is selected
-                            <div className="grid gap-4">
-                                {selectedDateMenus.map((day) => (
-                                    <MenuCard key={day.date} day={day} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === day.date} onCommentsOpened={handleCommentsOpened} />
-                                ))}
-                            </div>
-                        ) : mobileCurrentMenu ? (
-                            // Show single menu from arrow navigation
-                            <div className="max-w-md mx-auto">
-                                <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === mobileCurrentMenu.date} onCommentsOpened={handleCommentsOpened} />
-                            </div>
-                        ) : null}
-                    </section>
-                </MenuDataProvider>
+                            {selectedDateRange?.from && selectedDateMenus.length > 0 ? (
+                                // Show range of menus if date range is selected
+                                <div className="grid gap-4">
+                                    {selectedDateMenus.map((day) => (
+                                        <MenuCard key={day.date} day={day} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === day.date} onCommentsOpened={handleCommentsOpened} />
+                                    ))}
+                                </div>
+                            ) : mobileCurrentMenu ? (
+                                // Show single menu from arrow navigation
+                                <div className="max-w-md mx-auto">
+                                    <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === mobileCurrentMenu.date} onCommentsOpened={handleCommentsOpened} />
+                                </div>
+                            ) : null}
+                        </section>
+                    </MenuDataProvider>
+                </div>
             </div>
 
             {/* Mobile Bottom Navigation */}

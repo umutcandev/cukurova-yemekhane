@@ -269,7 +269,7 @@ export function MenuCard({ day, onMealClick, autoOpenComments, onCommentsOpened 
     }
 
     return (
-        <Card className="border border-border/40 bg-card overflow-hidden shadow-sm gap-0">
+        <Card className="bg-card overflow-hidden gap-0">
             {/* Header */}
             <div className="bg-muted/20 px-3 py-2 border-b border-border/40 flex items-center justify-between gap-2">
                 <div className="flex-1 min-w-0 overflow-hidden" style={{ maskImage: 'linear-gradient(to right, black 85%, transparent)' }}>
@@ -400,7 +400,7 @@ export function MenuCard({ day, onMealClick, autoOpenComments, onCommentsOpened 
             )}
 
             {/* Footer */}
-            <div className={cn("border-t border-border/40 bg-muted/20 px-3 py-2 flex items-center justify-between gap-2", noData && "opacity-20")} inert={noData || undefined}>
+            <div className={cn("border-t border-border/40 bg-muted/50 px-3 py-2 flex items-center justify-between gap-2", noData && "opacity-20")} inert={noData || undefined}>
                 {/* Sol: Yorumlar, Kalori, AI */}
                 <div className="flex items-center gap-1.5">
                     <Button

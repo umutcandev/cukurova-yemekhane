@@ -217,8 +217,8 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
                 className={cn(
                     "h-6 px-1 has-[>svg]:px-1 gap-1 text-xs rounded-md border border-border/40",
                     userAction === "like"
-                        ? "bg-green-500/10 border-green-500/50 text-green-600 dark:text-green-400 hover:bg-green-500/15"
-                        : "bg-muted/30 text-muted-foreground"
+                        ? "bg-green-500/10 border-green-500/50 text-green-600 dark:text-green-400 hover:bg-green-500/15 hover:text-green-600 dark:hover:text-green-400"
+                        : "bg-muted/30 text-muted-foreground hover:bg-muted/50 hover:text-green-600 dark:hover:text-green-400"
                 )}
             >
                 <LikeIcon className="size-3.5 shrink-0" />
@@ -234,8 +234,8 @@ export function LikeDislikeButtons({ menuDate }: LikeDislikeButtonsProps) {
                 className={cn(
                     "h-6 px-1 has-[>svg]:px-1 gap-1 text-xs rounded-md border border-border/40",
                     userAction === "dislike"
-                        ? "bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400 hover:bg-red-500/15"
-                        : "bg-muted/30 text-muted-foreground"
+                        ? "bg-red-500/10 border-red-500/50 text-red-600 dark:text-red-400 hover:bg-red-500/15 hover:text-red-600 dark:hover:text-red-400"
+                        : "bg-muted/30 text-muted-foreground hover:bg-muted/50 hover:text-red-600 dark:hover:text-red-400"
                 )}
             >
                 <DislikeIcon className="size-3.5 shrink-0" />
