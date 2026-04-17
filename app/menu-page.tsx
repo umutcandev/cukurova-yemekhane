@@ -215,8 +215,8 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                 }}
             />
 
-            {/* Tüm içerik — relative z-[1] ile halftone'un önünde */}
-            <div className="relative z-[1]">
+            {/* Tüm içerik — halftone DOM sırası nedeniyle zaten üstte, ayrı z-index gerekmez */}
+            <div className="relative">
                 <Header />
 
                 <div className="container mx-auto px-4 py-6 md:py-8">
