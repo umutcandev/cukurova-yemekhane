@@ -205,20 +205,10 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
     return (
         <main className="relative min-h-screen bg-background pb-20 md:pb-8">
-            {/* Halftone Background — sayfanın altına yapışık, z-0 ile tüm içeriğin arkasında */}
-            {/* Light mode */}
+            {/* Halftone Background */}
             <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[28rem] w-full bg-[url('/Halftone-Dots-forlight.png')] bg-[length:100%_auto] bg-bottom bg-no-repeat opacity-20 md:hidden dark:hidden"
-                style={{
-                    maskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 100%)',
-                    WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 100%)',
-                }}
-            />
-            {/* Dark mode */}
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 z-0 hidden h-[28rem] w-full bg-[url('/Halftone-Dots-fordark.png')] bg-[length:100%_auto] bg-bottom bg-no-repeat opacity-20 md:hidden dark:block"
+                className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[28rem] w-full bg-[url('/Halftone-Dots-forlight.png')] bg-[length:100%_auto] bg-bottom bg-no-repeat opacity-20 md:hidden dark:bg-[url('/Halftone-Dots-fordark.png')]"
                 style={{
                     maskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 100%)',
                     WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 100%)',
@@ -270,9 +260,6 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                         </section>
                     </MenuDataProvider>
                 </div>
-
-                {/* Mobilde halftone'u görebilmek için ekstra scroll alanı */}
-                <div className="h-32 md:hidden" aria-hidden="true" />
             </div>
 
             {/* Mobile Bottom Navigation */}
