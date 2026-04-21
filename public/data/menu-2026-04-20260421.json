@@ -1,7 +1,7 @@
 {
   "month": "2026-04",
-  "lastUpdated": "2026-04-14T05:54:17.347Z",
-  "scrapeDate": "2026-04-14",
+  "lastUpdated": "2026-04-21T05:56:43.706Z",
+  "scrapeDate": "2026-04-21",
   "totalDays": 23,
   "days": [
     {
@@ -380,12 +380,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "203",
-          "name": "Karışık Kızartma (Yoğurtlu)",
-          "calories": 220,
-          "category": "ana_yemek"
-        },
-        {
           "id": "156",
           "name": "Nohutlu Pirinç Pilavı",
           "calories": 377,
@@ -551,6 +545,12 @@
           "category": "ana_yemek"
         },
         {
+          "id": "204",
+          "name": "Etsiz Nohut Yahnisi",
+          "calories": 277,
+          "category": "ana_yemek"
+        },
+        {
           "id": "2314",
           "name": "Şehriyeli Bulgur Pilavı",
           "calories": 352,
@@ -596,13 +596,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "2331",
-          "name": "Cevizli Baklava",
-          "calories": 279,
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1242
+      "totalCalories": 1178
     },
     {
       "ymk": 20,
@@ -629,13 +629,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "2333",
-          "name": "Ayran",
-          "calories": 60,
+          "id": "2336",
+          "name": "yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 763
+      "totalCalories": 821
     },
     {
       "ymk": 21,
@@ -662,13 +662,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "59",
-          "name": "Meyve",
-          "calories": 1,
+          "id": "63",
+          "name": "Meyve (Armut)",
+          "calories": 128,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 696
+      "totalCalories": 823
     },
     {
       "ymk": 22,
@@ -761,13 +761,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "59",
-          "name": "Meyve",
-          "calories": 1,
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 798
+      "totalCalories": 1012
     }
   ]
 }
