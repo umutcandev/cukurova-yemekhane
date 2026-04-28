@@ -1,339 +1,9 @@
 {
   "month": "2026-04",
-  "lastUpdated": "2026-04-21T05:56:43.706Z",
-  "scrapeDate": "2026-04-21",
+  "lastUpdated": "2026-04-28T06:23:11.089Z",
+  "scrapeDate": "2026-04-28",
   "totalDays": 23,
   "days": [
-    {
-      "ymk": 1,
-      "date": "2026-03-30",
-      "dayName": "Pazartesi",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "97",
-          "name": "Hasan Paşa Köfte (Püreli)",
-          "calories": 480,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "156",
-          "name": "Nohutlu Pirinç Pilavı",
-          "calories": 377,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "248",
-          "name": "Halka Tatlı",
-          "calories": 375,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 1350
-    },
-    {
-      "ymk": 2,
-      "date": "2026-03-31",
-      "dayName": "Salı",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "183",
-          "name": "Tavuk Izgara",
-          "calories": 620,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2315",
-          "name": "Mercimekli Bulgur Pilavı",
-          "calories": 364,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "287",
-          "name": "Meyve (Muz)",
-          "calories": 90,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 1094
-    },
-    {
-      "ymk": 3,
-      "date": "2026-04-01",
-      "dayName": "Çarşamba",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "49",
-          "name": "Etli Kuru Fasulye",
-          "calories": 340,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2",
-          "name": "Şehriyeli Pirinç Pilavı",
-          "calories": 310,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 775
-    },
-    {
-      "ymk": 4,
-      "date": "2026-04-02",
-      "dayName": "Perşembe",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "77",
-          "name": "Arap Tava",
-          "calories": 234,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
-          "calories": 352,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "13",
-          "name": "Havuç Salata",
-          "calories": 105,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 809
-    },
-    {
-      "ymk": 5,
-      "date": "2026-04-03",
-      "dayName": "Cuma",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "182",
-          "name": "Tavuk Haşlama",
-          "calories": 396,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "119",
-          "name": "Meyhane Pilavı",
-          "calories": 341,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "144",
-          "name": "Meyve (Elma)",
-          "calories": 142,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 899
-    },
-    {
-      "ymk": 6,
-      "date": "2026-04-06",
-      "dayName": "Pazartesi",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "7",
-          "name": "Etli Taze Fasulye",
-          "calories": 262,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2",
-          "name": "Şehriyeli Pirinç Pilavı",
-          "calories": 310,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "144",
-          "name": "Meyve (Elma)",
-          "calories": 142,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 832
-    },
-    {
-      "ymk": 7,
-      "date": "2026-04-07",
-      "dayName": "Salı",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "3358",
-          "name": "Soslu Fırın Baget",
-          "calories": 620,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "160",
-          "name": "Bahar Pilavı",
-          "calories": 441,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "13",
-          "name": "Havuç Salata",
-          "calories": 105,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 1173
-    },
-    {
-      "ymk": 8,
-      "date": "2026-04-08",
-      "dayName": "Çarşamba",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "22",
-          "name": "Etli Nohut",
-          "calories": 373,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
-          "calories": 352,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "144",
-          "name": "Meyve (Elma)",
-          "calories": 142,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 985
-    },
-    {
-      "ymk": 9,
-      "date": "2026-04-09",
-      "dayName": "Perşembe",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "12",
-          "name": "Et Haşlama",
-          "calories": 396,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "119",
-          "name": "Meyhane Pilavı",
-          "calories": 341,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "75",
-          "name": "Puding",
-          "calories": 215,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 972
-    },
-    {
-      "ymk": 10,
-      "date": "2026-04-10",
-      "dayName": "Cuma",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "4362",
-          "name": "Tavuk Köfte+Patates püresi",
-          "calories": 350,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "62",
-          "name": "Kremalı Havuç Çorbası",
-          "calories": 190,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 665
-    },
     {
       "ymk": 11,
       "date": "2026-04-13",
@@ -342,7 +12,7 @@
       "meals": [
         {
           "id": "5",
-          "name": "Soslu Dalyan Köfte",
+          "name": "SOSLU DALYAN KÖFTE + PATATES PÜRESİ",
           "calories": 246,
           "category": "ana_yemek"
         },
@@ -375,7 +45,7 @@
       "meals": [
         {
           "id": "278",
-          "name": "Tavuk Izgara",
+          "name": "FIRIN BUT IZGARA",
           "calories": 620,
           "category": "ana_yemek"
         },
@@ -407,15 +77,15 @@
       "hasData": true,
       "meals": [
         {
-          "id": "49",
-          "name": "Etli Kuru Fasulye",
-          "calories": 340,
+          "id": "41",
+          "name": "Sini Köfte",
+          "calories": 460,
           "category": "ana_yemek"
         },
         {
-          "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
-          "calories": 352,
+          "id": "156",
+          "name": "Nohutlu Pirinç Pilavı",
+          "calories": 377,
           "category": "ana_yemek"
         },
         {
@@ -425,13 +95,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 817
+      "totalCalories": 1170
     },
     {
       "ymk": 14,
@@ -545,12 +215,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "204",
-          "name": "Etsiz Nohut Yahnisi",
-          "calories": 277,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2314",
           "name": "Şehriyeli Bulgur Pilavı",
           "calories": 352,
@@ -596,13 +260,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "75",
-          "name": "Puding",
-          "calories": 215,
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1178
+      "totalCalories": 970
     },
     {
       "ymk": 20,
@@ -644,9 +308,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "5",
-          "name": "Soslu Dalyan Köfte",
-          "calories": 246,
+          "id": "161",
+          "name": "SOSLU DALYAN KÖFTE + PARMAK PATATES",
+          "calories": 600,
           "category": "ana_yemek"
         },
         {
@@ -656,9 +320,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -668,7 +332,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 823
+      "totalCalories": 1198
     },
     {
       "ymk": 22,
@@ -680,6 +344,12 @@
           "id": "49",
           "name": "Etli Kuru Fasulye",
           "calories": 340,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "132",
+          "name": "Kuru Fasülye (Etsiz)",
+          "calories": 267,
           "category": "ana_yemek"
         },
         {
@@ -722,9 +392,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "11",
-          "name": "Ayran",
-          "calories": 60,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -734,7 +404,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1259
+      "totalCalories": 1317
     },
     {
       "ymk": 24,
@@ -743,9 +413,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "294",
-          "name": "Etli Bezelye",
-          "calories": 390,
+          "id": "157",
+          "name": "Ekşili Köfte",
+          "calories": 294,
           "category": "ana_yemek"
         },
         {
@@ -755,9 +425,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -767,7 +437,337 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1012
+      "totalCalories": 937
+    },
+    {
+      "ymk": 1,
+      "date": "2026-05-04",
+      "dayName": "Pazartesi",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "161",
+          "name": "SOSLU DALYAN KÖFTE + PARMAK PATATES",
+          "calories": 600,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2",
+          "name": "Şehriyeli Pirinç Pilavı",
+          "calories": 310,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "63",
+          "name": "Meyve (Armut)",
+          "calories": 128,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 1156
+    },
+    {
+      "ymk": 2,
+      "date": "2026-05-05",
+      "dayName": "Salı",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "49",
+          "name": "Etli Kuru Fasulye",
+          "calories": 340,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2315",
+          "name": "Mercimekli Bulgur Pilavı",
+          "calories": 364,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 829
+    },
+    {
+      "ymk": 3,
+      "date": "2026-05-06",
+      "dayName": "Çarşamba",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "278",
+          "name": "FIRIN BUT IZGARA",
+          "calories": 620,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "156",
+          "name": "Nohutlu Pirinç Pilavı",
+          "calories": 377,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "229",
+          "name": "Beşamel Soslu Havuç Çorbası",
+          "calories": 165,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 1377
+    },
+    {
+      "ymk": 4,
+      "date": "2026-05-07",
+      "dayName": "Perşembe",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "69",
+          "name": "Patlıcan Güveç (Etli)",
+          "calories": 292,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2314",
+          "name": "Şehriyeli Bulgur Pilavı",
+          "calories": 352,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 769
+    },
+    {
+      "ymk": 5,
+      "date": "2026-05-08",
+      "dayName": "Cuma",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "285",
+          "name": "TAVUK KÖFTE + PARMAK PATATES",
+          "calories": 520,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "160",
+          "name": "Bahar Pilavı",
+          "calories": 441,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "20",
+          "name": "Mercimek Çorba",
+          "calories": 244,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 1420
+    },
+    {
+      "ymk": 6,
+      "date": "2026-05-11",
+      "dayName": "Pazartesi",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "157",
+          "name": "Ekşili Köfte",
+          "calories": 294,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "1305",
+          "name": "Soslu Makarna",
+          "calories": 305,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 724
+    },
+    {
+      "ymk": 7,
+      "date": "2026-05-12",
+      "dayName": "Salı",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "22",
+          "name": "Etli Nohut",
+          "calories": 373,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2314",
+          "name": "Şehriyeli Bulgur Pilavı",
+          "calories": 352,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 985
+    },
+    {
+      "ymk": 8,
+      "date": "2026-05-13",
+      "dayName": "Çarşamba",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "288",
+          "name": "Soslu Fırın Tavuk",
+          "calories": 535,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "160",
+          "name": "Bahar Pilavı",
+          "calories": 441,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "155",
+          "name": "Şalgam",
+          "calories": 20,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 1211
+    },
+    {
+      "ymk": 9,
+      "date": "2026-05-14",
+      "dayName": "Perşembe",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "12",
+          "name": "Et Haşlama",
+          "calories": 396,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "119",
+          "name": "Meyhane Pilavı",
+          "calories": 341,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "11",
+          "name": "Ayran",
+          "calories": 60,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "59",
+          "name": "Meyve",
+          "calories": 1,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 798
+    },
+    {
+      "ymk": 10,
+      "date": "2026-05-15",
+      "dayName": "Cuma",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "41",
+          "name": "Sini Köfte",
+          "calories": 460,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "156",
+          "name": "Nohutlu Pirinç Pilavı",
+          "calories": 377,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 1170
     }
   ]
 }
