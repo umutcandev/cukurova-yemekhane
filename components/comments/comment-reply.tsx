@@ -18,7 +18,6 @@ interface CommentReplyProps {
     parentId: number
     commentsDisabled: boolean
     replyingToId: number | null
-    expandedComments: Set<number>
     session: Session | null
     isMobile: boolean
     openMenuId: number | null
@@ -30,7 +29,6 @@ interface CommentReplyProps {
     onOpenMenuChange: (id: number | null) => void
     onReport: (comment: Comment | Reply) => void
     onDelete: (id: number) => void
-    onToggleExpand: (id: number) => void
     onShowAuth: () => void
     onToggleReaction: (commentId: number, emoji: string) => void
     canDelete: (comment: Comment | Reply) => boolean
@@ -43,7 +41,6 @@ export function CommentReply({
     parentId,
     commentsDisabled,
     replyingToId,
-    expandedComments,
     session,
     isMobile,
     openMenuId,
@@ -55,7 +52,6 @@ export function CommentReply({
     onOpenMenuChange,
     onReport,
     onDelete,
-    onToggleExpand,
     onShowAuth,
     onToggleReaction,
     canDelete,
@@ -66,14 +62,24 @@ export function CommentReply({
 
     return (
         <div key={reply.id} className="flex items-start gap-2 py-1">
-            <Avatar className="h-6 w-6 shrink-0 mt-0.5">
+            <Avatar
+                className={`shrink-0 ${
+                    reply.isModerator
+                        ? "h-4 w-4 mt-1.5 ring-2 ring-primary ring-offset-2 ring-offset-background"
+                        : "h-6 w-6 mt-0.5"
+                }`}
+            >
                 {reply.userImage && (
                     <AvatarImage
                         src={reply.userImage}
                         alt={reply.userName || "Kullanıcı"}
                     />
                 )}
-                <AvatarFallback className="text-[10px] bg-muted text-muted-foreground">
+                <AvatarFallback
+                    className={`bg-muted text-muted-foreground ${
+                        reply.isModerator ? "text-[8px]" : "text-[10px]"
+                    }`}
+                >
                     {getInitials(reply.userName)}
                 </AvatarFallback>
             </Avatar>

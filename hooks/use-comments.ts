@@ -12,6 +12,7 @@ const ReplySchema = z.object({
     userId: z.string(),
     userName: z.string().nullable(),
     userImage: z.string().nullable(),
+    isModerator: z.boolean().default(false),
     content: z.string(),
     imageUrl: z.string().nullable(),
     parentId: z.number().nullable(),

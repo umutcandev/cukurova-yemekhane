@@ -129,7 +129,6 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
     const [showAuthDrawer, setShowAuthDrawer] = useState(false)
     const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null)
     const [openMenuId, setOpenMenuId] = useState<number | null>(null)
-    const [expandedComments, setExpandedComments] = useState<Set<number>>(new Set())
     const [expandedReplies, setExpandedReplies] = useState<Set<number>>(new Set())
     const [replyingToId, setReplyingToId] = useState<number | null>(null)
     const [replyContent, setReplyContent] = useState("")
@@ -316,15 +315,6 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         await deleteComment(id)
     }
 
-    const handleToggleExpand = (id: number) => {
-        setExpandedComments((prev) => {
-            const next = new Set(prev)
-            if (next.has(id)) next.delete(id)
-            else next.add(id)
-            return next
-        })
-    }
-
     const handleToggleReplies = (id: number) => {
         setExpandedReplies((prev) => { const next = new Set(prev); next.add(id); return next })
     }
@@ -354,7 +344,6 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         loadingMore,
         isMobile,
         scrollRef,
-        expandedComments,
         expandedReplies,
         replyingToId,
         replyContent,
@@ -368,7 +357,6 @@ export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelPro
         onOpenMenuChange: setOpenMenuId,
         onReport: setReportComment,
         onDelete: setDeleteConfirmId,
-        onToggleExpand: handleToggleExpand,
         onToggleReplies: handleToggleReplies,
         onShowAuth: () => setShowAuthDrawer(true),
         onToggleReaction: toggleReaction,

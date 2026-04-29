@@ -5,6 +5,7 @@ export interface Reply {
     userId: string
     userName: string | null
     userImage: string | null
+    isModerator: boolean
     content: string
     imageUrl: string | null
     parentId: number
@@ -18,6 +19,7 @@ export interface Comment {
     userId: string
     userName: string | null
     userImage: string | null
+    isModerator: boolean
     content: string
     imageUrl: string | null
     parentId: null

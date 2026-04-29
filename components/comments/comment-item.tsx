@@ -17,7 +17,6 @@ import type { Comment, Reply } from "./types"
 interface CommentItemProps {
     comment: Comment
     commentsDisabled: boolean
-    expandedComments: Set<number>
     expandedReplies: Set<number>
     replyingToId: number | null
     replyContent: string
@@ -31,7 +30,6 @@ interface CommentItemProps {
     onOpenMenuChange: (id: number | null) => void
     onReport: (comment: Comment | Reply) => void
     onDelete: (id: number) => void
-    onToggleExpand: (id: number) => void
     onToggleReplies: (id: number) => void
     onShowAuth: () => void
     onToggleReaction: (commentId: number, emoji: string) => void
@@ -43,7 +41,6 @@ interface CommentItemProps {
 export function CommentItem({
     comment,
     commentsDisabled,
-    expandedComments,
     expandedReplies,
     replyingToId,
     replyContent,
@@ -57,7 +54,6 @@ export function CommentItem({
     onOpenMenuChange,
     onReport,
     onDelete,
-    onToggleExpand,
     onToggleReplies,
     onShowAuth,
     onToggleReaction,
@@ -70,14 +66,24 @@ export function CommentItem({
     return (
         <div className="py-1.5">
             <div className="flex items-start gap-2.5">
-                <Avatar className="h-8 w-8 shrink-0 mt-0.5">
+                <Avatar
+                    className={`shrink-0 ${
+                        comment.isModerator
+                            ? "h-6 w-6 mt-1.5 ring-2 ring-primary ring-offset-2 ring-offset-background"
+                            : "h-8 w-8 mt-0.5"
+                    }`}
+                >
                     {comment.userImage && (
                         <AvatarImage
                             src={comment.userImage}
                             alt={comment.userName || "Kullanıcı"}
                         />
                     )}
-                    <AvatarFallback className="text-xs bg-muted text-muted-foreground">
+                    <AvatarFallback
+                        className={`bg-muted text-muted-foreground ${
+                            comment.isModerator ? "text-[10px]" : "text-xs"
+                        }`}
+                    >
                         {getInitials(comment.userName)}
                     </AvatarFallback>
                 </Avatar>
@@ -179,7 +185,6 @@ export function CommentItem({
                                     parentId={comment.id}
                                     commentsDisabled={commentsDisabled}
                                     replyingToId={replyingToId}
-                                    expandedComments={expandedComments}
                                     session={session}
                                     isMobile={isMobile}
                                     openMenuId={openMenuId}
@@ -191,7 +196,6 @@ export function CommentItem({
                                     onOpenMenuChange={onOpenMenuChange}
                                     onReport={onReport}
                                     onDelete={onDelete}
-                                    onToggleExpand={onToggleExpand}
                                     onShowAuth={onShowAuth}
                                     onToggleReaction={onToggleReaction}
                                     canDelete={canDelete}

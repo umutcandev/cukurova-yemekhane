@@ -12,7 +12,6 @@ interface CommentsListProps {
     loadingMore: boolean
     isMobile: boolean
     scrollRef: React.RefObject<HTMLDivElement>
-    expandedComments: Set<number>
     expandedReplies: Set<number>
     replyingToId: number | null
     replyContent: string
@@ -26,7 +25,6 @@ interface CommentsListProps {
     onOpenMenuChange: (id: number | null) => void
     onReport: (comment: Comment | Reply) => void
     onDelete: (id: number) => void
-    onToggleExpand: (id: number) => void
     onToggleReplies: (id: number) => void
     onShowAuth: () => void
     onToggleReaction: (commentId: number, emoji: string) => void
@@ -43,7 +41,6 @@ export function CommentsList({
     loadingMore,
     isMobile,
     scrollRef,
-    expandedComments,
     expandedReplies,
     replyingToId,
     replyContent,
@@ -57,7 +54,6 @@ export function CommentsList({
     onOpenMenuChange,
     onReport,
     onDelete,
-    onToggleExpand,
     onToggleReplies,
     onShowAuth,
     onToggleReaction,
@@ -120,7 +116,6 @@ export function CommentsList({
                                 key={comment.id}
                                 comment={comment}
                                 commentsDisabled={commentsDisabled}
-                                expandedComments={expandedComments}
                                 expandedReplies={expandedReplies}
                                 replyingToId={replyingToId}
                                 replyContent={replyContent}
@@ -134,7 +129,6 @@ export function CommentsList({
                                 onOpenMenuChange={onOpenMenuChange}
                                 onReport={onReport}
                                 onDelete={onDelete}
-                                onToggleExpand={onToggleExpand}
                                 onToggleReplies={onToggleReplies}
                                 onShowAuth={onShowAuth}
                                 onToggleReaction={onToggleReaction}

@@ -15,6 +15,7 @@ import { sanitizeHtml } from "@/lib/sanitize";
 const MAX_COMMENT_LENGTH = 200;
 const COMMENT_RATE_LIMIT = 5; // 5 comments per minute
 const GET_RATE_LIMIT = 30; // 30 requests per minute for GET
+const MODERATOR_USER_ID = process.env.MODERATOR_USER_ID?.trim() || undefined;
 
 
 interface CommentRow {
@@ -22,6 +23,7 @@ interface CommentRow {
     userId: string;
     userName: string | null;
     userImage: string | null;
+    isModerator: boolean;
     content: string;
     imageUrl: string | null;
     parentId: number | null;
@@ -147,6 +149,7 @@ function toCommentRow(raw: RawCommentRow): CommentRow {
         userId: raw.userId,
         userName: displayName,
         userImage: displayImage,
+        isModerator: MODERATOR_USER_ID !== undefined && raw.userId === MODERATOR_USER_ID,
         content: raw.content,
         imageUrl: raw.imageUrl,
         parentId: raw.parentId,
@@ -562,6 +565,7 @@ export async function POST(request: NextRequest) {
                     userId: session.user.id,
                     userName: displayName,
                     userImage: displayImage,
+                    isModerator: MODERATOR_USER_ID !== undefined && session.user.id === MODERATOR_USER_ID,
                     content: newComment.content,
                     imageUrl: newComment.imageUrl,
                     parentId: newComment.parentId,
