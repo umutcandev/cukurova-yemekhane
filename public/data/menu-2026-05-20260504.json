@@ -1,7 +1,7 @@
 {
-  "month": "2026-04",
-  "lastUpdated": "2026-04-27T06:21:19.074Z",
-  "scrapeDate": "2026-04-27",
+  "month": "2026-05",
+  "lastUpdated": "2026-05-04T06:32:33.162Z",
+  "scrapeDate": "2026-05-04",
   "totalDays": 23,
   "days": [
     {
@@ -314,12 +314,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "87",
-          "name": "Fırın Bezelye (Etsiz)",
-          "calories": 190,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2314",
           "name": "Şehriyeli Bulgur Pilavı",
           "calories": 352,
@@ -452,6 +446,12 @@
           "category": "ana_yemek"
         },
         {
+          "id": "87",
+          "name": "Fırın Bezelye (Etsiz)",
+          "calories": 190,
+          "category": "ana_yemek"
+        },
+        {
           "id": "2",
           "name": "Şehriyeli Pirinç Pilavı",
           "calories": 310,
@@ -512,9 +512,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "49",
-          "name": "Etli Kuru Fasulye",
-          "calories": 340,
+          "id": "278",
+          "name": "FIRIN BUT IZGARA",
+          "calories": 620,
           "category": "ana_yemek"
         },
         {
@@ -524,9 +524,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
+          "id": "229",
+          "name": "Beşamel Soslu Havuç Çorbası",
+          "calories": 165,
           "category": "ana_yemek"
         },
         {
@@ -536,7 +536,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1050
+      "totalCalories": 1377
     },
     {
       "ymk": 4,
