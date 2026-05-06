@@ -47,6 +47,11 @@ const MEAL_COLORS = [
     "hsl(55, 70%, 58%)",    // golden yellow
 ]
 
+// "hsl(210, 70%, 65%)" -> "hsla(210, 70%, 65%, 0.18)"
+function hslWithAlpha(hsl: string, alpha: number): string {
+    return hsl.replace(/^hsl\(/, "hsla(").replace(/\)$/, `, ${alpha})`)
+}
+
 function formatDateLabel(dateStr: string): string {
     const [year, month, day] = dateStr.split("-").map(Number)
     const date = new Date(year, month - 1, day)
@@ -416,47 +421,54 @@ export default function KaloriTakibiPage() {
                                                 Bu gün için kayıt yok.
                                             </p>
                                         ) : (
-                                            <div className="flex flex-col gap-1">
-                                                {selectedLog.consumedMeals.map((meal, idx) => (
-                                                    <div
-                                                        key={idx}
-                                                        className="flex items-center gap-2 py-1.5 rounded-md cursor-pointer hover:bg-muted/40 transition-colors px-1 -mx-1"
-                                                        onClick={() => setSelectedMeal({ id: meal.mealId, name: meal.mealName, calories: meal.calories })}
-                                                    >
-                                                        <span
-                                                            className="w-2 h-2 rounded-full shrink-0"
-                                                            style={{ backgroundColor: MEAL_COLORS[idx % MEAL_COLORS.length] }}
-                                                        />
-                                                        <span className="text-sm text-foreground truncate flex-1 min-w-0">
-                                                            {toTitleCase(meal.mealName)}
-                                                        </span>
-                                                        <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-1.5 text-muted-foreground bg-secondary/50 shrink-0">
-                                                            {meal.calories} kcal
-                                                        </Badge>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            className="h-5 w-5 p-0 text-muted-foreground/50 hover:text-primary shrink-0"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                setSelectedMeal({ id: meal.mealId, name: meal.mealName, calories: meal.calories })
+                                            <div className="flex flex-col gap-1.5">
+                                                {selectedLog.consumedMeals.map((meal, idx) => {
+                                                    const color = MEAL_COLORS[idx % MEAL_COLORS.length]
+                                                    return (
+                                                        <div
+                                                            key={meal.mealId ?? meal.mealName}
+                                                            className="relative flex items-center gap-2 py-2 pl-4 pr-1.5 rounded-md cursor-pointer overflow-hidden transition-colors hover:brightness-110"
+                                                            style={{
+                                                                backgroundColor: hslWithAlpha(color, 0.18),
                                                             }}
+                                                            onClick={() => setSelectedMeal({ id: meal.mealId, name: meal.mealName, calories: meal.calories })}
                                                         >
-                                                            <Eye className="h-3 w-3" />
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            className="h-5 w-5 p-0 text-muted-foreground/50 hover:text-destructive shrink-0"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleRemoveMeal(selectedLog.date, meal.mealName, meal.calories, meal.mealId)
-                                                            }}
-                                                        >
-                                                            <Trash2 className="h-3 w-3" />
-                                                        </Button>
-                                                    </div>
-                                                ))}
+                                                            <span
+                                                                aria-hidden
+                                                                className="absolute left-1.5 top-1.5 bottom-1.5 w-1 rounded-full"
+                                                                style={{ backgroundColor: color }}
+                                                            />
+                                                            <span className="text-sm text-foreground truncate flex-1 min-w-0">
+                                                                {toTitleCase(meal.mealName)}
+                                                            </span>
+                                                            <span className="font-mono text-[10px] text-muted-foreground shrink-0">
+                                                                {meal.calories} kcal
+                                                            </span>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                className="h-5 w-5 p-0 text-muted-foreground/60 hover:text-primary shrink-0"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    setSelectedMeal({ id: meal.mealId, name: meal.mealName, calories: meal.calories })
+                                                                }}
+                                                            >
+                                                                <Eye className="h-3 w-3" />
+                                                            </Button>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                className="h-5 w-5 p-0 text-muted-foreground/60 hover:text-destructive shrink-0"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    handleRemoveMeal(selectedLog.date, meal.mealName, meal.calories, meal.mealId)
+                                                                }}
+                                                            >
+                                                                <Trash2 className="h-3 w-3" />
+                                                            </Button>
+                                                        </div>
+                                                    )
+                                                })}
                                             </div>
                                         )}
                                     </div>

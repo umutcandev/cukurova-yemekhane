@@ -199,18 +199,16 @@ export function AvatarUploader({
                     <p className="text-xs text-muted-foreground">
                         Profil fotoğrafı isteğe bağlıdır.
                     </p>
-                    {hasCustomImage && (
-                        <Button
-                            type="button"
-                            variant="destructive"
-                            size="sm"
-                            className="h-8 text-xs flex-shrink-0"
-                            onClick={() => setConfirmOpen(true)}
-                            disabled={isUploading || isDeleting}
-                        >
-                            Kaldır
-                        </Button>
-                    )}
+                    <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="h-8 text-xs flex-shrink-0"
+                        onClick={() => setConfirmOpen(true)}
+                        disabled={!hasCustomImage || isUploading || isDeleting}
+                    >
+                        Kaldır
+                    </Button>
                 </div>
             </div>
 

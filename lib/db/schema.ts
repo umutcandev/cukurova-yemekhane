@@ -129,6 +129,7 @@ export const emailPreferences = pgTable(
             .notNull()
             .references(() => users.id, { onDelete: "cascade" }),
         notifyFavorites: boolean("notify_favorites").default(false).notNull(),
+        excludeLowCalorie: boolean("exclude_low_calorie").default(false).notNull(),
         createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
         updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
     },

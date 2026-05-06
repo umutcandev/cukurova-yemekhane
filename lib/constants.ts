@@ -1,0 +1,1 @@
+export const LOW_CALORIE_THRESHOLD = 150;

@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { useMenuData } from "@/components/menu-data-provider"
 import { useRouter } from "next/navigation"
-import { Bookmark, Trash2, ArrowLeft, Loader2, Mail, Eye } from "lucide-react"
+import { Bookmark, Trash2, ArrowLeft, Loader2, Eye, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner"
 import { toTitleCase } from "@/lib/utils"
 import { Header } from "@/components/header"
@@ -22,14 +22,11 @@ export default function FavorilerimPage() {
     const router = useRouter()
     const [favorites, setFavorites] = useState<FavoriteItem[]>([])
     const [isLoading, setIsLoading] = useState(true)
-    const [notifyFavorites, setNotifyFavorites] = useState(false)
-    const [isTogglingNotify, setIsTogglingNotify] = useState(false)
     const [selectedMeal, setSelectedMeal] = useState<{ id: string; name: string } | null>(null)
 
     useEffect(() => {
         if (session?.user) {
             fetchFavorites()
-            fetchEmailPreference()
         }
     }, [session?.user])
 
@@ -45,48 +42,6 @@ export default function FavorilerimPage() {
             console.error("Failed to fetch favorites:", error)
         } finally {
             setIsLoading(false)
-        }
-    }
-
-    const fetchEmailPreference = async () => {
-        try {
-            const res = await fetch("/api/email-preferences")
-            if (res.ok) {
-                const data = await res.json()
-                setNotifyFavorites(data.notifyFavorites || false)
-            }
-        } catch (error) {
-            console.error("Failed to fetch email preference:", error)
-        }
-    }
-
-    const handleToggleNotify = async (checked: boolean) => {
-        setIsTogglingNotify(true)
-        setNotifyFavorites(checked)
-
-        try {
-            const res = await fetch("/api/email-preferences", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ notifyFavorites: checked }),
-            })
-
-            if (res.ok) {
-                toast.success(
-                    checked
-                        ? "E-posta bildirimleri açıldı"
-                        : "E-posta bildirimleri kapatıldı",
-                    { duration: 2000 }
-                )
-            } else {
-                setNotifyFavorites(!checked)
-                toast.error("Bir hata oluştu", { duration: 2000 })
-            }
-        } catch {
-            setNotifyFavorites(!checked)
-            toast.error("Bir hata oluştu", { duration: 2000 })
-        } finally {
-            setIsTogglingNotify(false)
         }
     }
 
@@ -159,31 +114,26 @@ export default function FavorilerimPage() {
                     </div>
                 </div>
 
-                {/* Email Notification Opt-in */}
-                {favorites.length > 0 && (
-                    <Card className="bg-card p-3 mb-4">
-                        <div className="flex items-start gap-3">
-                            <div className="p-1.5 rounded-md bg-muted/50 flex-shrink-0 mt-0.5">
-                                <Mail className="h-4 w-4 text-muted-foreground" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between gap-2">
-                                    <p className="text-sm font-medium text-foreground">
-                                        E-posta Bildirimi
-                                    </p>
-                                    <Switch
-                                        checked={notifyFavorites}
-                                        onCheckedChange={handleToggleNotify}
-                                        disabled={isTogglingNotify}
-                                    />
-                                </div>
-                                <p className="text-xs text-muted-foreground mt-0.5">
-                                    Favori yemeğiniz menüde olduğunda e-posta{session?.user?.email ? ` (${session.user.email})` : ""} ile bilgilendirilirsiniz.
-                                </p>
-                            </div>
+                {/* Bildirim ayarları yönlendirmesi — her zaman görünür */}
+                <Card className="bg-card p-3 mb-4">
+                    <div className="flex items-start gap-3">
+                        <div className="p-1.5 rounded-md bg-muted/50 flex-shrink-0 mt-0.5">
+                            <Settings className="h-4 w-4 text-muted-foreground" />
                         </div>
-                    </Card>
-                )}
+                        <div className="flex-1 min-w-0">
+                            <p className="text-xs text-muted-foreground">
+                                Favori e-posta gönderimi varsayılan olarak açıktır. Bu ayarı değiştirmek için{" "}
+                                <Link
+                                    href="/ayarlar"
+                                    className="text-foreground font-medium underline underline-offset-2 hover:text-primary"
+                                >
+                                    Hesap Ayarları
+                                </Link>
+                                {" "}sayfasını ziyaret edin.
+                            </p>
+                        </div>
+                    </div>
+                </Card>
 
                 {/* Favorites List */}
                 {favorites.length === 0 ? (

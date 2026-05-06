@@ -66,27 +66,29 @@ export function CommentItem({
     return (
         <div className="py-1.5">
             <div className="flex items-start gap-2.5">
-                <Avatar
-                    className={`shrink-0 ${
-                        comment.isModerator
-                            ? "h-6 w-6 mt-1.5 ring-2 ring-primary ring-offset-2 ring-offset-background"
-                            : "h-8 w-8 mt-0.5"
-                    }`}
-                >
-                    {comment.userImage && (
-                        <AvatarImage
-                            src={comment.userImage}
-                            alt={comment.userName || "Kullanıcı"}
-                        />
-                    )}
-                    <AvatarFallback
-                        className={`bg-muted text-muted-foreground ${
-                            comment.isModerator ? "text-[10px]" : "text-xs"
-                        }`}
+                <div className="shrink-0 w-8 h-8 mt-0.5 flex items-center justify-center">
+                    <Avatar
+                        className={
+                            comment.isModerator
+                                ? "h-6 w-6 ring-2 ring-primary ring-offset-2 ring-offset-background"
+                                : "h-8 w-8"
+                        }
                     >
-                        {getInitials(comment.userName)}
-                    </AvatarFallback>
-                </Avatar>
+                        {comment.userImage && (
+                            <AvatarImage
+                                src={comment.userImage}
+                                alt={comment.userName || "Kullanıcı"}
+                            />
+                        )}
+                        <AvatarFallback
+                            className={`bg-muted text-muted-foreground ${
+                                comment.isModerator ? "text-[10px]" : "text-xs"
+                            }`}
+                        >
+                            {getInitials(comment.userName)}
+                        </AvatarFallback>
+                    </Avatar>
+                </div>
 
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">

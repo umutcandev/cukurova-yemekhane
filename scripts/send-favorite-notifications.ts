@@ -15,6 +15,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import { eq, and, isNotNull } from "drizzle-orm";
 import * as schema from "../lib/db/schema.js";
+import { LOW_CALORIE_THRESHOLD } from "../lib/constants.js";
 import nodemailer from "nodemailer";
 import fs from "fs";
 import path from "path";
@@ -228,6 +229,7 @@ async function main() {
     const subscribedUsers = await db
         .select({
             userId: schema.emailPreferences.userId,
+            excludeLowCalorie: schema.emailPreferences.excludeLowCalorie,
         })
         .from(schema.emailPreferences)
         .where(eq(schema.emailPreferences.notifyFavorites, true));
@@ -289,9 +291,23 @@ async function main() {
             }
 
             // Eşleşen yemeklerin detaylarını menüden al
-            const matchedMeals = todayMenu.meals.filter((m) =>
+            let matchedMeals = todayMenu.meals.filter((m) =>
                 matchedFavIds.includes(m.id)
             );
+
+            // Düşük kalori filtresi
+            if (sub.excludeLowCalorie) {
+                const before = matchedMeals.length;
+                matchedMeals = matchedMeals.filter((m) => m.calories >= LOW_CALORIE_THRESHOLD);
+                if (matchedMeals.length === 0) {
+                    console.log(`   ⏭️  ${maskEmail(user.email!)} — tüm eşleşmeler ${LOW_CALORIE_THRESHOLD} kcal altı, atlandı`);
+                    skipCount++;
+                    continue;
+                }
+                if (matchedMeals.length < before) {
+                    console.log(`   ℹ️  ${maskEmail(user.email!)} — ${before - matchedMeals.length} düşük kalorili yemek elendi`);
+                }
+            }
 
             // E-posta gönder
             const html = buildEmailHtml(

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Header } from "@/components/header"
 import { ProfileSection } from "@/components/account/profile-section"
+import { NotificationsSection } from "@/components/account/notifications-section"
 import { PrivacySection } from "@/components/account/privacy-section"
 import { PROFILE_CUSTOMIZATION_ENABLED } from "@/lib/feature-flags"
 import { resolveSelfIdentity } from "@/lib/user-identity"
@@ -20,11 +21,17 @@ interface ProfileState {
     hideProfilePicture: boolean
 }
 
+interface NotifPrefs {
+    notifyFavorites: boolean
+    excludeLowCalorie: boolean
+}
+
 export default function AyarlarPage() {
     const router = useRouter()
     const { status, update } = useSession()
 
     const [profile, setProfile] = useState<ProfileState | null>(null)
+    const [notifPrefs, setNotifPrefs] = useState<NotifPrefs | null>(null)
 
     useEffect(() => {
         if (status === "unauthenticated") {
@@ -58,6 +65,32 @@ export default function AyarlarPage() {
         }
     }, [status])
 
+    useEffect(() => {
+        if (status !== "authenticated") return
+        let cancelled = false
+        const load = async () => {
+            try {
+                const res = await fetch("/api/email-preferences", { cache: "no-store" })
+                if (!res.ok) throw new Error("notif load failed")
+                const data = await res.json()
+                if (cancelled) return
+                setNotifPrefs({
+                    notifyFavorites: !!data.notifyFavorites,
+                    excludeLowCalorie: !!data.excludeLowCalorie,
+                })
+            } catch (err) {
+                console.error("[ayarlar] notif load failed:", err)
+                if (!cancelled) {
+                    setNotifPrefs({ notifyFavorites: false, excludeLowCalorie: false })
+                }
+            }
+        }
+        load()
+        return () => {
+            cancelled = true
+        }
+    }, [status])
+
     if (!PROFILE_CUSTOMIZATION_ENABLED) {
         return (
             <main className="min-h-screen bg-background">
@@ -73,7 +106,7 @@ export default function AyarlarPage() {
         )
     }
 
-    if (status === "loading" || profile === null) {
+    if (status === "loading" || profile === null || notifPrefs === null) {
         return (
             <main className="min-h-screen bg-background">
                 <Header />
@@ -141,6 +174,12 @@ export default function AyarlarPage() {
                         onAvatarUploaded={handleAvatarUploaded}
                         onAvatarRemoved={handleAvatarRemoved}
                         onNicknameSaved={handleNicknameSaved}
+                    />
+
+                    <NotificationsSection
+                        notifyFavorites={notifPrefs.notifyFavorites}
+                        excludeLowCalorie={notifPrefs.excludeLowCalorie}
+                        onChange={setNotifPrefs}
                     />
 
                     <PrivacySection

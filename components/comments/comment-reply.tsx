@@ -62,27 +62,29 @@ export function CommentReply({
 
     return (
         <div key={reply.id} className="flex items-start gap-2 py-1">
-            <Avatar
-                className={`shrink-0 ${
-                    reply.isModerator
-                        ? "h-4 w-4 mt-1.5 ring-2 ring-primary ring-offset-2 ring-offset-background"
-                        : "h-6 w-6 mt-0.5"
-                }`}
-            >
-                {reply.userImage && (
-                    <AvatarImage
-                        src={reply.userImage}
-                        alt={reply.userName || "Kullanıcı"}
-                    />
-                )}
-                <AvatarFallback
-                    className={`bg-muted text-muted-foreground ${
-                        reply.isModerator ? "text-[8px]" : "text-[10px]"
-                    }`}
+            <div className="shrink-0 w-6 h-6 mt-0.5 flex items-center justify-center">
+                <Avatar
+                    className={
+                        reply.isModerator
+                            ? "h-4 w-4 ring-2 ring-primary ring-offset-2 ring-offset-background"
+                            : "h-6 w-6"
+                    }
                 >
-                    {getInitials(reply.userName)}
-                </AvatarFallback>
-            </Avatar>
+                    {reply.userImage && (
+                        <AvatarImage
+                            src={reply.userImage}
+                            alt={reply.userName || "Kullanıcı"}
+                        />
+                    )}
+                    <AvatarFallback
+                        className={`bg-muted text-muted-foreground ${
+                            reply.isModerator ? "text-[8px]" : "text-[10px]"
+                        }`}
+                    >
+                        {getInitials(reply.userName)}
+                    </AvatarFallback>
+                </Avatar>
+            </div>
 
             <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
