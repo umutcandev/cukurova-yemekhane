@@ -1,7 +1,7 @@
 {
-  "month": "2026-04",
-  "lastUpdated": "2026-04-30T06:21:04.374Z",
-  "scrapeDate": "2026-04-30",
+  "month": "2026-05",
+  "lastUpdated": "2026-05-07T06:20:23.771Z",
+  "scrapeDate": "2026-05-07",
   "totalDays": 23,
   "days": [
     {
@@ -413,12 +413,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "87",
-          "name": "Fırın Bezelye (Etsiz)",
-          "calories": 190,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2",
           "name": "Şehriyeli Pirinç Pilavı",
           "calories": 310,
@@ -518,9 +512,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "156",
-          "name": "Nohutlu Pirinç Pilavı",
-          "calories": 377,
+          "id": "8378",
+          "name": "Sebzeli Erişte Pilavı",
+          "calories": 290,
           "category": "ana_yemek"
         },
         {
@@ -536,7 +530,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1377
+      "totalCalories": 1290
     },
     {
       "ymk": 4,
@@ -548,6 +542,12 @@
           "id": "69",
           "name": "Patlıcan Güveç (Etli)",
           "calories": 292,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "196",
+          "name": "İmam Bayıldı",
+          "calories": 164,
           "category": "ana_yemek"
         },
         {
@@ -584,15 +584,15 @@
           "category": "ana_yemek"
         },
         {
-          "id": "160",
-          "name": "Bahar Pilavı",
-          "calories": 441,
+          "id": "8378",
+          "name": "Sebzeli Erişte Pilavı",
+          "calories": 290,
           "category": "ana_yemek"
         },
         {
-          "id": "20",
-          "name": "Mercimek Çorba",
-          "calories": 244,
+          "id": "158",
+          "name": "Şehriye Çorbası",
+          "calories": 126,
           "category": "ana_yemek"
         },
         {
@@ -602,7 +602,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1420
+      "totalCalories": 1151
     },
     {
       "ymk": 6,
@@ -617,9 +617,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "1305",
-          "name": "Soslu Makarna",
-          "calories": 305,
+          "id": "2315",
+          "name": "Mercimekli Bulgur Pilavı",
+          "calories": 364,
           "category": "ana_yemek"
         },
         {
@@ -635,7 +635,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 724
+      "totalCalories": 783
     },
     {
       "ymk": 7,
@@ -650,9 +650,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
-          "calories": 352,
+          "id": "2",
+          "name": "Şehriyeli Pirinç Pilavı",
+          "calories": 310,
           "category": "ana_yemek"
         },
         {
@@ -668,7 +668,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 985
+      "totalCalories": 943
     },
     {
       "ymk": 8,
@@ -683,9 +683,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "160",
-          "name": "Bahar Pilavı",
-          "calories": 441,
+          "id": "142",
+          "name": "Peynirli Erişte Pilavı",
+          "calories": 1,
           "category": "ana_yemek"
         },
         {
@@ -701,7 +701,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1211
+      "totalCalories": 771
     },
     {
       "ymk": 9,
@@ -716,9 +716,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "119",
-          "name": "Meyhane Pilavı",
-          "calories": 341,
+          "id": "2315",
+          "name": "Mercimekli Bulgur Pilavı",
+          "calories": 364,
           "category": "ana_yemek"
         },
         {
@@ -734,7 +734,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 798
+      "totalCalories": 821
     },
     {
       "ymk": 10,
