@@ -1,42 +1,9 @@
 {
   "month": "2026-05",
-  "lastUpdated": "2026-05-21T07:03:00.391Z",
-  "scrapeDate": "2026-05-21",
+  "lastUpdated": "2026-05-28T03:20:29.166Z",
+  "scrapeDate": "2026-05-28",
   "totalDays": 15,
   "days": [
-    {
-      "ymk": 1,
-      "date": "2026-05-04",
-      "dayName": "Pazartesi",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "161",
-          "name": "SOSLU DALYAN KÖFTE + PARMAK PATATES",
-          "calories": 600,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2",
-          "name": "Şehriyeli Pirinç Pilavı",
-          "calories": 310,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "63",
-          "name": "Meyve (Armut)",
-          "calories": 128,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 1156
-    },
     {
       "ymk": 2,
       "date": "2026-05-05",
@@ -117,7 +84,7 @@
         },
         {
           "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
+          "name": "TEL ŞEHRİYELİ BULGUR PİLAVI",
           "calories": 352,
           "category": "ana_yemek"
         },
@@ -216,7 +183,7 @@
         },
         {
           "id": "2",
-          "name": "Şehriyeli Pirinç Pilavı",
+          "name": "TEL ŞEHRİYELİ PİRİNÇ PİLAVI",
           "calories": 310,
           "category": "ana_yemek"
         },
@@ -315,7 +282,7 @@
         },
         {
           "id": "2",
-          "name": "Şehriyeli Pirinç Pilavı",
+          "name": "TEL ŞEHRİYELİ PİRİNÇ PİLAVI",
           "calories": 310,
           "category": "ana_yemek"
         },
@@ -381,7 +348,7 @@
         },
         {
           "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
+          "name": "TEL ŞEHRİYELİ BULGUR PİLAVI",
           "calories": 352,
           "category": "ana_yemek"
         },
@@ -410,12 +377,6 @@
           "id": "288",
           "name": "Soslu Fırın Tavuk",
           "calories": 535,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "190",
-          "name": "Ispanak Kavurma",
-          "calories": 42,
           "category": "ana_yemek"
         },
         {
@@ -453,14 +414,14 @@
         },
         {
           "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
+          "name": "TEL ŞEHRİYELİ BULGUR PİLAVI",
           "calories": 352,
           "category": "ana_yemek"
         },
         {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
           "category": "ana_yemek"
         },
         {
@@ -470,7 +431,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 971
+      "totalCalories": 860
     },
     {
       "ymk": 21,
@@ -486,7 +447,7 @@
         },
         {
           "id": "2314",
-          "name": "Şehriyeli Bulgur Pilavı",
+          "name": "TEL ŞEHRİYELİ BULGUR PİLAVI",
           "calories": 352,
           "category": "ana_yemek"
         },
@@ -504,6 +465,39 @@
         }
       ],
       "totalCalories": 752
+    },
+    {
+      "ymk": 1,
+      "date": "2026-06-08",
+      "dayName": "Pazartesi",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "7",
+          "name": "Etli Taze Fasulye",
+          "calories": 262,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2",
+          "name": "TEL ŞEHRİYELİ PİRİNÇ PİLAVI",
+          "calories": 310,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "64",
+          "name": "Türlü Turşu",
+          "calories": 10,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "91",
+          "name": "Meyve (Nektarin)",
+          "calories": 124,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 706
     }
   ]
 }
