@@ -1,7 +1,7 @@
 {
-  "month": "2026-05",
-  "lastUpdated": "2026-05-25T07:59:39.574Z",
-  "scrapeDate": "2026-05-25",
+  "month": "2026-06",
+  "lastUpdated": "2026-06-01T05:00:47.588Z",
+  "scrapeDate": "2026-06-01",
   "totalDays": 15,
   "days": [
     {
@@ -443,6 +443,12 @@
           "id": "22",
           "name": "Etli Nohut",
           "calories": 373,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "204",
+          "name": "Etsiz Nohut Yahnisi",
+          "calories": 277,
           "category": "ana_yemek"
         },
         {
