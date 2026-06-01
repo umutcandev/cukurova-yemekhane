@@ -47,11 +47,6 @@ const MEAL_COLORS = [
     "hsl(55, 70%, 58%)",    // golden yellow
 ]
 
-// "hsl(210, 70%, 65%)" -> "hsla(210, 70%, 65%, 0.18)"
-function hslWithAlpha(hsl: string, alpha: number): string {
-    return hsl.replace(/^hsl\(/, "hsla(").replace(/\)$/, `, ${alpha})`)
-}
-
 function formatDateLabel(dateStr: string): string {
     const [year, month, day] = dateStr.split("-").map(Number)
     const date = new Date(year, month - 1, day)
@@ -413,21 +408,18 @@ export default function KaloriTakibiPage() {
                                                 Bu gün için kayıt yok.
                                             </p>
                                         ) : (
-                                            <div className="flex flex-col gap-1.5">
+                                            <div className="flex flex-col gap-0.5">
                                                 {selectedLog.consumedMeals.map((meal, idx) => {
                                                     const color = MEAL_COLORS[idx % MEAL_COLORS.length]
                                                     return (
                                                         <div
                                                             key={meal.mealId ?? meal.mealName}
-                                                            className="relative flex items-center gap-2 py-2 pl-4 pr-1.5 rounded-md cursor-pointer overflow-hidden transition-colors hover:brightness-110"
-                                                            style={{
-                                                                backgroundColor: hslWithAlpha(color, 0.18),
-                                                            }}
+                                                            className="flex items-center gap-2.5 py-1.5 px-1.5 rounded-md cursor-pointer transition-colors hover:bg-muted/50"
                                                             onClick={() => setSelectedMeal({ id: meal.mealId, name: meal.mealName, calories: meal.calories })}
                                                         >
                                                             <span
                                                                 aria-hidden
-                                                                className="absolute left-1.5 top-1.5 bottom-1.5 w-1 rounded-full"
+                                                                className="size-2.5 rounded-[3px] shrink-0"
                                                                 style={{ backgroundColor: color }}
                                                             />
                                                             <span className="text-sm text-foreground truncate flex-1 min-w-0">

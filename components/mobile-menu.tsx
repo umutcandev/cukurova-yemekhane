@@ -116,7 +116,7 @@ function MobileMenuDisabled({ isOpen, onClose }: MobileMenuProps) {
                                         className="w-full h-10 text-sm font-medium border-border/60"
                                         asChild
                                     >
-                                        <Link href="mailto:hi@umutcan.xyz">
+                                        <Link href="mailto:umuthcan@gmail.com">
                                             İletişime Geç
                                         </Link>
                                     </Button>
@@ -242,7 +242,7 @@ function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
                                             className="w-full h-10 text-sm font-medium border-border/60"
                                             asChild
                                         >
-                                            <Link href="mailto:hi@umutcan.xyz">
+                                            <Link href="mailto:umuthcan@gmail.com">
                                                 İletişime Geç
                                             </Link>
                                         </Button>
@@ -257,7 +257,7 @@ function MobileMenuEnabled({ isOpen, onClose }: MobileMenuProps) {
                                             className="w-full h-10 text-sm font-medium border-border/60 mb-4"
                                             asChild
                                         >
-                                            <Link href="mailto:hi@umutcan.xyz">
+                                            <Link href="mailto:umuthcan@gmail.com">
                                                 İletişime Geç
                                             </Link>
                                         </Button>

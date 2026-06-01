@@ -4,8 +4,6 @@ import * as React from "react"
 import {
     ChevronLeft,
     ChevronRight,
-    ChevronsLeft,
-    ChevronsRight,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -86,33 +84,17 @@ export function TablePagination({
     return (
         <div
             className={cn(
-                "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+                "flex flex-row items-center justify-between gap-2",
                 className
             )}
         >
             {/* Sol: özet metni */}
-            <p className="text-xs text-muted-foreground tabular-nums order-2 sm:order-1">
+            <p className="text-xs text-muted-foreground tabular-nums shrink-0">
                 {from}–{to} / {totalItems}
             </p>
 
             {/* Orta: gezinme kontrolleri */}
-            <div className="flex items-center gap-1 order-1 sm:order-2">
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground disabled:opacity-30"
-                            disabled={isFirst}
-                            onClick={() => goToPage(1)}
-                            aria-label="İlk sayfa"
-                        >
-                            <ChevronsLeft className="h-4 w-4" />
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>İlk</TooltipContent>
-                </Tooltip>
-
+            <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
@@ -170,28 +152,12 @@ export function TablePagination({
                     </TooltipTrigger>
                     <TooltipContent>Sonraki</TooltipContent>
                 </Tooltip>
-
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground disabled:opacity-30"
-                            disabled={isLast}
-                            onClick={() => goToPage(totalPages)}
-                            aria-label="Son sayfa"
-                        >
-                            <ChevronsRight className="h-4 w-4" />
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Son</TooltipContent>
-                </Tooltip>
             </div>
 
-            {/* Sağ: sayfa boyutu seçici */}
-            {onPageSizeChange && pageSizeOptions.length > 0 && (
-                <div className="flex items-center gap-2 order-3">
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">
+            {/* Sağ: sayfa boyutu seçici ("Görüntüle" etiketi mobilde gizli) */}
+            {onPageSizeChange && pageSizeOptions.length > 0 ? (
+                <div className="flex items-center gap-2 shrink-0">
+                    <span className="hidden text-xs text-muted-foreground whitespace-nowrap sm:inline">
                         Görüntüle
                     </span>
                     <Select
@@ -214,6 +180,9 @@ export function TablePagination({
                         </SelectContent>
                     </Select>
                 </div>
+            ) : (
+                // Seçici yoksa özet metnini dengelemek için boş alan
+                <span className="shrink-0" aria-hidden />
             )}
         </div>
     )
