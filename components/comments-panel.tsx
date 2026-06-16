@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useCallback, useEffect } from "react"
-import { useSession } from "next-auth/react"
+import { useSafeSession } from "@/hooks/use-safe-session"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { toast } from "sonner"
 import {
@@ -119,7 +119,7 @@ async function uploadImageToR2(blob: Blob): Promise<string> {
 
 export function CommentsPanel({ open, onOpenChange, menuDate }: CommentsPanelProps) {
     const isMobile = useIsMobile()
-    const { data: session } = useSession()
+    const { data: session } = useSafeSession()
     const scrollRef = useRef<HTMLDivElement>(null!)
     const isToday = menuDate === getTurkeyDate()
 

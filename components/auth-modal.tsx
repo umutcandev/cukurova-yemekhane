@@ -47,11 +47,6 @@ export function GoogleIcon({ className }: { className?: string }) {
 function AuthContent({ disabled }: { disabled?: boolean }) {
     return (
         <div className="flex flex-col items-center gap-4 py-2">
-            {disabled && (
-                <span className="inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                    Giriş sistemi geçici olarak devre dışı
-                </span>
-            )}
             <Button
                 className="w-full h-11 gap-3 text-sm font-medium"
                 variant="outline"
@@ -63,7 +58,7 @@ function AuthContent({ disabled }: { disabled?: boolean }) {
             </Button>
             <p className="text-center text-[11px] text-muted-foreground/60">
                 {disabled
-                    ? "Sistem bakım nedeniyle geçici olarak kapatılmıştır."
+                    ? "Sorularınız için hi@umutcan.dev e-posta adresini kullanabilirsiniz."
                     : "Ücretsiz hesabınızla tüm kişisel özelliklere erişin."
                 }
             </p>
@@ -93,7 +88,7 @@ export function AuthModal({ open, onOpenChange, message }: AuthModalProps) {
     )
 
     const description = disabled
-        ? "Giriş sistemi şu anda geçici olarak devre dışıdır. Lütfen daha sonra tekrar deneyin."
+        ? "Giriş sistemi şu anda geçici olarak devre dışıdır. Yeni eğitim döneminde tekrar aktif hale gelecektir."
         : (message || "Bu özelliği kullanabilmek için giriş yapmanız gerekiyor.")
 
     if (isMobile) {
