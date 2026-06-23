@@ -1,7 +1,7 @@
 {
   "month": "2026-06",
-  "lastUpdated": "2026-06-16T05:00:57.168Z",
-  "scrapeDate": "2026-06-16",
+  "lastUpdated": "2026-06-23T05:00:49.992Z",
+  "scrapeDate": "2026-06-23",
   "totalDays": 24,
   "days": [
     {
@@ -347,12 +347,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "215",
-          "name": "Ispanaklı Börek",
-          "calories": 1,
-          "category": "ana_yemek"
-        },
-        {
           "id": "236",
           "name": "Tel Şehriye Çorbası",
           "calories": 126,
@@ -515,6 +509,12 @@
           "id": "2318",
           "name": "Soslu But Special",
           "calories": 620,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "37",
+          "name": "Zeytinyağlı Barbunya",
+          "calories": 371,
           "category": "ana_yemek"
         },
         {
@@ -722,9 +722,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "8416",
-          "name": "Karnabahar Salatası",
-          "calories": 1,
+          "id": "13",
+          "name": "Havuç Salata",
+          "calories": 105,
           "category": "ana_yemek"
         },
         {
@@ -734,7 +734,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1146
+      "totalCalories": 1250
     },
     {
       "ymk": 24,
