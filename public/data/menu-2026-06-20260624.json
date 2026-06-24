@@ -1,7 +1,7 @@
 {
   "month": "2026-06",
-  "lastUpdated": "2026-06-17T05:00:55.091Z",
-  "scrapeDate": "2026-06-17",
+  "lastUpdated": "2026-06-24T05:00:55.151Z",
+  "scrapeDate": "2026-06-24",
   "totalDays": 24,
   "days": [
     {
@@ -380,12 +380,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "204",
-          "name": "Etsiz Nohut Yahnisi",
-          "calories": 277,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2",
           "name": "TEL ŞEHRİYELİ PİRİNÇ PİLAVI",
           "calories": 310,
@@ -548,6 +542,12 @@
           "id": "49",
           "name": "Etli Kuru Fasulye",
           "calories": 340,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "132",
+          "name": "Kuru Fasülye (Etsiz)",
+          "calories": 267,
           "category": "ana_yemek"
         },
         {
@@ -722,9 +722,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "8416",
-          "name": "Karnabahar Salatası",
-          "calories": 1,
+          "id": "13",
+          "name": "Havuç Salata",
+          "calories": 105,
           "category": "ana_yemek"
         },
         {
@@ -734,7 +734,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1146
+      "totalCalories": 1250
     },
     {
       "ymk": 24,
