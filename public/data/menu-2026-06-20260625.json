@@ -1,7 +1,7 @@
 {
   "month": "2026-06",
-  "lastUpdated": "2026-06-18T05:00:47.166Z",
-  "scrapeDate": "2026-06-18",
+  "lastUpdated": "2026-06-25T05:00:47.913Z",
+  "scrapeDate": "2026-06-25",
   "totalDays": 24,
   "days": [
     {
@@ -413,12 +413,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "3",
-          "name": "Zeytinyağlı Taze Fasülye",
-          "calories": 153,
-          "category": "ana_yemek"
-        },
-        {
           "id": "1305",
           "name": "Soslu Makarna",
           "calories": 305,
@@ -584,6 +578,12 @@
           "category": "ana_yemek"
         },
         {
+          "id": "133",
+          "name": "Zeytinyağlı Biber Dolması",
+          "calories": 1,
+          "category": "ana_yemek"
+        },
+        {
           "id": "4361",
           "name": "Mercimek Çorba",
           "calories": 244,
@@ -722,9 +722,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "8416",
-          "name": "Karnabahar Salatası",
-          "calories": 1,
+          "id": "13",
+          "name": "Havuç Salata",
+          "calories": 105,
           "category": "ana_yemek"
         },
         {
@@ -734,7 +734,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1146
+      "totalCalories": 1250
     },
     {
       "ymk": 24,
