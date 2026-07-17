@@ -1,7 +1,7 @@
 {
   "month": "2026-07",
-  "lastUpdated": "2026-07-10T05:00:55.824Z",
-  "scrapeDate": "2026-07-10",
+  "lastUpdated": "2026-07-17T05:00:50.632Z",
+  "scrapeDate": "2026-07-17",
   "totalDays": 24,
   "days": [
     {
@@ -314,12 +314,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "271",
-          "name": "Patates Musakka (Etsiz)",
-          "calories": 220,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2315",
           "name": "Mercimekli Bulgur Pilavı",
           "calories": 364,
@@ -359,9 +353,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -371,7 +365,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 949
+      "totalCalories": 1047
     },
     {
       "ymk": 12,
@@ -452,15 +446,21 @@
           "category": "ana_yemek"
         },
         {
+          "id": "1299",
+          "name": "Karışık Kızartma (Soslu)",
+          "calories": 224,
+          "category": "ana_yemek"
+        },
+        {
           "id": "236",
           "name": "Tel Şehriye Çorbası",
           "calories": 126,
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "275",
+          "name": "Marul Salata",
+          "calories": 93,
           "category": "ana_yemek"
         },
         {
@@ -470,7 +470,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 748
+      "totalCalories": 744
     },
     {
       "ymk": 16,
