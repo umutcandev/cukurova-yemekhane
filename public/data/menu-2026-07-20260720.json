@@ -1,7 +1,7 @@
 {
   "month": "2026-07",
-  "lastUpdated": "2026-07-13T05:01:04.082Z",
-  "scrapeDate": "2026-07-13",
+  "lastUpdated": "2026-07-20T05:00:55.337Z",
+  "scrapeDate": "2026-07-20",
   "totalDays": 24,
   "days": [
     {
@@ -347,12 +347,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "87",
-          "name": "Fırın Bezelye (Etsiz)",
-          "calories": 190,
-          "category": "ana_yemek"
-        },
-        {
           "id": "156",
           "name": "Nohutlu Pirinç Pilavı",
           "calories": 377,
@@ -458,9 +452,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "275",
+          "name": "Marul Salata",
+          "calories": 93,
           "category": "ana_yemek"
         },
         {
@@ -470,7 +464,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 748
+      "totalCalories": 744
     },
     {
       "ymk": 16,
@@ -482,6 +476,12 @@
           "id": "1",
           "name": "Terbiyeli Köfte",
           "calories": 295,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "204",
+          "name": "Etsiz Nohut Yahnisi",
+          "calories": 277,
           "category": "ana_yemek"
         },
         {
