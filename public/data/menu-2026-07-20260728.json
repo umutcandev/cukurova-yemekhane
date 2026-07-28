@@ -1,42 +1,9 @@
 {
   "month": "2026-07",
-  "lastUpdated": "2026-07-21T05:00:50.482Z",
-  "scrapeDate": "2026-07-21",
+  "lastUpdated": "2026-07-28T05:00:55.512Z",
+  "scrapeDate": "2026-07-28",
   "totalDays": 24,
   "days": [
-    {
-      "ymk": 1,
-      "date": "2026-06-29",
-      "dayName": "Pazartesi",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "41",
-          "name": "Sini Köfte",
-          "calories": 460,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2310",
-          "name": "Peynirli Makarna",
-          "calories": 341,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "94",
-          "name": "Çoban Salata",
-          "calories": 91,
-          "category": "ana_yemek"
-        },
-        {
-          "id": "2333",
-          "name": "Ayran",
-          "calories": 60,
-          "category": "ana_yemek"
-        }
-      ],
-      "totalCalories": 952
-    },
     {
       "ymk": 2,
       "date": "2026-06-30",
@@ -512,21 +479,15 @@
           "category": "ana_yemek"
         },
         {
-          "id": "1308",
-          "name": "Patatesli Börek",
-          "calories": 544,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2",
           "name": "Tel Şehriyeli Pirinç Pilavı",
           "calories": 310,
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -536,7 +497,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1497
+      "totalCalories": 1518
     },
     {
       "ymk": 18,
@@ -557,9 +518,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
+          "id": "26",
+          "name": "Cacık",
+          "calories": 97,
           "category": "ana_yemek"
         },
         {
@@ -569,7 +530,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 861
+      "totalCalories": 840
     },
     {
       "ymk": 19,
@@ -683,6 +644,12 @@
           "category": "ana_yemek"
         },
         {
+          "id": "204",
+          "name": "Etsiz Nohut Yahnisi",
+          "calories": 277,
+          "category": "ana_yemek"
+        },
+        {
           "id": "2",
           "name": "Tel Şehriyeli Pirinç Pilavı",
           "calories": 310,
@@ -782,9 +749,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "7373",
-          "name": "Soğan Çorbası",
-          "calories": 150,
+          "id": "2356",
+          "name": "Dövme Çorbası",
+          "calories": 155,
           "category": "ana_yemek"
         },
         {
@@ -794,13 +761,46 @@
           "category": "ana_yemek"
         },
         {
-          "id": "110",
-          "name": "Keşgül",
-          "calories": 381,
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1015
+      "totalCalories": 854
+    },
+    {
+      "ymk": 1,
+      "date": "2026-08-03",
+      "dayName": "Pazartesi",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "8373",
+          "name": "Kremalı  Köfte",
+          "calories": 400,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "1305",
+          "name": "Soslu Makarna",
+          "calories": 305,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "155",
+          "name": "Şalgam",
+          "calories": 20,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "91",
+          "name": "Meyve (Nektarin)",
+          "calories": 124,
+          "category": "ana_yemek"
+        }
+      ],
+      "totalCalories": 849
     }
   ]
 }
