@@ -1,7 +1,7 @@
 {
   "month": "2026-07",
-  "lastUpdated": "2026-07-24T05:00:57.865Z",
-  "scrapeDate": "2026-07-24",
+  "lastUpdated": "2026-07-31T05:00:49.653Z",
+  "scrapeDate": "2026-07-31",
   "totalDays": 24,
   "days": [
     {
@@ -578,12 +578,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "247",
-          "name": "Patates Kızartma",
-          "calories": 126,
-          "category": "ana_yemek"
-        },
-        {
           "id": "205",
           "name": "Barbunya",
           "calories": 371,
@@ -656,9 +650,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -668,7 +662,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 811
+      "totalCalories": 832
     },
     {
       "ymk": 23,
@@ -722,9 +716,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "11",
-          "name": "Ayran",
-          "calories": 60,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek"
         },
         {
@@ -734,7 +728,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1079
+      "totalCalories": 1137
     },
     {
       "ymk": 25,
@@ -749,9 +743,15 @@
           "category": "ana_yemek"
         },
         {
-          "id": "236",
-          "name": "Tel Şehriye Çorbası",
-          "calories": 126,
+          "id": "1308",
+          "name": "Patatesli Börek",
+          "calories": 544,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2356",
+          "name": "Dövme Çorbası",
+          "calories": 155,
           "category": "ana_yemek"
         },
         {
@@ -767,7 +767,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 825
+      "totalCalories": 854
     },
     {
       "ymk": 1,
