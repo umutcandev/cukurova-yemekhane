@@ -1,7 +1,7 @@
 {
   "month": "2026-08",
-  "lastUpdated": "2026-08-10T05:00:52.577Z",
-  "scrapeDate": "2026-08-10",
+  "lastUpdated": "2026-08-17T05:00:57.587Z",
+  "scrapeDate": "2026-08-17",
   "totalDays": 25,
   "days": [
     {
@@ -215,12 +215,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "271",
-          "name": "Patates Musakka (Etsiz)",
-          "calories": 220,
-          "category": "ana_yemek"
-        },
-        {
           "id": "2314",
           "name": "Tel Şehriyeli Bulgur Pilavı",
           "calories": 352,
@@ -386,6 +380,12 @@
           "category": "ana_yemek"
         },
         {
+          "id": "3",
+          "name": "Zeytinyağlı Taze Fasülye",
+          "calories": 153,
+          "category": "ana_yemek"
+        },
+        {
           "id": "2",
           "name": "Tel Şehriyeli Pirinç Pilavı",
           "calories": 310,
@@ -413,9 +413,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "41",
-          "name": "Sini Köfte",
-          "calories": 460,
+          "id": "97",
+          "name": "Hasan Paşa Köfte (Püreli)",
+          "calories": 480,
           "category": "ana_yemek"
         },
         {
@@ -437,7 +437,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1010
+      "totalCalories": 1030
     },
     {
       "ymk": 13,
@@ -545,9 +545,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "5362",
-          "name": "Peynirli Pide",
-          "calories": 400,
+          "id": "41",
+          "name": "Sini Köfte",
+          "calories": 460,
           "category": "ana_yemek"
         },
         {
@@ -563,13 +563,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "99",
-          "name": "İrmik Helvası",
-          "calories": 517,
+          "id": "114",
+          "name": "Meyve (Karpuz)",
+          "calories": 92,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1182
+      "totalCalories": 817
     },
     {
       "ymk": 17,
@@ -623,9 +623,9 @@
           "category": "ana_yemek"
         },
         {
-          "id": "64",
-          "name": "Türlü Turşu",
-          "calories": 10,
+          "id": "26",
+          "name": "Cacık",
+          "calories": 97,
           "category": "ana_yemek"
         },
         {
@@ -635,7 +635,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 969
+      "totalCalories": 1056
     },
     {
       "ymk": 19,
@@ -656,19 +656,19 @@
           "category": "ana_yemek"
         },
         {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
+          "id": "64",
+          "name": "Türlü Turşu",
+          "calories": 10,
           "category": "ana_yemek"
         },
         {
-          "id": "111",
-          "name": "Meyve (Kiraz)",
-          "calories": 80,
+          "id": "112",
+          "name": "Meyve (Kayısı)",
+          "calories": 84,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 865
+      "totalCalories": 782
     },
     {
       "ymk": 20,
