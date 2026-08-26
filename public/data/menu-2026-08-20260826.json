@@ -1,7 +1,7 @@
 {
   "month": "2026-08",
-  "lastUpdated": "2026-08-19T05:00:52.236Z",
-  "scrapeDate": "2026-08-19",
+  "lastUpdated": "2026-08-26T05:00:57.727Z",
+  "scrapeDate": "2026-08-26",
   "totalDays": 25,
   "days": [
     {
@@ -413,12 +413,6 @@
           "category": "ana_yemek"
         },
         {
-          "id": "147",
-          "name": "Patlıcan Güveç (Etsiz)",
-          "calories": 292,
-          "category": "ana_yemek"
-        },
-        {
           "id": "1305",
           "name": "Soslu Makarna",
           "calories": 305,
@@ -545,9 +539,9 @@
       "hasData": true,
       "meals": [
         {
-          "id": "288",
-          "name": "Soslu Fırın Tavuk",
-          "calories": 535,
+          "id": "2318",
+          "name": "Soslu But Special",
+          "calories": 620,
           "category": "ana_yemek"
         },
         {
@@ -563,13 +557,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
+          "id": "8409",
+          "name": "Kemalpaşa Tatlısı",
+          "calories": 250,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 970
+      "totalCalories": 1298
     },
     {
       "ymk": 18,
@@ -578,9 +572,15 @@
       "hasData": true,
       "meals": [
         {
-          "id": "60",
-          "name": "İzmir Köfte",
-          "calories": 391,
+          "id": "97",
+          "name": "Hasan Paşa Köfte (Püreli)",
+          "calories": 480,
+          "category": "ana_yemek"
+        },
+        {
+          "id": "2328",
+          "name": "Peynirli Börek",
+          "calories": 362,
           "category": "ana_yemek"
         },
         {
@@ -602,7 +602,7 @@
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 1124
+      "totalCalories": 1213
     },
     {
       "ymk": 19,
@@ -629,13 +629,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "112",
-          "name": "Meyve (Kayısı)",
-          "calories": 84,
+          "id": "260",
+          "name": "Meyve (Şeftali)",
+          "calories": 147,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 782
+      "totalCalories": 845
     },
     {
       "ymk": 20,
@@ -695,13 +695,13 @@
           "category": "ana_yemek"
         },
         {
-          "id": "112",
-          "name": "Meyve (Kayısı)",
-          "calories": 84,
+          "id": "113",
+          "name": "Meyve (Kavun)",
+          "calories": 93,
           "category": "ana_yemek"
         }
       ],
-      "totalCalories": 704
+      "totalCalories": 713
     },
     {
       "ymk": 22,
