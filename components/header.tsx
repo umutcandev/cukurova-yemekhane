@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useSafeSession } from "@/hooks/use-safe-session"
+import { useSession } from "next-auth/react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AuthButton } from "@/components/auth-button"
@@ -66,7 +66,7 @@ function NotifPopover({
 export function Header() {
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const { data: session } = useSafeSession()
+    const { data: session } = useSession()
     const isAuthenticated = !!session?.user?.id
     const {
         notifications,

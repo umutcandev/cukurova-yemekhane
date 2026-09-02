@@ -2,7 +2,6 @@
 
 import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
-import { AUTH_ENABLED } from "@/lib/feature-flags"
 import {
     Dialog,
     DialogContent,
@@ -44,23 +43,19 @@ export function GoogleIcon({ className }: { className?: string }) {
     )
 }
 
-function AuthContent({ disabled }: { disabled?: boolean }) {
+function AuthContent() {
     return (
         <div className="flex flex-col items-center gap-4 py-2">
             <Button
                 className="w-full h-11 gap-3 text-sm font-medium"
                 variant="outline"
-                onClick={() => !disabled && signIn("google")}
-                disabled={disabled}
+                onClick={() => signIn("google")}
             >
                 <GoogleIcon className="h-5 w-5" />
                 Google ile Giriş Yap
             </Button>
             <p className="text-center text-[11px] text-muted-foreground/60">
-                {disabled
-                    ? "Sorularınız için hi@umutcan.dev e-posta adresini kullanabilirsiniz."
-                    : "Ücretsiz hesabınızla tüm kişisel özelliklere erişin."
-                }
+                Ücretsiz hesabınızla tüm kişisel özelliklere erişin.
             </p>
         </div>
     )
@@ -74,22 +69,9 @@ interface AuthModalProps {
 
 export function AuthModal({ open, onOpenChange, message }: AuthModalProps) {
     const isMobile = useIsMobile()
-    const disabled = !AUTH_ENABLED
 
-    const title = (
-        <>
-            Giriş Yapın
-            {disabled && (
-                <span className="ml-2 inline-flex items-center rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400 align-middle">
-                    Devre Dışı
-                </span>
-            )}
-        </>
-    )
-
-    const description = disabled
-        ? "Giriş sistemi şu anda geçici olarak devre dışıdır. Yeni eğitim döneminde tekrar aktif hale gelecektir."
-        : (message || "Bu özelliği kullanabilmek için giriş yapmanız gerekiyor.")
+    const title = "Giriş Yapın"
+    const description = message || "Bu özelliği kullanabilmek için giriş yapmanız gerekiyor."
 
     if (isMobile) {
         return (
@@ -103,7 +85,7 @@ export function AuthModal({ open, onOpenChange, message }: AuthModalProps) {
                             </DrawerDescription>
                         </DrawerHeader>
                         <div className="px-4 pb-2">
-                            <AuthContent disabled={disabled} />
+                            <AuthContent />
                         </div>
                         <DrawerFooter className="pt-2">
                             <DrawerClose asChild>
@@ -127,7 +109,7 @@ export function AuthModal({ open, onOpenChange, message }: AuthModalProps) {
                         {description}
                     </DialogDescription>
                 </DialogHeader>
-                <AuthContent disabled={disabled} />
+                <AuthContent />
             </DialogContent>
         </Dialog>
     )

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { Bookmark, Flame, LogOut, Settings } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { AUTH_ENABLED, PROFILE_CUSTOMIZATION_ENABLED } from "@/lib/feature-flags"
+import { PROFILE_CUSTOMIZATION_ENABLED } from "@/lib/feature-flags"
 import { resolveSelfIdentity } from "@/lib/user-identity"
 import {
     Avatar,
@@ -23,36 +23,6 @@ import {
 import { AuthModal } from "@/components/auth-modal"
 
 export function AuthButton() {
-    if (!AUTH_ENABLED) {
-        return <AuthButtonDisabled />
-    }
-
-    return <AuthButtonEnabled />
-}
-
-function AuthButtonDisabled() {
-    const [authOpen, setAuthOpen] = useState(false)
-
-    return (
-        <>
-            <Button
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs px-3 opacity-60 cursor-not-allowed"
-                onClick={() => setAuthOpen(true)}
-            >
-                Giriş Yap
-            </Button>
-
-            <AuthModal
-                open={authOpen}
-                onOpenChange={setAuthOpen}
-            />
-        </>
-    )
-}
-
-function AuthButtonEnabled() {
     const { data: session, status } = useSession()
     const [authOpen, setAuthOpen] = useState(false)
     const router = useRouter()

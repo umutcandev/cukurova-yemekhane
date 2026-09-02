@@ -4,8 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { MenuDataProvider } from "@/components/menu-data-provider"
-import { AUTH_ENABLED } from "@/lib/feature-flags"
-import { AuthSessionProvider } from "@/components/auth-session-provider"
+import { SessionProvider } from "next-auth/react"
 
 import { Toaster } from "@/components/ui/sonner"
 import { OnboardingModal } from "@/components/onboarding-modal"
@@ -65,13 +64,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthSessionProvider>
+          <SessionProvider>
             <MenuDataProvider>
               {children}
               <OnboardingModal />
             </MenuDataProvider>
             <Toaster />
-          </AuthSessionProvider>
+          </SessionProvider>
           {process.env.NEXT_PUBLIC_GA_ID && (
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
           )}

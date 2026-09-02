@@ -27,7 +27,7 @@ Live: [https://cukurova.app](https://cukurova.app)
 - **Calendar**: Bottom sheet on mobile, dialog on desktop
 - **Theming**: Dark / light mode with system preference detection
 - **Responsive**: Separate views for desktop and mobile
-- **Automation**: GitHub Actions for weekday menu scraping + favorite notifications
+- **Automation**: GitHub Actions for weekday menu scraping; favorite notifications run as a Coolify scheduled task
 - **Rate Limiting**: API protection via Upstash Redis (distributed) or in-memory fallback
 - **Analytics**: Google Analytics
 

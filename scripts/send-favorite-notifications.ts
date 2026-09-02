@@ -1,13 +1,16 @@
 /**
  * Favori Yemek E-posta Bildirim Scripti
  *
- * Bu script GitHub Actions'ta scrape step'inden sonra çalışır.
  * Bugünkü menüdeki yemekleri, kullanıcıların favorileriyle eşleştirir
  * ve eşleşme varsa Google SMTP üzerinden e-posta gönderir.
  *
- * Kullanım: npx tsx scripts/send-favorite-notifications.ts
+ * Kullanım: pnpm notify
  *
- * Gerekli env variables, bizim senaryomuzda github actions için Github repository secret olarak tanımlı:
+ * Coolify'da app container'ı üzerinde scheduled task olarak çalışır; DB internal
+ * ağdan erişildiği için dışarı açık olması gerekmez. Menü verisini repodan gelen
+ * public/data/ dosyalarından okur, yani scrape commit'i deploy olduktan sonra çalışmalı.
+ *
+ * Gerekli env variables (app'in Coolify environment'ından miras alınır):
  *   DATABASE_URL, SMTP_USER, SMTP_PASS
  */
 

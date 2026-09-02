@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useSafeSession } from "@/hooks/use-safe-session"
+import { useSession } from "next-auth/react"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -28,7 +28,7 @@ interface NotifPrefs {
 
 export default function AyarlarPage() {
     const router = useRouter()
-    const { status, update } = useSafeSession()
+    const { status, update } = useSession()
 
     const [profile, setProfile] = useState<ProfileState | null>(null)
     const [notifPrefs, setNotifPrefs] = useState<NotifPrefs | null>(null)
