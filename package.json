@@ -7,7 +7,8 @@
     "dev": "next dev --turbopack",
     "type-check": "tsc --noEmit",
     "start": "next start",
-    "scrape": "tsx scripts/scrape-menu.ts"
+    "scrape": "tsx scripts/scrape-menu.ts",
+    "notify": "tsx scripts/send-favorite-notifications.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.1",
