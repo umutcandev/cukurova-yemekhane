@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { MenuCard } from "@/components/menu-card"
+import { NetvayCard } from "@/components/netvay-card"
 import { Header } from "@/components/header"
 import { MenuDataProvider } from "@/components/menu-data-provider"
 import { getTurkeyDate } from "@/lib/date-utils"
@@ -203,6 +204,9 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
     const mobileCurrentDate = availableDates[mobileSelectedDateIndex]
     const mobileCurrentMenu = effectiveMenuData.days[mobileSelectedDateIndex]
 
+    // Logo kartı yalnızca üstünde gerçekten bir menü kartı varsa gösterilir
+    const hasMenuCard = (!!selectedDateRange?.from && selectedDateMenus.length > 0) || !!mobileCurrentMenu
+
     return (
         <main className="relative min-h-screen bg-background pb-20 md:pb-8">
             {/* Halftone Background */}
@@ -257,6 +261,9 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                                     <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === mobileCurrentMenu.date} onCommentsOpened={handleCommentsOpened} />
                                 </div>
                             ) : null}
+
+                            {/* Menü kartının hemen altında, aynı genişlikte ortalanmış logo kartı */}
+                            {hasMenuCard && <NetvayCard className="mt-4" />}
                         </section>
                     </MenuDataProvider>
                 </div>

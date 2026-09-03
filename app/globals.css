@@ -38,6 +38,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --scrollbar-thumb: color-mix(in oklab, var(--foreground) 22%, transparent);
+  --scrollbar-thumb-hover: color-mix(in oklab, var(--foreground) 38%, transparent);
+  --scrollbar-thumb-active: color-mix(in oklab, var(--foreground) 52%, transparent);
 }
 
 .dark {
@@ -73,6 +76,9 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --scrollbar-thumb: color-mix(in oklab, var(--foreground) 20%, transparent);
+  --scrollbar-thumb-hover: color-mix(in oklab, var(--foreground) 36%, transparent);
+  --scrollbar-thumb-active: color-mix(in oklab, var(--foreground) 50%, transparent);
 }
 
 @theme inline {
@@ -127,5 +133,41 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Minimal, temayla uyumlu kaydırma çubukları (Firefox) */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+
+  /* WebKit / Chromium — 8px yakalama alanı, 4px görünür çubuk */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    background-color: var(--scrollbar-thumb);
+    transition: background-color 150ms ease;
+  }
+
+  /* Hover'da 6px'e kalınlaşır: dinlenmede ince, kullanırken tutulabilir */
+  ::-webkit-scrollbar-thumb:hover {
+    border-width: 1px;
+    background-color: var(--scrollbar-thumb-hover);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    border-width: 1px;
+    background-color: var(--scrollbar-thumb-active);
   }
 }
