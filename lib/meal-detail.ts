@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import iconv from 'iconv-lite';
 import type { Ingredient, MealDetail } from './types';
+import { UPSTREAM_ORIGIN } from './upstream';
 
 /**
  * yemek-goster.asp detay sayfası için TEK parse noktası.
@@ -11,7 +12,7 @@ import type { Ingredient, MealDetail } from './types';
  * ayrışmasına yol açardı.
  */
 
-const MEAL_DETAIL_URL = 'https://yemekhane.cu.edu.tr/yemek-goster.asp';
+const MEAL_DETAIL_URL = `${UPSTREAM_ORIGIN}/yemek-goster.asp`;
 
 const USER_AGENT =
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
@@ -69,7 +70,7 @@ export function parseMealDetail(html: string, id: string): MealDetail {
     let imageUrl: string | null = null;
     const imgSrc = $('img[src^="yemekler/"]').attr('src');
     if (imgSrc) {
-        imageUrl = `https://yemekhane.cu.edu.tr/${imgSrc}`;
+        imageUrl = `${UPSTREAM_ORIGIN}/${imgSrc}`;
     }
 
     const ingredients: Ingredient[] = [];
