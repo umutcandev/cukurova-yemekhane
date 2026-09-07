@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card"
 import { Header } from "@/components/header"
 import { ProfileSection } from "@/components/account/profile-section"
 import { NotificationsSection } from "@/components/account/notifications-section"
+import { AllergenSection } from "@/components/account/allergen-section"
 import { PrivacySection } from "@/components/account/privacy-section"
 import { PROFILE_CUSTOMIZATION_ENABLED } from "@/lib/feature-flags"
 import { resolveSelfIdentity } from "@/lib/user-identity"
@@ -175,6 +176,8 @@ export default function AyarlarPage() {
                         onAvatarRemoved={handleAvatarRemoved}
                         onNicknameSaved={handleNicknameSaved}
                     />
+
+                    <AllergenSection />
 
                     <NotificationsSection
                         notifyFavorites={notifPrefs.notifyFavorites}

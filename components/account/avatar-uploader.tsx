@@ -150,13 +150,17 @@ export function AvatarUploader({
     return (
         <>
             <div className="rounded-xl ring-1 ring-foreground/10 bg-card overflow-hidden">
-                {/* Body — title + description left, avatar right */}
-                <div className="flex items-start justify-between gap-6 px-5 pt-5 pb-4">
-                    <div className="space-y-1">
-                        <h3 className="text-md font-semibold text-foreground leading-none">
+                {/* Body — title + description left, avatar right.
+                    Avatar yüksekliği metin bloğuyla eşit (16px başlık + 8px
+                    space-y-2 + tek satır açıklama ≈ 44px); kart bu sayede
+                    kompakt kalıyor. Başlığın leading-none'u ve space-y-2 bu
+                    hesabın parçası — değiştirirken avatar hizası kayar. */}
+                <div className="flex items-center justify-between gap-4 px-4 py-4 sm:gap-6 sm:px-5">
+                    <div className="min-w-0 space-y-2">
+                        <h3 className="text-base font-semibold text-foreground leading-none">
                             Profil Fotoğrafı
                         </h3>
-                        <p className="text-sm text-muted-foreground mt-2">
+                        <p className="text-sm text-muted-foreground text-pretty">
                             Profil fotoğrafınızı değiştirmek için fotoğrafa dokunun.
                         </p>
                     </div>
@@ -167,20 +171,20 @@ export function AvatarUploader({
                         disabled={isUploading || isDeleting}
                         className="relative flex-shrink-0 group cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        <Avatar className="h-[68px] w-[68px] ring-1 ring-border/50 transition-shadow group-hover:ring-border">
+                        <Avatar className="h-11 w-11 ring-1 ring-border/50 transition-shadow group-hover:ring-border">
                             <AvatarImage src={displayImage || ""} alt={displayName || ""} />
-                            <AvatarFallback className="text-lg bg-primary text-primary-foreground">
+                            <AvatarFallback className="text-sm bg-primary text-primary-foreground">
                                 {getInitials(displayName)}
                             </AvatarFallback>
                         </Avatar>
                         {isUploading && (
                             <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50">
-                                <Loader2 className="h-5 w-5 animate-spin text-white" />
+                                <Loader2 className="h-4 w-4 animate-spin text-white" />
                             </div>
                         )}
                         {!isUploading && (
                             <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 group-hover:bg-black/40 transition-colors">
-                                <Camera className="h-4 w-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <Camera className="h-3.5 w-3.5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
                         )}
                     </button>
@@ -194,8 +198,8 @@ export function AvatarUploader({
                     />
                 </div>
 
-                {/* Footer */}
-                <div className="flex items-center justify-between gap-4 border-t border-border/40 bg-muted/50 px-4 py-2">
+                {/* Footer — yüksekliği buton belirliyor: h-7 + py-1.5 = 40px. */}
+                <div className="flex items-center justify-between gap-4 border-t border-border/40 bg-muted/50 px-4 py-1.5 sm:px-5">
                     <p className="text-xs text-muted-foreground">
                         Profil fotoğrafı isteğe bağlıdır.
                     </p>
@@ -203,7 +207,7 @@ export function AvatarUploader({
                         type="button"
                         variant="destructive"
                         size="sm"
-                        className="h-8 text-xs flex-shrink-0"
+                        className="h-7 px-2.5 text-xs flex-shrink-0"
                         onClick={() => setConfirmOpen(true)}
                         disabled={!hasCustomImage || isUploading || isDeleting}
                     >

@@ -251,14 +251,14 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                             {selectedDateRange?.from && selectedDateMenus.length > 0 ? (
                                 // Show range of menus if date range is selected
                                 <div className="grid gap-4">
-                                    {selectedDateMenus.map((day) => (
-                                        <MenuCard key={day.date} day={day} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === day.date} onCommentsOpened={handleCommentsOpened} />
+                                    {selectedDateMenus.map((day, index) => (
+                                        <MenuCard key={day.date} day={day} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === day.date} onCommentsOpened={handleCommentsOpened} allowAllergenNudge={index === 0} />
                                     ))}
                                 </div>
                             ) : mobileCurrentMenu ? (
                                 // Show single menu from arrow navigation
                                 <div className="max-w-md mx-auto">
-                                    <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === mobileCurrentMenu.date} onCommentsOpened={handleCommentsOpened} />
+                                    <MenuCard day={mobileCurrentMenu} onMealClick={handleMealClick} autoOpenComments={autoOpenCommentsDate === mobileCurrentMenu.date} onCommentsOpened={handleCommentsOpened} allowAllergenNudge />
                                 </div>
                             ) : null}
 

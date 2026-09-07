@@ -1,3 +1,5 @@
+import type { AllergenHit } from './allergens';
+
 export interface MenuData {
   month: string;           // "2025-11"
   lastUpdated: string;     // ISO timestamp
@@ -20,6 +22,22 @@ export interface Meal {
   name: string;            // "Ekşili Köfte"
   calories: number;        // 294
   category: MealCategory;  // "ana_yemek"
+
+  // ── Alerjen zenginleştirmesi ──────────────────────────────────────
+  // Hepsi OPSİYONEL: public/data'daki eski JSON dosyaları bu alanları
+  // içermiyor ve okunmaya devam etmeli. Okuyan her yer undefined'ı ele almalı.
+
+  // NOT: malzeme listesi bilerek burada tutulmaz. Yemekhane, ID'yi
+  // değiştirmeden reçeteyi güncelleyebiliyor; bayat bir kopya göstermektense
+  // detay modalı her açılışta canlı çeker.
+  allergens?: AllergenHit[];
+  /** Sözlükte bulunmayan malzemeler → yemek "eksik veri" durumundadır */
+  unmappedIngredients?: string[];
+  dietFlags?: { hasMeat: boolean; hasAnimalProduct: boolean };
+  /** ISO timestamp — reçete ID sabitken değişebildiği için tazelik göstergesi */
+  enrichedAt?: string;
+  /** Detay sayfası çekilemedi; alerjen bilgisi YOK, "temiz" demek değil */
+  enrichmentFailed?: boolean;
 }
 
 export type MealCategory =

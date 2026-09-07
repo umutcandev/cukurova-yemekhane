@@ -30,7 +30,16 @@ jobs:
       - name: Bağımlılıkları Yükle
         run: pnpm install --frozen-lockfile
 
-      - name: Menüyü Scrape Et
+      # Bozuk sözlükle veri yazmamak için scrape'ten ÖNCE doğrula.
+      - name: Alerjen Motorunu Doğrula
+        run: pnpm run verify-allergens
+
+      # Scrape, menüyü çektikten sonra alerjen zenginleştirmesini de çalıştırır.
+      # lib/allergens.ts sözlüğünde bulunmayan bir malzeme çıkarsa script
+      # ::warning:: anotasyonu + job özeti üretir ve exit 0 ile devam eder:
+      # menü scrape'i sözlük eskidiği için düşürülmez, ama uyarı gözden kaçmaz.
+      # Uyarı gördüğünde sözlüğü güncelle ve `pnpm enrich` ile eski veriyi tazele.
+      - name: Menüyü Scrape Et ve Alerjenleri Etiketle
         run: pnpm run scrape
 
       - name: Değişiklikleri Kontrol Et ve Pushla

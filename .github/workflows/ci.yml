@@ -31,3 +31,8 @@ jobs:
 
       - name: TypeScript Kontrolu
         run: pnpm type-check
+
+      # Alerjen guvenlik-kritik: sozluk butunlugu ve normalizasyon her PR'da
+      # dogrulanir (bkz. scripts/verify-allergens.ts).
+      - name: Alerjen Motoru Kontrolu
+        run: pnpm verify-allergens

@@ -1,4 +1,9 @@
 import { scrapeFullMonth } from '../lib/scraper.js';
+import {
+  enrichMenuData,
+  printEnrichmentReport,
+  emitCIAnnotations,
+} from '../lib/enrich-menu.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -12,6 +17,18 @@ async function main() {
 
     // Scraping işlemini çalıştır
     const menuData = await scrapeFullMonth();
+
+    // Alerjen zenginleştirmesi.
+    // Bu adım komple çökerse scrape yine de eski davranışıyla JSON'u yazar:
+    // menü göstermek, alerjen göstermekten daha temeldir (ALERJENPLANI R6).
+    try {
+      const report = await enrichMenuData(menuData);
+      printEnrichmentReport(report);
+      emitCIAnnotations(report);
+    } catch (enrichError) {
+      console.error('\n⚠️ Alerjen zenginleştirmesi başarısız, menü alerjensiz kaydediliyor:');
+      console.error(enrichError);
+    }
 
     // public/data klasörünü oluştur (yoksa)
     const dataDir = path.join(__dirname, '..', 'public', 'data');
