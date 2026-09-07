@@ -14,6 +14,7 @@ import {
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import type { AdapterAccountType } from "next-auth/adapters";
+import type { AllergenId } from "../allergens";
 
 // ==========================================
 // Existing Table (preserved from raw SQL)
@@ -257,5 +258,96 @@ export const commentReports = pgTable(
     },
     (table) => [
         uniqueIndex("comment_reports_unique_idx").on(table.commentId, table.reporterId),
+    ]
+);
+
+// ==========================================
+// Alerjen tercihleri
+// ==========================================
+// email_preferences'a kolon eklemek yerine ayrı tablolar: bu tercih
+// bildirimlerden bağımsız olarak UI'da da (menü kartı, detay modalı)
+// kullanılıyor; ikisini aynı satıra sıkıştırmak gereksiz bağlar.
+
+/** Kullanıcının uyarı almak istediği alerjenler (çoktan seçmeli) */
+export const userAllergens = pgTable(
+    "user_allergens",
+    {
+        id: serial("id").primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        allergenId: text("allergen_id").$type<AllergenId>().notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        uniqueIndex("user_allergens_user_allergen_idx").on(table.userId, table.allergenId),
+        index("user_allergens_user_idx").on(table.userId),
+    ]
+);
+
+export const allergenPreferences = pgTable(
+    "allergen_preferences",
+    {
+        id: serial("id").primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        /**
+         * "içerebilir" seviyesindekiler de uyarı üretsin mi?
+         * Varsayılan true = güvenli taraf. Çölyak hastası muhtemelleri de
+         * görmek ister; hafif laktoz hassasiyeti olan her yemekte margarin
+         * uyarısı almak istemez.
+         */
+        includeProbable: boolean("include_probable").default(true).notNull(),
+        /** Alerjen e-postası istiyor mu? Favori e-postasından BAĞIMSIZ */
+        notifyAllergens: boolean("notify_allergens").default(false).notNull(),
+        dietPreference: text("diet_preference")
+            .$type<"none" | "vegetarian" | "vegan">()
+            .default("none")
+            .notNull(),
+        createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [uniqueIndex("allergen_prefs_user_idx").on(table.userId)]
+);
+
+// ==========================================
+// Bildirim gönderim kaydı
+// ==========================================
+
+/**
+ * "Bu kullanıcıya, bu kanaldan, bu menü günü için mail gitti" kaydı.
+ *
+ * Tek amacı ikinci kez göndermemek: cron çift tetiklenirse, redeploy sonrası
+ * task tekrar koşarsa ya da biri elle `pnpm notify` derse kullanıcı aynı maili
+ * yeniden almasın.
+ *
+ * Kayıt gönderim BAŞARILI olduktan sonra yazılır. Tersi (önce yaz, sonra
+ * gönder) SMTP hatasında kullanıcıyı sessizce uyarısız bırakırdı; alerjen
+ * uyarısında kaçırılan mail, tekrarlanan mailden kötüdür.
+ *
+ * channel: scripts/notify kanallarının id'si ("favorites", "allergens").
+ * Serbest metin, çünkü kanal listesi kodda yaşıyor ve DB'nin bilmesi gerekmiyor.
+ */
+export const notificationLog = pgTable(
+    "notification_log",
+    {
+        id: serial("id").primaryKey(),
+        userId: text("user_id")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        channel: text("channel").notNull(),
+        /** Menünün günü (TR saatine göre) — gönderim anı değil */
+        menuDate: date("menu_date", { mode: "string" }).notNull(),
+        sentAt: timestamp("sent_at", { mode: "date" }).defaultNow().notNull(),
+    },
+    (table) => [
+        uniqueIndex("notification_log_unique_idx").on(
+            table.userId,
+            table.channel,
+            table.menuDate
+        ),
+        // Koşu başına "bugün kime gitti" sorgusu bu indeksten okunur
+        index("notification_log_channel_date_idx").on(table.channel, table.menuDate),
     ]
 );

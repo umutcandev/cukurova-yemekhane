@@ -7,8 +7,12 @@
     "dev": "next dev --turbopack",
     "type-check": "tsc --noEmit",
     "start": "next start",
+    "db:tunnel": "tsx scripts/db-tunnel.ts",
     "scrape": "tsx scripts/scrape-menu.ts",
-    "notify": "tsx scripts/send-favorite-notifications.ts"
+    "enrich": "tsx scripts/enrich-menu.ts",
+    "verify-allergens": "tsx scripts/verify-allergens.ts",
+    "notify": "tsx scripts/notify/index.ts",
+    "notify:dry": "tsx scripts/notify/index.ts --dry-run"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.1",

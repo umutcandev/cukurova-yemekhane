@@ -14,22 +14,10 @@ Live: [https://cukurova.app](https://cukurova.app)
 ## Features
 
 - **Daily Menu**: Day-by-day menu cards with calorie info and meal details (ingredients and images)
-- **Menu Search**: Search past menus by meal name via command palette
-- **Menu Sharing**: Generate shareable images with `html-to-image`, download or copy to clipboard
-- **AI Menu Analysis**: Ready-made prompts for ChatGPT, Claude, Grok, and Perplexity
-- **Like / Dislike**: One reaction per user per menu, rate-limited
+- **Allergen Labelling**: Meal recipes are matched against a hand-curated ingredient → allergen dictionary (EU/TGK 14 allergens) with `kesin` / `içerebilir` confidence levels. Warning-only by design — it never claims a meal is safe. Unrecognised ingredients raise a CI warning instead of silently reading as "no allergens".
 - **Favorites**: Favorite meals, `/favorilerim` page, email notifications when a favorite meal appears on the menu
 - **Calorie Tracking**: Daily meal logging, calorie goal setting, pie chart visualization, `/kalori-takibi` page
 - **Comments**: Date-based comments with threading (replies), photo uploads (Cloudflare R2), real-time polling, profanity filter, XSS protection
-- **Comment Moderation**: Delete by author or moderator, reporting with email notifications to moderator
-- **Onboarding**: 5-step video guide after first login
-- **Google Sign-In**: NextAuth.js v5 + Google OAuth (JWT)
-- **Calendar**: Bottom sheet on mobile, dialog on desktop
-- **Theming**: Dark / light mode with system preference detection
-- **Responsive**: Separate views for desktop and mobile
-- **Automation**: GitHub Actions for weekday menu scraping; favorite notifications run as a Coolify scheduled task
-- **Rate Limiting**: API protection via Upstash Redis (distributed) or in-memory fallback
-- **Analytics**: Google Analytics
 
 ## Architecture
 
@@ -37,8 +25,13 @@ Live: [https://cukurova.app](https://cukurova.app)
 
 1. **Scraping** — University's ASP site is parsed with `cheerio`
 2. **Parsing** — `Windows-1254` → `UTF-8` conversion via `iconv-lite`, DOM extraction
-3. **Storage** — `public/data/menu-YYYY-MM-YYYYMMDD.json` files
-4. **Rendering** — Next.js Server Components
+3. **Enrichment** — Each meal's detail page is fetched once per scrape and its
+   ingredients are matched against `lib/allergens.ts`; allergens are written
+   into the JSON. Ingredient lists themselves are *not* cached — the detail
+   modal always fetches them live, because the canteen can change a recipe
+   without changing its meal ID.
+4. **Storage** — `public/data/menu-YYYY-MM-YYYYMMDD.json` files
+5. **Rendering** — Next.js Server Components
 
 ## Tech Stack
 
@@ -65,11 +58,23 @@ cd cukurova-yemekhane
 pnpm install
 cp .env.example .env.local   # Configure variables
 npx drizzle-kit push          # Push database schema
-pnpm scrape                   # Fetch menu data
+pnpm scrape                   # Fetch menu data (also labels allergens)
 pnpm dev                      # http://localhost:3000
 ```
 
 For detailed configuration, see `.env.example`.
+
+### Allergen dictionary maintenance
+
+The allergen feature is only as good as `lib/allergens.ts`. When the canteen
+introduces an ingredient the dictionary doesn't know, `pnpm scrape` prints it
+and raises a GitHub Actions warning, the affected meals are then shown as
+"incomplete data" rather than as allergen-free.
+
+```bash
+pnpm verify-allergens         # Dictionary integrity + normalisation checks
+pnpm enrich                   # Re-label existing JSON after a dictionary change
+```
 
 ## Contributing
 

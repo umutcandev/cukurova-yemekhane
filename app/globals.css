@@ -171,3 +171,83 @@
     background-color: var(--scrollbar-thumb-active);
   }
 }
+
+/*
+  Derin bağlantıyla (ör. /ayarlar?vurgu=alerjen) gelinen bölümü bir kez
+  işaretler: hafifçe belirir, sonra kaybolur.
+
+  Neden keyframe ve neden `forwards`: bu bir durum değil, bir kez oynayan bir
+  dizi. Vurgu bir React state'ine bağlansaydı, o state'i geri almayı unutan /
+  atlayan her yol (StrictMode'un çift efekti dahil) çerçeveyi ekranda kalıcı
+  bırakırdı. Animasyon kendi kendine biter; şeffaflıkta durur.
+*/
+@keyframes section-highlight {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  12% {
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--primary) 16%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.section-highlight {
+  animation: section-highlight 2s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-highlight {
+    animation: none;
+  }
+}
+
+/*
+  Dar bir butonun içinde sığmayan etiketi kaydırır (ör. görsel üstündeki
+  "Google Görseller ile Ara"). Şerit metnin İKİ kopyasını yan yana taşır ve
+  tam yarısı kadar kayar: ikinci kopya birincinin bittiği yeri doldurduğu için
+  döngü başa dönerken boşluk görünmez.
+
+  Başta ve sonda kısa bir duraklama var; sürekli kayan metin okunmuyor.
+*/
+@keyframes marquee-x {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+  85%,
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  /* Kenarlarda metni yumuşakça kes: kırpma çizgisi yerine solma. */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 6px,
+    black calc(100% - 6px),
+    transparent 100%
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x 7s ease-in-out infinite;
+}
+
+/* Kopyalar arası nefes payı; -50% kaymasının sorunsuz dönmesi için her
+   kopyanın kendi payını taşıması gerekir. */
+.marquee-track > * {
+  padding-inline-end: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}

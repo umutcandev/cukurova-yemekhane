@@ -33,7 +33,10 @@ next-env.d.ts
 
 # agents and internal docs
 AGENTS.md
+.agents/
 .agent/
+.claude/
+skills-lock.json
 
-# drizzle
+# Drizzle ORM
 /drizzle
