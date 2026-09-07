@@ -1,3 +1,15 @@
+// Build'de sabitlenir: YEMEKHANE_ORIGIN buildtime'da da tanımlı olmalı.
+const upstreamOrigin = process.env.YEMEKHANE_ORIGIN
+const proxyImagePattern = upstreamOrigin
+  ? [
+      {
+        protocol: new URL(upstreamOrigin).protocol.replace(':', ''),
+        hostname: new URL(upstreamOrigin).hostname,
+        pathname: '/yemekler/**',
+      },
+    ]
+  : []
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
@@ -26,6 +38,7 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      ...proxyImagePattern,
       {
         protocol: 'https',
         hostname: 'yemekhane.cu.edu.tr',

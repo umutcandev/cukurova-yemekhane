@@ -1,12 +1,13 @@
 import * as cheerio from 'cheerio';
 import iconv from 'iconv-lite';
 import type { MenuData, DayMenu, Meal } from './types.js';
+import { UPSTREAM_ORIGIN } from './upstream.js';
 
 export async function scrapeFullMonth(): Promise<MenuData> {
   console.log('📡 Yemekhane sitesinden veri çekiliyor...');
 
   // 1. Sayfayı çek (Windows-1254 encoding için iconv kullan)
-  const response = await fetch('https://yemekhane.cu.edu.tr/default.asp');
+  const response = await fetch(`${UPSTREAM_ORIGIN}/default.asp`);
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);

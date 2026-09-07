@@ -29,6 +29,10 @@ ENV NEXT_PUBLIC_GA_ID=$NEXT_PUBLIC_GA_ID
 ENV NEXT_PUBLIC_PHOTO_UPLOAD_ENABLED=$NEXT_PUBLIC_PHOTO_UPLOAD_ENABLED
 ENV NEXT_PUBLIC_PROFILE_CUSTOMIZATION_ENABLED=$NEXT_PUBLIC_PROFILE_CUSTOMIZATION_ENABLED
 
+# images.remotePatterns'a girdiği için buildtime'da da lazım.
+ARG YEMEKHANE_ORIGIN
+ENV YEMEKHANE_ORIGIN=$YEMEKHANE_ORIGIN
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # .next/cache cache mount'ta tutulur: sonraki build'lerde Next incremental
