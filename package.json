@@ -11,6 +11,7 @@
     "scrape": "tsx scripts/scrape-menu.ts",
     "enrich": "tsx scripts/enrich-menu.ts",
     "verify-allergens": "tsx scripts/verify-allergens.ts",
+    "verify-agent": "tsx scripts/verify-agent-readiness.ts",
     "notify": "tsx scripts/notify/index.ts",
     "notify:dry": "tsx scripts/notify/index.ts --dry-run"
   },

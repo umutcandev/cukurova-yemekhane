@@ -1,19 +1,23 @@
-import { Suspense } from "react"
+import type { Metadata } from "next"
+
 import { loadAllMenuData } from "@/lib/menu-loader"
+import { socialMetadata } from "@/lib/seo"
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/lib/site"
 import MenuPage from "./menu-page"
 
 // Her sayfa ziyaretinde menü verisi sunucudan taze çekilir; ISR/önbellek kullanılmaz.
 // Açık sekmelerdeki gün değişimi ise client tarafında use-day-change hook'u ile algılanır.
 export const dynamic = "force-dynamic"
 
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  ...socialMetadata({ title: SITE_TITLE, description: SITE_DESCRIPTION, path: "/" }),
+}
+
 export default async function Home() {
   try {
     const menuData = await loadAllMenuData()
-    return (
-      <Suspense>
-        <MenuPage menuData={menuData} />
-      </Suspense>
-    )
+    return <MenuPage menuData={menuData} />
   } catch (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

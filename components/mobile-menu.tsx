@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
-import { Home, Bookmark, Flame, Monitor, Sun, Moon, Loader2, Settings } from "lucide-react"
+import { Home, Bookmark, Flame, Monitor, Sun, Moon, Loader2, Settings, Info, ShieldCheck } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -17,6 +18,11 @@ import {
 } from "@/components/ui/avatar"
 
 
+
+const legalLinks = [
+    { href: "/hakkinda", label: "Hakkında", icon: Info },
+    { href: "/gizlilik", label: "Gizlilik Politikası", icon: ShieldCheck },
+] as const
 
 function ThemeToggleBar() {
     const { setTheme, theme } = useTheme()
@@ -82,24 +88,47 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         transition={{ duration: 0.2 }}
                         className="fixed inset-0 z-[60] dark text-foreground bg-background"
                     >
-                        {/* Header with close button — mirrors header layout */}
+                        {/* Header — ana header'ı yansıtır: solda logo, sağda butonlar.
+                            Buton radius'ları header'daki hamburger ile aynı kalsın
+                            diye rounded-full kullanılmıyor; morph sırasında şekil
+                            değişmiyor. */}
                         <div className="container mx-auto px-4 py-3">
-                            <div className="flex items-center justify-end min-h-9">
-                                <Button
-                                    variant="outline"
-                                    size="icon-sm"
+                            <div className="flex items-center justify-between min-h-9">
+                                <Link
+                                    href="/"
                                     onClick={onClose}
-                                    className="rounded-full"
+                                    className="relative h-9 w-40 block"
                                 >
-                                    <motion.svg
-                                        initial={{ rotate: -90 }}
-                                        animate={{ rotate: 0 }}
-                                        transition={{ duration: 0.25, ease: "easeOut" }}
-                                        width="16" height="16" viewBox="0 0 16 16" fill="currentColor" strokeLinejoin="round" style={{ color: 'currentcolor' }}
-                                    >
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M12.4697 13.5303L13 14.0607L14.0607 13L13.5303 12.4697L9.06065 7.99999L13.5303 3.53032L14.0607 2.99999L13 1.93933L12.4697 2.46966L7.99999 6.93933L3.53032 2.46966L2.99999 1.93933L1.93933 2.99999L2.46966 3.53032L6.93933 7.99999L2.46966 12.4697L1.93933 13L2.99999 14.0607L3.53032 13.5303L7.99999 9.06065L12.4697 13.5303Z" />
-                                    </motion.svg>
-                                </Button>
+                                    <Image
+                                        src="/logo-cu.svg"
+                                        alt="Yemekhane"
+                                        fill
+                                        className="object-contain object-left"
+                                    />
+                                </Link>
+
+                                <div className="flex items-center gap-2">
+                                    {legalLinks.map(({ href, label, icon: Icon }) => (
+                                        <Button key={href} variant="outline" size="icon-sm" asChild>
+                                            <Link
+                                                href={href}
+                                                onClick={onClose}
+                                                title={label}
+                                                aria-label={label}
+                                            >
+                                                <Icon className="h-4 w-4" />
+                                            </Link>
+                                        </Button>
+                                    ))}
+
+                                    <Button variant="outline" size="icon-sm" onClick={onClose}>
+                                        <svg
+                                            width="16" height="16" viewBox="0 0 16 16" fill="currentColor" strokeLinejoin="round" style={{ color: 'currentcolor' }}
+                                        >
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M12.4697 13.5303L13 14.0607L14.0607 13L13.5303 12.4697L9.06065 7.99999L13.5303 3.53032L14.0607 2.99999L13 1.93933L12.4697 2.46966L7.99999 6.93933L3.53032 2.46966L2.99999 1.93933L1.93933 2.99999L2.46966 3.53032L6.93933 7.99999L2.46966 12.4697L1.93933 13L2.99999 14.0607L3.53032 13.5303L7.99999 9.06065L12.4697 13.5303Z" />
+                                        </svg>
+                                    </Button>
+                                </div>
                             </div>
                         </div>
 

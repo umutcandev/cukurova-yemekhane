@@ -288,9 +288,9 @@ export function MenuCard({ day, onMealClick, autoOpenComments, onCommentsOpened,
             <div className="bg-muted/20 px-3 py-2 border-b border-border/40 flex items-center justify-between gap-2">
                 <div className="flex-1 min-w-0 overflow-hidden" style={{ maskImage: 'linear-gradient(to right, black 85%, transparent)' }}>
                     <div className="flex items-center gap-2 whitespace-nowrap">
-                        <div className="text-lg font-semibold text-foreground tracking-tight">
+                        <h2 className="text-lg font-semibold text-foreground tracking-tight">
                             {formatDayName(day.date)}
-                        </div>
+                        </h2>
                         <Badge variant="secondary" className="font-mono font-normal text-[10px] h-5 px-2 text-muted-foreground bg-secondary/50 shrink-0">
                             {formatDateShort(day.date)}
                         </Badge>

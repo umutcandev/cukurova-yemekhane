@@ -85,7 +85,7 @@ export function Header() {
                         <Link href="/" className="relative h-9 w-40 md:w-48 block">
                             <Image
                                 src="/logo-cu.svg"
-                                alt="ÇÜ Yemekhane"
+                                alt="Yemekhane"
                                 fill
                                 className="object-contain object-left"
                                 priority

@@ -1,13 +1,14 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
-import { useSearchParams } from "next/navigation"
+import { Suspense, useState, useEffect, useCallback } from "react"
+import type { ReadonlyURLSearchParams } from "next/navigation"
 import { MealDetailModal } from "@/components/meal-detail-modal"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import { MenuCard } from "@/components/menu-card"
 import { NetvayCard } from "@/components/netvay-card"
 import { Header } from "@/components/header"
 import { MenuDataProvider } from "@/components/menu-data-provider"
+import { SearchParamsSync } from "@/components/search-params-sync"
 import { getTurkeyDate } from "@/lib/date-utils"
 import { useDayChange } from "@/hooks/use-day-change"
 import { X } from "lucide-react"
@@ -115,13 +116,15 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
     const [mobileSelectedDateIndex, setMobileSelectedDateIndex] = useState<number>(findInitialDateIndex())
 
-    // URL'den ?date= parametresini oku → arama sonuçlarından navigasyon
-    const searchParams = useSearchParams()
+    // URL'den ?date= parametresini oku → arama sonuçlarından navigasyon.
+    // Hook SearchParamsSync içinde: bkz. components/search-params-sync.tsx
     const [autoOpenCommentsDate, setAutoOpenCommentsDate] = useState<string | null>(null)
     const handleCommentsOpened = useCallback(() => setAutoOpenCommentsDate(null), [])
-    useEffect(() => {
-        const dateParam = searchParams.get("date")
-        if (dateParam) {
+    const handleSearchParams = useCallback(
+        (searchParams: ReadonlyURLSearchParams) => {
+            const dateParam = searchParams.get("date")
+            if (!dateParam) return
+
             const targetIndex = effectiveMenuData.days.findIndex((day) => day.date === dateParam)
             if (targetIndex !== -1) {
                 setMobileSelectedDateIndex(targetIndex)
@@ -130,8 +133,9 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
             if (searchParams.get("openComments")) {
                 setAutoOpenCommentsDate(dateParam)
             }
-        }
-    }, [searchParams, effectiveMenuData.days])
+        },
+        [effectiveMenuData.days]
+    )
 
     // Use initialDate here as well to avoid mismatch
     const today = initialDate
@@ -209,6 +213,10 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
 
     return (
         <main className="relative min-h-screen bg-background pb-20 md:pb-8">
+            <Suspense fallback={null}>
+                <SearchParamsSync onChange={handleSearchParams} />
+            </Suspense>
+
             {/* Halftone Background */}
             <div
                 aria-hidden="true"
@@ -224,6 +232,13 @@ export default function MenuPage({ menuData }: { menuData: MenuData }) {
                 <Header />
 
                 <div className="container mx-auto px-4 py-6 md:py-8">
+
+                    {/* Sayfanın tek H1'i. Görsel tasarımda logo bu işi görüyor,
+                        ama logo bir <img> — ekran okuyucular ve tarayıcılar için
+                        metin bir başlık gerekiyor. */}
+                    <h1 className="sr-only">
+                        Çukurova Üniversitesi Yemekhane Günlük Menüsü
+                    </h1>
 
                     {/* Notice Banner */}
                     {showNotice && (
