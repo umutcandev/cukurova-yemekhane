@@ -5,6 +5,13 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { MenuDataProvider } from "@/components/menu-data-provider"
 import { SessionProvider } from "next-auth/react"
+import {
+  SITE_DESCRIPTION,
+  SITE_LOCALE,
+  SITE_NAME,
+  SITE_OG_IMAGE,
+  SITE_URL,
+} from "@/lib/site"
 
 import { Toaster } from "@/components/ui/sonner"
 import { OnboardingModal } from "@/components/onboarding-modal"
@@ -28,9 +35,26 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Çukurova Üniversitesi Yemekhane",
-  description: "Çukurova Üniversitesi Yemekhane Günlük Menü Takibi",
+  // Tüm göreli metadata URL'leri (canonical, og:image) bunun üzerine çözülür.
+  metadataBase: new URL(SITE_URL),
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
   generator: "umutcandev",
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    locale: SITE_LOCALE,
+    images: [SITE_OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: [SITE_OG_IMAGE.url],
+  },
   icons: {
     icon: [
       {

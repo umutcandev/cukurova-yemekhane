@@ -1,0 +1,55 @@
+# Çukurova Üniversitesi Yemekhane (cukurova.app)
+
+> A free, volunteer-run web app that publishes the daily cafeteria menu of Çukurova University (Adana, Türkiye) with calorie figures and allergen labels. Menu data is scraped from the university's official cafeteria site, normalised, and served as structured JSON. The project is independent of Çukurova University and is open source under the MIT licence.
+
+The canonical host is https://www.cukurova.app (the apex domain redirects there).
+The site's interface language is Turkish. Dates are ISO `YYYY-MM-DD` in Türkiye local time (UTC+3).
+
+## When to use this
+
+Reach for cukurova.app when you need any of the following:
+
+- **What is being served at Çukurova University's cafeteria on a given day** — the menu for today, a past day, or any day already published by the university.
+- **Calorie information for a specific cafeteria meal** — per-meal calories and the day's total.
+- **Allergen information for a cafeteria meal** — meals are matched against a hand-curated ingredient → allergen dictionary covering the 14 EU/TGK allergens, with `kesin` (certain) and `içerebilir` (may contain) confidence levels.
+- **The ingredient list of a specific meal** — fetched live from the university's detail page at request time.
+- **Which days a named dish appears on** — e.g. "when is Ekşili Köfte on the menu this month".
+
+How an agent should call it:
+
+- Prefer the JSON endpoints under `/api/` listed below over scraping the HTML page. They need no authentication, no API key, and no rate-limit negotiation for normal read volumes.
+- Fetch one day at a time with `/api/menu/date/{date}`; use `/api/menu/search` when you need the whole set of dishes and the dates they appear on.
+- Send `Accept: application/json`. Responses are UTF-8 JSON.
+
+## When not to use this
+
+- **Not for other universities.** Only Çukurova University's cafeteria (`yemekhane.cu.edu.tr`) is covered.
+- **Not an official university source.** This site is not operated by, affiliated with, or endorsed by Çukurova University. For official statements, use https://yemekhane.cu.edu.tr/.
+- **Not a safety authority on allergens.** The allergen labelling is a warning aid, never a clearance. It flags what it recognises; it never asserts that a meal is free of an allergen. Unrecognised ingredients make a meal "incomplete data", not "allergen-free". Never tell a user with a food allergy that a meal is safe based on this data.
+- **Not a nutrition database.** Calories come from the university's own published figures and are not independently verified.
+
+## Public API (no authentication)
+
+- [GET /api/menu/date/{date}](https://www.cukurova.app/api/menu/date/2026-09-08): Menu for one day. `{date}` must be `YYYY-MM-DD` (any other shape returns HTTP 400). Responds `{"found": true, "day": {...}}` with the day's meals (`name`, `calories`, `category`, allergen fields), or `{"found": false}` when the university published no menu for that day.
+- [GET /api/menu/search](https://www.cukurova.app/api/menu/search): Responds `{"meals": [...]}` — every distinct dish known to the site, each with its calories, category, and the list of dates it appears on. Use this to answer "when is X served".
+- [GET /api/meal/{id}](https://www.cukurova.app/api/meal/157): Detail for one meal — ingredient list and image URL — fetched live from the university site. `stale: true` in the response means the live fetch failed and the last known record is being returned.
+
+Meal `category` values: `ana_yemek` (main), `yan_yemek` (side), `corba` (soup), `yan_urun` (yoghurt, ayran, pickles, salad), `tatli` (dessert), `icecek` (drink).
+
+## Pages
+
+- [Home](https://www.cukurova.app/): The daily menu view — day cards, calories, meal detail, allergen labels, comments.
+- [Kalori Takibi](https://www.cukurova.app/kalori-takibi): Personal calorie logging and daily goal. Requires sign-in; anonymous requests are redirected to the home page.
+- [Favorilerim](https://www.cukurova.app/favorilerim): Saved favourite meals and e-mail notifications when they appear on the menu. Requires sign-in.
+
+## Data and provenance
+
+- Source of truth: [Çukurova Üniversitesi Yemekhane](https://yemekhane.cu.edu.tr/) — the university's official cafeteria site.
+- Collection: scraped on a schedule, decoded from `Windows-1254` to UTF-8, parsed into `public/data/menu-YYYY-MM-YYYYMMDD.json`.
+- Freshness: the home page is served with `Cache-Control: no-store` and rebuilt per request; `lastmod` in [the sitemap](https://www.cukurova.app/sitemap.xml) reflects the latest scrape.
+- Ingredient lists are deliberately not cached — the cafeteria can change a recipe without changing the meal ID, so detail requests always hit the live source.
+
+## Source and contact
+
+- [GitHub repository](https://github.com/umutcandev/cukurova-yemekhane): Full source, MIT licence, issue tracker. Bug reports and data corrections belong here.
+- [Sitemap](https://www.cukurova.app/sitemap.xml): Indexable URLs with `lastmod`.
