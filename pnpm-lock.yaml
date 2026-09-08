@@ -141,6 +141,9 @@ importers:
       drizzle-kit:
         specifier: ^0.31.9
         version: 0.31.9
+      esbuild:
+        specifier: 0.27.1
+        version: 0.27.1
       postcss:
         specifier: ^8.5
         version: 8.5.6

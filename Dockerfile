@@ -40,6 +40,20 @@ COPY . .
 RUN --mount=type=cache,id=next-cache,target=/app/.next/cache \
     pnpm build
 
+# Bildirim çalıştırıcısı runtime image'ında `pnpm notify` ile ÇALIŞTIRILAMAZ:
+# standalone çıktısında ne scripts/ kaynağı, ne tsx, ne de pnpm'in yazabileceği
+# bir node_modules var (container `nextjs` kullanıcısıyla, /app ise root'a ait
+# olarak çalışıyor). pnpm orada kurulum denemek zorunda kalıp
+# ERR_PNPM_PACKAGE_MANAGER_CREATE_SLOT_DIR ile düşüyordu.
+#
+# Bunun yerine script burada, bağımlılıkları da içine gömülü tek bir ESM
+# dosyasına paketlenir (.next/standalone/scripts/notify/index.mjs) ve aşağıdaki
+# standalone COPY'siyle image'a girer. Runtime'da sadece `node` gerekir:
+#   node scripts/notify/index.mjs
+# Yol derinliği önemli: scripts/notify/ → ../../public/data, kaynak ağaçtaki
+# ile aynı, yani menu.ts'nin DATA_DIR hesabı iki yerde de doğru çalışır.
+RUN pnpm build:notify
+
 # ---- runner ----
 FROM base AS runner
 ENV NODE_ENV=production
@@ -57,6 +71,10 @@ COPY --from=builder /app/.next/static ./.next/static
 # lib/menu-loader.ts bunları runtime'da diskten okuyor.
 # Bu satır silinirse menüler boş gelir.
 COPY --from=builder /app/public ./public
+
+# Scheduled task'ın çağıracağı bundle gerçekten geldi mi? Eksikse hata sabah
+# 06:00'daki cron'da değil, burada build'de çıksın.
+RUN test -f ./scripts/notify/index.mjs && node --check ./scripts/notify/index.mjs
 
 USER nextjs
 EXPOSE 3000

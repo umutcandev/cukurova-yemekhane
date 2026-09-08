@@ -76,6 +76,32 @@ pnpm verify-allergens         # Dictionary integrity + normalisation checks
 pnpm enrich                   # Re-label existing JSON after a dictionary change
 ```
 
+### Daily email notifications
+
+`scripts/notify/` matches today's menu against users' favorites and allergen
+preferences and sends the resulting emails. Locally:
+
+```bash
+pnpm notify:dry               # matches recipients and prints them, sends nothing
+pnpm notify                   # sends for real
+```
+
+In production the container runs Next's `standalone` output, which ships
+neither the TypeScript sources nor `tsx`, and `/app` is root-owned while the
+process runs as the unprivileged `nextjs` user. `pnpm notify` therefore cannot
+work there — pnpm falls back to installing dependencies and dies with
+`ERR_PNPM_PACKAGE_MANAGER_CREATE_SLOT_DIR: Permission denied`. The Docker build
+bundles the runner into a single self-contained entry point instead
+(`pnpm build:notify`), so the Coolify scheduled task command is:
+
+```
+node scripts/notify/index.mjs
+```
+
+`--dry-run` and `--date=YYYY-MM-DD` work the same way on that command. The task
+reads the menu from `public/data/`, so it must run *after* the day's scrape
+commit has been deployed.
+
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](.github/CONTRIBUTING.md) for details.

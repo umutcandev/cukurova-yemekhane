@@ -5,11 +5,19 @@
  * çalıştırır (favori eşleşmesi, alerjen uyarısı). Kanallar birbirinden
  * bağımsızdır: biri patlarsa diğeri yine çalışır, ama koşu hatalı sayılır.
  *
- * Kullanım: pnpm notify   (kuru koşu: pnpm notify:dry)
+ * Kullanım (yerel): pnpm notify   (kuru koşu: pnpm notify:dry)
  *
+ * Kullanım (production): node scripts/notify/index.mjs
  * Coolify'da app container'ı üzerinde scheduled task olarak çalışır; DB internal
  * ağdan erişildiği için dışarı açık olması gerekmez. Menü verisini repodan gelen
  * public/data/ dosyalarından okur, yani scrape commit'i deploy olduktan sonra çalışmalı.
+ *
+ * production'da `pnpm notify` ÇALIŞMAZ: runtime image'ı Next standalone çıktısı,
+ * içinde ne bu TypeScript kaynağı ne de tsx var; pnpm kurulum denemek zorunda
+ * kalır ve /app root'a ait olduğu için (container `nextjs` kullanıcısıyla koşar)
+ * ERR_PNPM_PACKAGE_MANAGER_CREATE_SLOT_DIR ile düşer. Bu dosya build sırasında
+ * (Dockerfile'daki `pnpm build:notify`) tek bir .mjs'e paketlenir ve scheduled
+ * task doğrudan node ile o bundle'ı çağırır.
  *
  * Gerekli env variables (app'in Coolify environment'ından miras alınır):
  *   DATABASE_URL, SMTP_USER, SMTP_PASS

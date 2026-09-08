@@ -6,7 +6,11 @@ import type { DayData, MenuData } from "./types.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/** scripts/notify/ → repo kökü. Dosya taşınırsa bu derinlik güncellenmeli. */
+/**
+ * scripts/notify/ → repo kökü. Dosya taşınırsa bu derinlik güncellenmeli.
+ * Production bundle'ı da aynı derinlikte durur (/app/scripts/notify/index.mjs
+ * → /app/public/data), bu yüzden iki layout'ta da tek hesap yeter.
+ */
 const DATA_DIR = path.join(__dirname, "..", "..", "public", "data");
 
 /**
