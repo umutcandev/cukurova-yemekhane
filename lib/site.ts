@@ -7,7 +7,13 @@
  * arama motorları yönlendirme zinciri görür.
  */
 
-export const SITE_URL = process.env.APP_URL || "https://www.cukurova.app"
+/**
+ * Bilerek sabit: env'e baglanmaz. Canonical, og:url ve sitemap her ortamda
+ * production adresini gostermeli — preview deploy'lari kendini kanonik ilan
+ * ederse arama motorlari yanlis URL indeksler. (lib/mail.ts'teki APP_URL ayri
+ * bir amaca hizmet ediyor: e-posta icindeki geri donus linkleri.)
+ */
+export const SITE_URL = "https://www.cukurova.app"
 
 export const SITE_NAME = "Çukurova Üniversitesi Yemekhane"
 
