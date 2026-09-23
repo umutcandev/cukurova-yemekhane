@@ -1,7 +1,7 @@
 {
   "month": "2026-09",
-  "lastUpdated": "2026-09-15T05:01:03.303Z",
-  "scrapeDate": "2026-09-15",
+  "lastUpdated": "2026-09-23T05:00:49.872Z",
+  "scrapeDate": "2026-09-23",
   "totalDays": 25,
   "days": [
     {
@@ -43,7 +43,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "1305",
@@ -64,7 +64,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "155",
@@ -85,7 +85,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "113",
@@ -98,7 +98,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 713
@@ -149,7 +149,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2",
@@ -170,7 +170,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "10",
@@ -191,7 +191,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "64",
@@ -212,7 +212,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 1058
@@ -256,7 +256,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "273",
@@ -285,7 +285,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "94",
@@ -298,7 +298,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2333",
@@ -319,7 +319,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 832
@@ -349,7 +349,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "4361",
@@ -370,7 +370,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "275",
@@ -392,7 +392,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "4",
@@ -427,7 +427,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 936
@@ -457,7 +457,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2314",
@@ -479,7 +479,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "26",
@@ -500,7 +500,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "46",
@@ -551,7 +551,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 1351
@@ -590,7 +590,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "17",
@@ -612,7 +612,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "10",
@@ -633,7 +633,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "114",
@@ -646,7 +646,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 1162
@@ -676,7 +676,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "268",
@@ -704,7 +704,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "155",
@@ -725,7 +725,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "33",
@@ -777,7 +777,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 1390
@@ -807,7 +807,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2315",
@@ -828,7 +828,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "26",
@@ -849,7 +849,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "13",
@@ -870,7 +870,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 858
@@ -924,7 +924,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "5366",
@@ -945,7 +945,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "11",
@@ -966,7 +966,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "4",
@@ -1001,7 +1001,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 1030
@@ -1031,7 +1031,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2",
@@ -1052,7 +1052,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "10",
@@ -1073,7 +1073,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "24",
@@ -1094,7 +1094,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 808
@@ -1132,7 +1132,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2310",
@@ -1160,7 +1160,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "155",
@@ -1181,7 +1181,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "92",
@@ -1194,7 +1194,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 915
@@ -1216,11 +1216,11 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "218",
-          "name": "boş",
+          "id": "213",
+          "name": "BOŞ",
           "calories": 1,
           "category": "ana_yemek",
           "allergens": [],
@@ -1229,20 +1229,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
-        },
-        {
-          "id": "218",
-          "name": "boş",
-          "calories": 1,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "11",
@@ -1263,7 +1250,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "8418",
@@ -1276,7 +1263,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 653
@@ -1298,7 +1285,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2314",
@@ -1320,7 +1307,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "10",
@@ -1341,7 +1328,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "24",
@@ -1362,7 +1349,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 817
@@ -1392,20 +1379,28 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "156",
-          "name": "Nohutlu Pirinç Pilavı",
-          "calories": 377,
+          "id": "40",
+          "name": "Arpa Şehriyeli Pirinç Pilavı",
+          "calories": 1,
           "category": "ana_yemek",
-          "allergens": [],
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "ARPA ŞEHRİYE"
+              ]
+            }
+          ],
           "unmappedIngredients": [],
           "dietFlags": {
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "26",
@@ -1426,7 +1421,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "260",
@@ -1439,10 +1434,10 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 928
+      "totalCalories": 552
     },
     {
       "ymk": 15,
@@ -1490,7 +1485,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "96",
@@ -1527,7 +1522,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "11",
@@ -1548,7 +1543,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "13",
@@ -1569,7 +1564,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 1090
@@ -1581,23 +1576,17 @@
       "hasData": true,
       "meals": [
         {
-          "id": "1",
-          "name": "Terbiyeli Köfte",
-          "calories": 295,
+          "id": "157",
+          "name": "Ekşili Köfte",
+          "calories": 294,
           "category": "ana_yemek",
           "allergens": [
             {
               "id": "gluten",
               "confidence": "kesin",
               "from": [
+                "EKMEK SOMUN",
                 "UN"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "YOĞURT"
               ]
             },
             {
@@ -1613,7 +1602,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "1305",
@@ -1634,28 +1623,28 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
           "category": "ana_yemek",
           "allergens": [
             {
-              "id": "sulfit",
-              "confidence": "muhtemel",
+              "id": "sut",
+              "confidence": "kesin",
               "from": [
-                "ŞALGAM"
+                "YOĞURT"
               ]
             }
           ],
           "unmappedIngredients": [],
           "dietFlags": {
             "hasMeat": false,
-            "hasAnimalProduct": false
+            "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "113",
@@ -1668,10 +1657,10 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 713
+      "totalCalories": 810
     },
     {
       "ymk": 17,
@@ -1680,16 +1669,30 @@
       "hasData": true,
       "meals": [
         {
-          "id": "2318",
-          "name": "Soslu But Special",
+          "id": "278",
+          "name": "FIRIN BUT IZGARA",
           "calories": 620,
           "category": "ana_yemek",
           "allergens": [
             {
-              "id": "gluten",
+              "id": "sut",
               "confidence": "kesin",
               "from": [
-                "UN"
+                "SÜT"
+              ]
+            },
+            {
+              "id": "hardal",
+              "confidence": "muhtemel",
+              "from": [
+                "KÖRİ"
+              ]
+            },
+            {
+              "id": "kereviz",
+              "confidence": "muhtemel",
+              "from": [
+                "KÖRİ"
               ]
             }
           ],
@@ -1698,7 +1701,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "156",
@@ -1711,42 +1714,22 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "258",
-          "name": "Dondurma",
-          "calories": 133,
+          "id": "218",
+          "name": "Pancarlı Havuç Salatası",
+          "calories": 120,
           "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "DONDURMA"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "muhtemel",
-              "from": [
-                "DONDURMA"
-              ]
-            },
-            {
-              "id": "soya",
-              "confidence": "muhtemel",
-              "from": [
-                "DONDURMA"
-              ]
-            }
+          "allergens": [],
+          "unmappedIngredients": [
+            "KIRMIZI PANCAR"
           ],
-          "unmappedIngredients": [],
           "dietFlags": {
             "hasMeat": false,
-            "hasAnimalProduct": true
+            "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "8376",
@@ -1797,10 +1780,10 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 1604
+      "totalCalories": 1591
     },
     {
       "ymk": 18,
@@ -1827,7 +1810,28 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
+        },
+        {
+          "id": "282",
+          "name": "Patlıcan Musakka (Etsiz)",
+          "calories": 292,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2315",
@@ -1848,7 +1852,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "26",
@@ -1869,12 +1873,12 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "59",
-          "name": "Meyve",
-          "calories": 1,
+          "id": "114",
+          "name": "Meyve (Karpuz)",
+          "calories": 92,
           "category": "ana_yemek",
           "allergens": [],
           "unmappedIngredients": [],
@@ -1882,10 +1886,10 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 816
+      "totalCalories": 907
     },
     {
       "ymk": 19,
@@ -1912,7 +1916,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2",
@@ -1933,7 +1937,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "11",
@@ -1954,7 +1958,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "13",
@@ -1975,7 +1979,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 782
@@ -1987,30 +1991,16 @@
       "hasData": true,
       "meals": [
         {
-          "id": "4362",
-          "name": "Tavuk Köfte+Patates püresi",
-          "calories": 350,
+          "id": "2318",
+          "name": "Soslu But Special",
+          "calories": 620,
           "category": "ana_yemek",
           "allergens": [
             {
               "id": "gluten",
               "confidence": "kesin",
               "from": [
-                "EKMEK SOMUN"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "SÜT"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "kesin",
-              "from": [
-                "YUMURTA"
+                "UN"
               ]
             }
           ],
@@ -2019,7 +2009,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2315",
@@ -2040,7 +2030,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "155",
@@ -2061,7 +2051,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2334",
@@ -2103,10 +2093,10 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 1115
+      "totalCalories": 1385
     },
     {
       "ymk": 21,
@@ -2141,7 +2131,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "1305",
@@ -2162,7 +2152,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "10",
@@ -2183,12 +2173,12 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "59",
-          "name": "Meyve",
-          "calories": 1,
+          "id": "113",
+          "name": "Meyve (Kavun)",
+          "calories": 93,
           "category": "ana_yemek",
           "allergens": [],
           "unmappedIngredients": [],
@@ -2196,10 +2186,10 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 718
+      "totalCalories": 810
     },
     {
       "ymk": 22,
@@ -2241,7 +2231,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "156",
@@ -2254,7 +2244,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "8414",
@@ -2275,7 +2265,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "64",
@@ -2296,7 +2286,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 908
@@ -2318,7 +2308,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "17",
@@ -2340,7 +2330,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "10",
@@ -2361,12 +2351,12 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "59",
-          "name": "Meyve",
-          "calories": 1,
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
           "category": "ana_yemek",
           "allergens": [],
           "unmappedIngredients": [],
@@ -2374,10 +2364,10 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 811
+      "totalCalories": 952
     },
     {
       "ymk": 24,
@@ -2404,7 +2394,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "2",
@@ -2425,7 +2415,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "11",
@@ -2446,7 +2436,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "33",
@@ -2498,7 +2488,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
       "totalCalories": 1500
@@ -2542,7 +2532,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "123",
@@ -2563,7 +2553,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
           "id": "155",
@@ -2584,12 +2574,12 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         },
         {
-          "id": "59",
-          "name": "Meyve",
-          "calories": 1,
+          "id": "1296",
+          "name": "MUZ",
+          "calories": 150,
           "category": "ana_yemek",
           "allergens": [],
           "unmappedIngredients": [],
@@ -2597,10 +2587,10 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-09-15T05:01:03.308Z"
+          "enrichedAt": "2026-09-23T05:00:49.878Z"
         }
       ],
-      "totalCalories": 797
+      "totalCalories": 946
     }
   ]
 }
