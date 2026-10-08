@@ -1,1022 +1,9 @@
 {
   "month": "2026-10",
-  "lastUpdated": "2026-10-01T05:00:55.183Z",
-  "scrapeDate": "2026-10-01",
+  "lastUpdated": "2026-10-08T05:00:51.824Z",
+  "scrapeDate": "2026-10-08",
   "totalDays": 25,
   "days": [
-    {
-      "ymk": 6,
-      "date": "2026-09-07",
-      "dayName": "Pazartesi",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "161",
-          "name": "SOSLU DALYAN KÖFTE + PARMAK PATATES",
-          "calories": 600,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "EKMEK SOMUN",
-                "UN",
-                "PARMAK PATATES DONMUŞ"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "kesin",
-              "from": [
-                "YUMURTA"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "17",
-          "name": "Şehriyeli Bulgur Pilavı",
-          "calories": 352,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "ARPA ŞEHRİYE",
-                "BULGUR"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "YOĞURT"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "114",
-          "name": "Meyve (Karpuz)",
-          "calories": 92,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 1162
-    },
-    {
-      "ymk": 7,
-      "date": "2026-09-08",
-      "dayName": "Salı",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "2318",
-          "name": "Soslu But Special",
-          "calories": 620,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "UN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "268",
-          "name": "Dövme Çorbası",
-          "calories": 155,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "DÖĞME"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "YOĞURT"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sulfit",
-              "confidence": "muhtemel",
-              "from": [
-                "ŞALGAM"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "33",
-          "name": "Revani",
-          "calories": 595,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "KABARTMA TOZU",
-                "UN",
-                "İRMİK"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "BİTKİSEL MARGARİN",
-                "YOĞURT"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "kesin",
-              "from": [
-                "YUMURTA"
-              ]
-            },
-            {
-              "id": "sert_kabuklu",
-              "confidence": "muhtemel",
-              "from": [
-                "HİNDİSTAN CEVİZİ"
-              ]
-            },
-            {
-              "id": "soya",
-              "confidence": "muhtemel",
-              "from": [
-                "BİTKİSEL MARGARİN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 1390
-    },
-    {
-      "ymk": 8,
-      "date": "2026-09-09",
-      "dayName": "Çarşamba",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "69",
-          "name": "Patlıcan Güveç (Etli)",
-          "calories": 292,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "UN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "2315",
-          "name": "Mercimekli Bulgur Pilavı",
-          "calories": 364,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "BULGUR"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "YOĞURT"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "13",
-          "name": "Havuç Salata",
-          "calories": 105,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sulfit",
-              "confidence": "muhtemel",
-              "from": [
-                "SİRKE"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 858
-    },
-    {
-      "ymk": 9,
-      "date": "2026-09-10",
-      "dayName": "Perşembe",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "97",
-          "name": "Hasan Paşa Köfte (Püreli)",
-          "calories": 480,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "EKMEK SOMUN",
-                "UN"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "KAŞAR PEYNİRİ",
-                "SÜT",
-                "BİTKİSEL MARGARİN"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "kesin",
-              "from": [
-                "YUMURTA"
-              ]
-            },
-            {
-              "id": "soya",
-              "confidence": "muhtemel",
-              "from": [
-                "BİTKİSEL MARGARİN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "5366",
-          "name": "Arpa Şehriye Pilavı",
-          "calories": 250,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "ARPA ŞEHRİYE"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "11",
-          "name": "Ayran",
-          "calories": 60,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "AYRAN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "4",
-          "name": "Muhallebi",
-          "calories": 240,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "muhtemel",
-              "from": [
-                "NİŞASTA"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "SÜT"
-              ]
-            },
-            {
-              "id": "sert_kabuklu",
-              "confidence": "kesin",
-              "from": [
-                "CEVİZ İÇİ"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 1030
-    },
-    {
-      "ymk": 10,
-      "date": "2026-09-11",
-      "dayName": "Cuma",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "22",
-          "name": "Etli Nohut",
-          "calories": 373,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "UN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "2",
-          "name": "Tel Şehriyeli Pirinç Pilavı",
-          "calories": 310,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "TEL ŞEHRİYE"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "YOĞURT"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sulfit",
-              "confidence": "muhtemel",
-              "from": [
-                "SALATALIK TURŞUSU"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 808
-    },
-    {
-      "ymk": 11,
-      "date": "2026-09-14",
-      "dayName": "Pazartesi",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "41",
-          "name": "Sini Köfte",
-          "calories": 460,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "UN",
-                "EKMEK SOMUN"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "kesin",
-              "from": [
-                "YUMURTA"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "2310",
-          "name": "Peynirli Makarna",
-          "calories": 341,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "MAKARNA"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "TAM YAĞLI BEYAZ PEYNİR"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "155",
-          "name": "Şalgam",
-          "calories": 20,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sulfit",
-              "confidence": "muhtemel",
-              "from": [
-                "ŞALGAM"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "92",
-          "name": "Meyve (Erik)",
-          "calories": 94,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 915
-    },
-    {
-      "ymk": 12,
-      "date": "2026-09-15",
-      "dayName": "Salı",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "128",
-          "name": "Tavuklu Pilav",
-          "calories": 591,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "213",
-          "name": "BOŞ",
-          "calories": 1,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "11",
-          "name": "Ayran",
-          "calories": 60,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "AYRAN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "8418",
-          "name": "boş",
-          "calories": 1,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 653
-    },
-    {
-      "ymk": 13,
-      "date": "2026-09-16",
-      "dayName": "Çarşamba",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "49",
-          "name": "Etli Kuru Fasulye",
-          "calories": 340,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "2314",
-          "name": "Tel Şehriyeli Bulgur Pilavı",
-          "calories": 352,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "BULGUR",
-                "TEL ŞEHRİYE"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "10",
-          "name": "Yoğurt",
-          "calories": 118,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "YOĞURT"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "24",
-          "name": "Salatalık Turşusu",
-          "calories": 7,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sulfit",
-              "confidence": "muhtemel",
-              "from": [
-                "SALATALIK TURŞUSU"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 817
-    },
-    {
-      "ymk": 14,
-      "date": "2026-09-17",
-      "dayName": "Perşembe",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "129",
-          "name": "Patlıcan Musakka",
-          "calories": 307,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "UN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "40",
-          "name": "Arpa Şehriyeli Pirinç Pilavı",
-          "calories": 1,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "ARPA ŞEHRİYE"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "26",
-          "name": "Cacık",
-          "calories": 97,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "YOĞURT"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "260",
-          "name": "Meyve (Şeftali)",
-          "calories": 147,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 552
-    },
-    {
-      "ymk": 15,
-      "date": "2026-09-18",
-      "dayName": "Cuma",
-      "hasData": true,
-      "meals": [
-        {
-          "id": "8419",
-          "name": "Kremalı Körili Tavuk",
-          "calories": 440,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "UN"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "SÜT"
-              ]
-            },
-            {
-              "id": "hardal",
-              "confidence": "muhtemel",
-              "from": [
-                "KÖRİ"
-              ]
-            },
-            {
-              "id": "kereviz",
-              "confidence": "muhtemel",
-              "from": [
-                "KÖRİ"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": true,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "96",
-          "name": "Fırın Makarna",
-          "calories": 485,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "MAKARNA",
-                "UN"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "SÜT",
-                "KAŞAR PEYNİRİ"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "kesin",
-              "from": [
-                "YUMURTA"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "11",
-          "name": "Ayran",
-          "calories": 60,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "AYRAN"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "13",
-          "name": "Havuç Salata",
-          "calories": 105,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sulfit",
-              "confidence": "muhtemel",
-              "from": [
-                "SİRKE"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        }
-      ],
-      "totalCalories": 1090
-    },
     {
       "ymk": 16,
       "date": "2026-09-21",
@@ -1050,7 +37,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "1305",
@@ -1071,7 +58,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "10",
@@ -1092,7 +79,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "113",
@@ -1105,7 +92,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 810
@@ -1149,7 +136,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "156",
@@ -1162,7 +149,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "218",
@@ -1177,7 +164,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "8376",
@@ -1228,7 +215,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 1591
@@ -1258,7 +245,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "2315",
@@ -1279,7 +266,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "26",
@@ -1300,7 +287,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "114",
@@ -1313,7 +300,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 907
@@ -1343,7 +330,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "2",
@@ -1364,7 +351,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "11",
@@ -1385,7 +372,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "13",
@@ -1406,7 +393,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 782
@@ -1436,7 +423,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "2315",
@@ -1457,7 +444,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "64",
@@ -1478,7 +465,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "2334",
@@ -1520,7 +507,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 1375
@@ -1558,7 +545,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "1305",
@@ -1579,7 +566,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "10",
@@ -1600,7 +587,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "113",
@@ -1613,7 +600,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 810
@@ -1658,7 +645,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "156",
@@ -1671,7 +658,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "8414",
@@ -1693,7 +680,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "64",
@@ -1714,7 +701,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 1027
@@ -1736,7 +723,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "17",
@@ -1758,7 +745,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "10",
@@ -1779,7 +766,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "144",
@@ -1792,7 +779,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 952
@@ -1836,20 +823,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
-        },
-        {
-          "id": "37",
-          "name": "Zeytinyağlı Barbunya",
-          "calories": 371,
-          "category": "ana_yemek",
-          "allergens": [],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": false
-          },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "2",
@@ -1870,7 +844,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "11",
@@ -1891,7 +865,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "33",
@@ -1943,7 +917,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 1585
@@ -1965,7 +939,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "123",
@@ -1986,7 +960,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "155",
@@ -2007,7 +981,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "114",
@@ -2020,7 +994,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 726
@@ -2058,7 +1032,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "1305",
@@ -2079,7 +1053,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "218",
@@ -2094,7 +1068,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "64",
@@ -2115,7 +1089,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 670
@@ -2137,7 +1111,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "2314",
@@ -2159,7 +1133,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "10",
@@ -2180,12 +1154,12 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
-          "id": "144",
-          "name": "Meyve (Elma)",
-          "calories": 142,
+          "id": "113",
+          "name": "Meyve (Kavun)",
+          "calories": 93,
           "category": "ana_yemek",
           "allergens": [],
           "unmappedIngredients": [],
@@ -2193,10 +1167,10 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
-      "totalCalories": 952
+      "totalCalories": 903
     },
     {
       "ymk": 3,
@@ -2237,7 +1211,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "156",
@@ -2250,7 +1224,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "26",
@@ -2271,7 +1245,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "63",
@@ -2284,7 +1258,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 952
@@ -2322,7 +1296,28 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "197",
+          "name": "Fırın Patates (Etsiz)",
+          "calories": 220,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "2314",
@@ -2344,7 +1339,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "258",
@@ -2379,7 +1374,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
           "id": "8376",
@@ -2430,7 +1425,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
       "totalCalories": 1419
@@ -2442,16 +1437,1071 @@
       "hasData": true,
       "meals": [
         {
-          "id": "183",
-          "name": "Tavuk Izgara",
+          "id": "278",
+          "name": "FIRIN BUT IZGARA",
           "calories": 620,
           "category": "ana_yemek",
           "allergens": [
             {
-              "id": "gluten",
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "SÜT"
+              ]
+            },
+            {
+              "id": "hardal",
               "confidence": "muhtemel",
               "from": [
-                "PARMAK PATATES DONMUŞ"
+                "KÖRİ"
+              ]
+            },
+            {
+              "id": "kereviz",
+              "confidence": "muhtemel",
+              "from": [
+                "KÖRİ"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "2",
+          "name": "Tel Şehriyeli Pirinç Pilavı",
+          "calories": 310,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "TEL ŞEHRİYE"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "8416",
+          "name": "Karnabahar Salatası",
+          "calories": 1,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sulfit",
+              "confidence": "muhtemel",
+              "from": [
+                "SALATALIK TURŞUSU"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "2333",
+          "name": "Ayran",
+          "calories": 60,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "AYRAN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 991
+    },
+    {
+      "ymk": 6,
+      "date": "2026-10-12",
+      "dayName": "Pazartesi",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "5",
+          "name": "SOSLU DALYAN KÖFTE + PATATES PÜRESİ",
+          "calories": 246,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN",
+                "EKMEK SOMUN"
+              ]
+            },
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "SÜT",
+                "BİTKİSEL MARGARİN"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "kesin",
+              "from": [
+                "YUMURTA"
+              ]
+            },
+            {
+              "id": "soya",
+              "confidence": "muhtemel",
+              "from": [
+                "BİTKİSEL MARGARİN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "8378",
+          "name": "Sebzeli Erişte Pilavı",
+          "calories": 290,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "ERİŞTE MAKARNA",
+                "TAVUK BULYON",
+                "ÇESNİ"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "muhtemel",
+              "from": [
+                "ERİŞTE MAKARNA"
+              ]
+            },
+            {
+              "id": "soya",
+              "confidence": "muhtemel",
+              "from": [
+                "TAVUK BULYON",
+                "ÇESNİ"
+              ]
+            },
+            {
+              "id": "hardal",
+              "confidence": "muhtemel",
+              "from": [
+                "ÇESNİ"
+              ]
+            },
+            {
+              "id": "kereviz",
+              "confidence": "muhtemel",
+              "from": [
+                "TAVUK BULYON",
+                "ÇESNİ"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "YOĞURT"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sulfit",
+              "confidence": "muhtemel",
+              "from": [
+                "SALATALIK TURŞUSU"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 661
+    },
+    {
+      "ymk": 7,
+      "date": "2026-10-13",
+      "dayName": "Salı",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "182",
+          "name": "Tavuk Haşlama",
+          "calories": 396,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN"
+              ]
+            },
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "YOĞURT"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "kesin",
+              "from": [
+                "YUMURTA"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "156",
+          "name": "Nohutlu Pirinç Pilavı",
+          "calories": 377,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "155",
+          "name": "Şalgam",
+          "calories": 20,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sulfit",
+              "confidence": "muhtemel",
+              "from": [
+                "ŞALGAM"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 935
+    },
+    {
+      "ymk": 8,
+      "date": "2026-10-14",
+      "dayName": "Çarşamba",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "2329",
+          "name": "Çiftlik Köfte",
+          "calories": 387,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "EKMEK SOMUN",
+                "UN"
+              ]
+            },
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "YOĞURT"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "kesin",
+              "from": [
+                "YUMURTA"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "2314",
+          "name": "Tel Şehriyeli Bulgur Pilavı",
+          "calories": 352,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "BULGUR",
+                "TEL ŞEHRİYE"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "11",
+          "name": "Ayran",
+          "calories": 60,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "AYRAN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "99",
+          "name": "İrmik Helvası",
+          "calories": 517,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "İRMİK"
+              ]
+            },
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "SÜT",
+                "BİTKİSEL MARGARİN"
+              ]
+            },
+            {
+              "id": "sert_kabuklu",
+              "confidence": "kesin",
+              "from": [
+                "ÇAM FISTIĞI"
+              ]
+            },
+            {
+              "id": "soya",
+              "confidence": "muhtemel",
+              "from": [
+                "BİTKİSEL MARGARİN"
+              ]
+            },
+            {
+              "id": "sulfit",
+              "confidence": "muhtemel",
+              "from": [
+                "KUŞ ÜZÜMÜ"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 1316
+    },
+    {
+      "ymk": 9,
+      "date": "2026-10-15",
+      "dayName": "Perşembe",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "49",
+          "name": "Etli Kuru Fasulye",
+          "calories": 340,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "2",
+          "name": "Tel Şehriyeli Pirinç Pilavı",
+          "calories": 310,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "TEL ŞEHRİYE"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sulfit",
+              "confidence": "muhtemel",
+              "from": [
+                "SALATALIK TURŞUSU"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "2336",
+          "name": "yoğurt",
+          "calories": 118,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "YOĞURT"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 775
+    },
+    {
+      "ymk": 10,
+      "date": "2026-10-16",
+      "dayName": "Cuma",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "157",
+          "name": "Ekşili Köfte",
+          "calories": 294,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "EKMEK SOMUN",
+                "UN"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "kesin",
+              "from": [
+                "YUMURTA"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "1305",
+          "name": "Soslu Makarna",
+          "calories": 305,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "MAKARNA"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "11",
+          "name": "Ayran",
+          "calories": 60,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "AYRAN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 801
+    },
+    {
+      "ymk": 11,
+      "date": "2026-10-19",
+      "dayName": "Pazartesi",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "41",
+          "name": "Sini Köfte",
+          "calories": 460,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN",
+                "EKMEK SOMUN"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "kesin",
+              "from": [
+                "YUMURTA"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "119",
+          "name": "Meyhane Pilavı",
+          "calories": 341,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "BULGUR"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "10",
+          "name": "Yoğurt",
+          "calories": 118,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "YOĞURT"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "24",
+          "name": "Salatalık Turşusu",
+          "calories": 7,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sulfit",
+              "confidence": "muhtemel",
+              "from": [
+                "SALATALIK TURŞUSU"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 926
+    },
+    {
+      "ymk": 12,
+      "date": "2026-10-20",
+      "dayName": "Salı",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "278",
+          "name": "FIRIN BUT IZGARA",
+          "calories": 620,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "SÜT"
+              ]
+            },
+            {
+              "id": "hardal",
+              "confidence": "muhtemel",
+              "from": [
+                "KÖRİ"
+              ]
+            },
+            {
+              "id": "kereviz",
+              "confidence": "muhtemel",
+              "from": [
+                "KÖRİ"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "2",
+          "name": "Tel Şehriyeli Pirinç Pilavı",
+          "calories": 310,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "TEL ŞEHRİYE"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "155",
+          "name": "Şalgam",
+          "calories": 20,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sulfit",
+              "confidence": "muhtemel",
+              "from": [
+                "ŞALGAM"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "63",
+          "name": "Meyve (Armut)",
+          "calories": 128,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 1078
+    },
+    {
+      "ymk": 13,
+      "date": "2026-10-21",
+      "dayName": "Çarşamba",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "49",
+          "name": "Etli Kuru Fasulye",
+          "calories": 340,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "2314",
+          "name": "Tel Şehriyeli Bulgur Pilavı",
+          "calories": 352,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "BULGUR",
+                "TEL ŞEHRİYE"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "26",
+          "name": "Cacık",
+          "calories": 97,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "YOĞURT"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "144",
+          "name": "Meyve (Elma)",
+          "calories": 142,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 931
+    },
+    {
+      "ymk": 14,
+      "date": "2026-10-22",
+      "dayName": "Perşembe",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "60",
+          "name": "İzmir Köfte",
+          "calories": 391,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN",
+                "EKMEK SOMUN"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "kesin",
+              "from": [
+                "YUMURTA"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": true,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "156",
+          "name": "Nohutlu Pirinç Pilavı",
+          "calories": 377,
+          "category": "ana_yemek",
+          "allergens": [],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "11",
+          "name": "Ayran",
+          "calories": 60,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "AYRAN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        },
+        {
+          "id": "75",
+          "name": "Puding",
+          "calories": 215,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "sut",
+              "confidence": "kesin",
+              "from": [
+                "PUDİNG",
+                "SÜT"
+              ]
+            },
+            {
+              "id": "yumurta",
+              "confidence": "muhtemel",
+              "from": [
+                "PUDİNG"
+              ]
+            },
+            {
+              "id": "sert_kabuklu",
+              "confidence": "muhtemel",
+              "from": [
+                "HİNDİSTAN CEVİZİ"
+              ]
+            },
+            {
+              "id": "soya",
+              "confidence": "muhtemel",
+              "from": [
+                "PUDİNG"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": true
+          },
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
+        }
+      ],
+      "totalCalories": 1043
+    },
+    {
+      "ymk": 15,
+      "date": "2026-10-23",
+      "dayName": "Cuma",
+      "hasData": true,
+      "meals": [
+        {
+          "id": "8419",
+          "name": "Kremalı Körili Tavuk",
+          "calories": 440,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN"
               ]
             },
             {
@@ -2481,19 +2531,19 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
-          "id": "2",
-          "name": "Tel Şehriyeli Pirinç Pilavı",
-          "calories": 310,
+          "id": "1305",
+          "name": "Soslu Makarna",
+          "calories": 305,
           "category": "ana_yemek",
           "allergens": [
             {
               "id": "gluten",
               "confidence": "kesin",
               "from": [
-                "TEL ŞEHRİYE"
+                "MAKARNA"
               ]
             }
           ],
@@ -2502,19 +2552,19 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
-          "id": "8416",
-          "name": "Karnabahar Salatası",
-          "calories": 1,
+          "id": "155",
+          "name": "Şalgam",
+          "calories": 20,
           "category": "ana_yemek",
           "allergens": [
             {
               "id": "sulfit",
               "confidence": "muhtemel",
               "from": [
-                "SALATALIK TURŞUSU"
+                "ŞALGAM"
               ]
             }
           ],
@@ -2523,31 +2573,23 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         },
         {
-          "id": "2333",
-          "name": "Ayran",
-          "calories": 60,
+          "id": "63",
+          "name": "Meyve (Armut)",
+          "calories": 128,
           "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "AYRAN"
-              ]
-            }
-          ],
+          "allergens": [],
           "unmappedIngredients": [],
           "dietFlags": {
             "hasMeat": false,
-            "hasAnimalProduct": true
+            "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-10-01T05:00:55.191Z"
+          "enrichedAt": "2026-10-08T05:00:51.830Z"
         }
       ],
-      "totalCalories": 991
+      "totalCalories": 893
     }
   ]
 }
