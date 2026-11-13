@@ -1,7 +1,7 @@
 {
   "month": "2026-11",
-  "lastUpdated": "2026-11-06T05:01:05.975Z",
-  "scrapeDate": "2026-11-06",
+  "lastUpdated": "2026-11-13T05:01:09.719Z",
+  "scrapeDate": "2026-11-13",
   "totalDays": 23,
   "days": [
     {
@@ -43,7 +43,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "156",
@@ -56,7 +56,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "155",
@@ -77,7 +77,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "144",
@@ -90,7 +90,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 935
@@ -135,7 +135,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2314",
@@ -157,7 +157,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "11",
@@ -178,7 +178,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "63",
@@ -191,7 +191,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 927
@@ -213,7 +213,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2",
@@ -234,7 +234,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "24",
@@ -255,7 +255,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2336",
@@ -276,7 +276,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 775
@@ -314,7 +314,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "1305",
@@ -335,7 +335,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "11",
@@ -356,7 +356,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "99",
@@ -406,7 +406,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 1176
@@ -444,7 +444,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "119",
@@ -465,7 +465,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "11",
@@ -486,7 +486,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "13",
@@ -507,7 +507,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 966
@@ -551,7 +551,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2",
@@ -572,7 +572,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "155",
@@ -593,7 +593,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "63",
@@ -606,7 +606,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 1078
@@ -628,7 +628,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2314",
@@ -650,7 +650,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "26",
@@ -671,7 +671,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "144",
@@ -684,7 +684,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 931
@@ -722,7 +722,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "156",
@@ -735,7 +735,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "11",
@@ -756,7 +756,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "4",
@@ -791,7 +791,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 1068
@@ -842,7 +842,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "1305",
@@ -863,7 +863,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "155",
@@ -884,7 +884,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "63",
@@ -897,7 +897,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 893
@@ -935,7 +935,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2",
@@ -956,7 +956,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "10",
@@ -977,7 +977,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "24",
@@ -998,7 +998,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 729
@@ -1028,7 +1028,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "156",
@@ -1041,7 +1041,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "11",
@@ -1062,7 +1062,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "144",
@@ -1075,7 +1075,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 1199
@@ -1113,7 +1113,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2310",
@@ -1141,7 +1141,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "10",
@@ -1162,7 +1162,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "63",
@@ -1175,7 +1175,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 822
@@ -1219,7 +1219,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2",
@@ -1240,7 +1240,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "155",
@@ -1261,7 +1261,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "248",
@@ -1289,7 +1289,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 1055
@@ -1319,7 +1319,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2314",
@@ -1341,7 +1341,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "26",
@@ -1362,7 +1362,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "8",
@@ -1375,7 +1375,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 950
@@ -1427,7 +1427,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2",
@@ -1448,7 +1448,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "218",
@@ -1463,7 +1463,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2333",
@@ -1484,7 +1484,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 790
@@ -1514,7 +1514,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2314",
@@ -1536,7 +1536,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "10",
@@ -1557,7 +1557,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "24",
@@ -1578,7 +1578,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 850
@@ -1624,44 +1624,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
-        },
-        {
-          "id": "73",
-          "name": "Peynirli Börek",
-          "calories": 362,
-          "category": "ana_yemek",
-          "allergens": [
-            {
-              "id": "gluten",
-              "confidence": "kesin",
-              "from": [
-                "YUFKA"
-              ]
-            },
-            {
-              "id": "sut",
-              "confidence": "kesin",
-              "from": [
-                "TAM YAĞLI BEYAZ PEYNİR",
-                "LOR PEYNİRİ",
-                "YOĞURT"
-              ]
-            },
-            {
-              "id": "yumurta",
-              "confidence": "kesin",
-              "from": [
-                "YUMURTA"
-              ]
-            }
-          ],
-          "unmappedIngredients": [],
-          "dietFlags": {
-            "hasMeat": false,
-            "hasAnimalProduct": true
-          },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "4361",
@@ -1682,7 +1645,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "13",
@@ -1703,7 +1666,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "4",
@@ -1738,7 +1701,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 951
@@ -1776,7 +1739,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "1305",
@@ -1797,7 +1760,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "10",
@@ -1818,7 +1781,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "64",
@@ -1839,7 +1802,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 727
@@ -1861,7 +1824,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "8392",
@@ -1883,7 +1846,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "26",
@@ -1904,7 +1867,7 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "8",
@@ -1917,7 +1880,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 563
@@ -1947,7 +1910,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "156",
@@ -1960,7 +1923,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "6369",
@@ -2006,7 +1969,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "24",
@@ -2027,7 +1990,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 1154
@@ -2065,7 +2028,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2314",
@@ -2087,7 +2050,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "26",
@@ -2108,11 +2071,11 @@
             "hasMeat": false,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
-          "id": "76",
-          "name": "Portakal",
+          "id": "148",
+          "name": "Meyve (Portakal)",
           "calories": 171,
           "category": "ana_yemek",
           "allergens": [],
@@ -2121,7 +2084,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 1011
@@ -2143,7 +2106,28 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
+        },
+        {
+          "id": "204",
+          "name": "Etsiz Nohut Yahnisi",
+          "calories": 277,
+          "category": "ana_yemek",
+          "allergens": [
+            {
+              "id": "gluten",
+              "confidence": "kesin",
+              "from": [
+                "UN"
+              ]
+            }
+          ],
+          "unmappedIngredients": [],
+          "dietFlags": {
+            "hasMeat": false,
+            "hasAnimalProduct": false
+          },
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "2",
@@ -2164,7 +2148,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "13",
@@ -2185,7 +2169,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "64",
@@ -2206,7 +2190,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 660
@@ -2250,7 +2234,7 @@
             "hasMeat": true,
             "hasAnimalProduct": true
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "1305",
@@ -2271,7 +2255,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "155",
@@ -2292,7 +2276,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         },
         {
           "id": "144",
@@ -2305,7 +2289,7 @@
             "hasMeat": false,
             "hasAnimalProduct": false
           },
-          "enrichedAt": "2026-11-06T05:01:05.981Z"
+          "enrichedAt": "2026-11-13T05:01:09.726Z"
         }
       ],
       "totalCalories": 762
